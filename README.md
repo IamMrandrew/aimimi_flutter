@@ -19,4 +19,4 @@ samples, guidance on mobile development, and a full API reference.
 
 - IamMrandrew
 - terrence-au
-- janson0004
+- janson_cheung
