@@ -18,5 +18,4 @@ samples, guidance on mobile development, and a full API reference.
 # Contributors
 
 - IamMrandrew
-- rpbanker
 - janson0004
