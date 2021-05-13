@@ -19,4 +19,8 @@ samples, guidance on mobile development, and a full API reference.
 
 - IamMrandrew
 - terrence-au
-- janson_cheung
+- janson0004
+
+# Todo
+
+- done
