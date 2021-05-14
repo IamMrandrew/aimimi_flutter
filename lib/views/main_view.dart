@@ -9,12 +9,20 @@ class MainView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
           toolbarHeight: 60,
-          leading: IconButton(
-            icon: FaIcon(FontAwesomeIcons.bullseye),
-            color: themeShadedColor,
-            onPressed: () {
-              //print("Pressed");
-            },
+          leadingWidth: 60,
+          leading: Row(
+            children: [
+              SizedBox(
+                width: 10,
+              ),
+              IconButton(
+                icon: FaIcon(FontAwesomeIcons.bullseye),
+                color: themeShadedColor,
+                onPressed: () {
+                  //print("Pressed");
+                },
+              ),
+            ],
           ),
           centerTitle: true,
           title: Text(
@@ -32,6 +40,9 @@ class MainView extends StatelessWidget {
               onPressed: () {
                 //print("Pressed");
               },
+            ),
+            SizedBox(
+              width: 10,
             )
           ]),
       body: TodayView(),
