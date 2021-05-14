@@ -1,15 +1,16 @@
 import 'package:aimimi/styles/colors.dart';
+import 'package:aimimi/views/today_view.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class HomeView extends StatelessWidget {
+class MainView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Home"),
+        elevation: 0,
       ),
-      body: Container(),
+      body: TodayView(),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         backgroundColor: Color(0xffFFFFFF),
@@ -24,21 +25,21 @@ class HomeView extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.emoji_events,
+              Icons.indeterminate_check_box_outlined,
+              color: monoSecondaryColor,
+            ),
+            label: "Goals",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.emoji_events_outlined,
               color: monoSecondaryColor,
             ),
             label: "Leaderboard",
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.calendar_today,
-              color: monoSecondaryColor,
-            ),
-            label: "Calendar",
-          ),
-          BottomNavigationBarItem(
-            icon: FaIcon(
-              FontAwesomeIcons.userCircle,
+              Icons.account_circle_outlined,
               color: monoSecondaryColor,
             ),
             label: "Profile",
