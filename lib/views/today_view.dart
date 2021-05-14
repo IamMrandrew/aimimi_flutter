@@ -24,7 +24,9 @@ class _TodayViewState extends State<TodayView> {
               ),
               SizedBox(height: 16),
               TodayGoal(),
+              SizedBox(height: 8),
               TodayGoal(),
+              SizedBox(height: 8),
               TodayGoal()
             ]));
   }
