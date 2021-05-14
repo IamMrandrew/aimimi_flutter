@@ -1,15 +1,37 @@
 import 'package:aimimi/styles/colors.dart';
 import 'package:aimimi/views/today_view.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MainView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Home"),
-        elevation: 0,
-      ),
+          leading: IconButton(
+            icon: FaIcon(FontAwesomeIcons.bullseye),
+            color: themeShadedColor,
+            onPressed: () {
+              //print("Pressed");
+            },
+          ),
+          centerTitle: true,
+          title: Text(
+            "Today",
+            style: TextStyle(
+              color: themeShadedColor,
+            ),
+          ),
+          elevation: 0,
+          actions: [
+            IconButton(
+              icon: FaIcon(FontAwesomeIcons.solidBell),
+              color: themeShadedColor,
+              onPressed: () {
+                //print("Pressed");
+              },
+            )
+          ]),
       body: TodayView(),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
