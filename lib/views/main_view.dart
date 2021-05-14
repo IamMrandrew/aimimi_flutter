@@ -8,6 +8,7 @@ class MainView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          toolbarHeight: 60,
           leading: IconButton(
             icon: FaIcon(FontAwesomeIcons.bullseye),
             color: themeShadedColor,
@@ -20,6 +21,7 @@ class MainView extends StatelessWidget {
             "Today",
             style: TextStyle(
               color: themeShadedColor,
+              fontWeight: FontWeight.w800,
             ),
           ),
           elevation: 0,
