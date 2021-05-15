@@ -2,6 +2,9 @@ import 'package:aimimi/styles/colors.dart';
 import 'package:aimimi/styles/text_styles.dart';
 import 'package:aimimi/views/today_view.dart';
 import 'package:aimimi/widgets/modal/modal_add_goal.dart';
+import 'package:aimimi/views/leaderboard_view.dart';
+import 'package:aimimi/views/profile_view.dart';
+import 'package:aimimi/views/goal_view.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -19,6 +22,19 @@ class _MainViewState extends State<MainView> {
         return ModalAddGoal();
       },
     );
+  }
+
+  int _currentIndex = 0;
+  final List<Widget> _views = [
+    TodayView(),
+    GoalView(),
+    LeaderboardView(),
+    ProfileView(),
+  ];
+  void onTappedBar(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
   }
 
   @override
@@ -59,7 +75,7 @@ class _MainViewState extends State<MainView> {
               width: 10,
             )
           ]),
-      body: TodayView(),
+      body: _views[_currentIndex],
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
         child: FaIcon(
@@ -70,13 +86,15 @@ class _MainViewState extends State<MainView> {
         elevation: 0,
       ),
       bottomNavigationBar: BottomNavigationBar(
+        onTap: onTappedBar,
+        currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
         backgroundColor: Color(0xffFFFFFF),
         items: [
           BottomNavigationBarItem(
             icon: Icon(
               Icons.today,
-              color: monoSecondaryColor,
+              //color: monoSecondaryColor,
             ),
             label: "Today",
             activeIcon: Icon(Icons.today, color: themeShadedColor),
@@ -84,21 +102,21 @@ class _MainViewState extends State<MainView> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.indeterminate_check_box_outlined,
-              color: monoSecondaryColor,
+              //color: monoSecondaryColor,
             ),
             label: "Goals",
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.emoji_events_outlined,
-              color: monoSecondaryColor,
+              //color: monoSecondaryColor,
             ),
             label: "Leaderboard",
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.account_circle_outlined,
-              color: monoSecondaryColor,
+              //color: monoSecondaryColor,
             ),
             label: "Profile",
           ),
@@ -114,6 +132,7 @@ class _MainViewState extends State<MainView> {
           fontWeight: FontWeight.w600,
         ),
         selectedItemColor: themeShadedColor,
+        unselectedItemColor: monoSecondaryColor,
       ),
     );
   }
