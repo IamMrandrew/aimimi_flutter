@@ -1,7 +1,7 @@
+import 'package:aimimi/styles/buttons.dart';
 import 'package:aimimi/styles/colors.dart';
 import 'package:aimimi/styles/text_fields.dart';
 import 'package:aimimi/styles/text_styles.dart';
-import 'package:dropdown_below/dropdown_below.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -16,179 +16,17 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
   String _title;
   String _category;
   String _frequency;
-  String _period;
+  String _period = "Daily";
   String _timespan;
   String _description;
   bool _publicity = false;
 
-  TextFormField _buildTitleField() {
-    return TextFormField(
-      decoration: InputDecoration(
-        hintText: "What is your goal?",
-        fillColor: backgroundColor,
-        filled: true,
-        border: textFieldBorder,
-        contentPadding: EdgeInsets.all(10),
-        isDense: true,
-        hintStyle: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w400,
-          color: monoSecondaryColor,
-        ),
-      ),
-      validator: (String value) {
-        if (value.isEmpty) {
-          return "Name is Required";
-        }
-        return null;
-      },
-      onSaved: (String value) {
-        setState(() {
-          _title = value;
-        });
-      },
-    );
-  }
-
-  DropdownBelow<String> _buildCategoryDropdown() {
-    return DropdownBelow(
-      // dropdownColor: Colors.white,
-      boxPadding: EdgeInsets.symmetric(horizontal: 10),
-      boxWidth: 180,
-      boxHeight: 45,
-      itemWidth: 180,
-      itemTextstyle: TextStyle(
-        fontSize: 14,
-        fontWeight: FontWeight.w400,
-        color: Colors.black,
-      ),
-      boxTextstyle: TextStyle(
-        fontSize: 14,
-        fontWeight: FontWeight.w400,
-        color: monoSecondaryColor,
-      ),
-      hint: Text("Select"),
-      // icon: Icon(
-      //   Icons.arrow_drop_down_outlined,
-      //   color: monoSecondaryColor,
-      // ),
-      iconSize: 28,
-      items: ["Lifestyle", "Sport"].map((item) {
-        return DropdownMenuItem(
-          child: Text(item),
-          value: item,
-        );
-      }).toList(),
-      onChanged: (value) {
-        setState(() {
-          _category = value;
-        });
-      },
-    );
-  }
-
-  TextFormField _buildFrequencyField() {
-    return TextFormField(
-      decoration: InputDecoration(
-        hintText: "1",
-        fillColor: backgroundColor,
-        filled: true,
-        border: textFieldBorder,
-        contentPadding: EdgeInsets.all(10),
-        isDense: true,
-        hintStyle: textFieldHintTextStyle,
-      ),
-      keyboardType: TextInputType.number,
-      validator: (String value) {
-        int frequency = int.tryParse(value);
-
-        if (frequency == null || frequency <= 0) {
-          return "Name is Required";
-        }
-        return null;
-      },
-      onSaved: (String value) {
-        setState(() {
-          _frequency = value;
-        });
-      },
-    );
-  }
-
-  TextFormField _buildTimespanField() {
-    return TextFormField(
-      decoration: InputDecoration(
-        hintText: "3",
-        fillColor: backgroundColor,
-        filled: true,
-        border: textFieldBorder,
-        contentPadding: EdgeInsets.all(10),
-        isDense: true,
-        hintStyle: textFieldHintTextStyle,
-      ),
-      keyboardType: TextInputType.number,
-      validator: (String value) {
-        if (value.isEmpty) {
-          return "Name is Required";
-        }
-        return null;
-      },
-      onSaved: (String value) {
-        setState(() {
-          _timespan = value;
-        });
-      },
-    );
-  }
-
-  TextFormField _buildDescriptionField() {
-    return TextFormField(
-      decoration: InputDecoration(
-        hintText: "Typing something about your goal ...",
-        fillColor: backgroundColor,
-        filled: true,
-        border: textFieldBorder,
-        contentPadding: EdgeInsets.all(10),
-        isDense: true,
-        hintStyle: textFieldHintTextStyle,
-      ),
-      keyboardType: TextInputType.number,
-      maxLines: 3,
-      validator: (String value) {
-        if (value.isEmpty) {
-          return "Name is Required";
-        }
-        return null;
-      },
-      onSaved: (String value) {
-        setState(() {
-          _description = value;
-        });
-      },
-    );
-  }
-
-  CheckboxListTile _buildPublicityCheckbox() {
-    return CheckboxListTile(
-      controlAffinity: ListTileControlAffinity.leading,
-      title: Text(
-        "Shared goal?",
-        style: textFieldTitleTextStyle,
-      ),
-      value: _publicity,
-      contentPadding: EdgeInsets.zero,
-      onChanged: (value) {
-        setState(() {
-          _publicity = !_publicity;
-        });
-      },
-    );
-  }
-
-  Container _buildModal() {
+  @override
+  Widget build(BuildContext context) {
     return Container(
       child: Column(
         children: [
+          // Modal title bar
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -197,7 +35,9 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
                   FontAwesomeIcons.times,
                   color: themeShadedColor,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
               Text(
                 "Add Goal",
@@ -213,8 +53,16 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
                     return;
                   }
                   _formKey.currentState.save();
-
-                  print(_title);
+                  print({
+                    "title": _title,
+                    "category": _category,
+                    "period": _period,
+                    "frequency": _frequency,
+                    "timespan": _timespan,
+                    "description": _description,
+                    "publicity": _publicity,
+                  });
+                  Navigator.pop(context);
                 },
               ),
             ],
@@ -222,6 +70,7 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
           SizedBox(
             height: 40,
           ),
+          // Add goal input form
           Form(
             key: _formKey,
             child: Column(
@@ -246,39 +95,7 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
                   "Repeating period?",
                   style: textFieldTitleTextStyle,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: Text("Everyday"),
-                      style: ElevatedButton.styleFrom(
-                        primary: themeColor,
-                        shadowColor: Colors.transparent,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 8),
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: Text(
-                        "Weekly",
-                        style: TextStyle(color: monoPrimaryColor),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        primary: backgroundColor,
-                        shadowColor: Colors.transparent,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+                _buildPeriodButtons(),
                 SizedBox(
                   height: 6,
                 ),
@@ -333,8 +150,204 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return _buildModal();
+  TextFormField _buildTitleField() {
+    return TextFormField(
+      decoration: InputDecoration(
+        hintText: "What is your goal?",
+        fillColor: backgroundColor,
+        filled: true,
+        border: textFieldBorder,
+        contentPadding: EdgeInsets.all(10),
+        isDense: true,
+        hintStyle: TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.w400,
+          color: monoSecondaryColor,
+        ),
+      ),
+      validator: (String value) {
+        if (value.isEmpty) {
+          return "Goal title is empty";
+        }
+        return null;
+      },
+      onSaved: (String value) {
+        setState(() {
+          _title = value;
+        });
+      },
+    );
+  }
+
+  Container _buildCategoryDropdown() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.all(Radius.circular(8)),
+      ),
+      child: DropdownButton<String>(
+        value: _category,
+        dropdownColor: Colors.white,
+        isDense: true,
+        underline: SizedBox(),
+        hint: Text("Select"),
+        style: TextStyle(
+          fontFamily: "Roboto",
+          color: monoPrimaryColor,
+          fontWeight: FontWeight.w600,
+        ),
+        icon: Icon(
+          Icons.arrow_drop_down_outlined,
+          color: monoSecondaryColor,
+        ),
+        iconSize: 28,
+        items: ["Lifestyle", "Sport"].map((item) {
+          return DropdownMenuItem(
+            child: Text(item),
+            value: item,
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            _category = value;
+          });
+        },
+      ),
+    );
+  }
+
+  Row _buildPeriodButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(
+          onPressed: () {
+            setState(() {
+              _period = "Daily";
+            });
+          },
+          child: Text(
+            "Daily",
+            style: selectButtonTextStyle(_period == "Daily"),
+          ),
+          style: selectButtonStyle(_period == "Daily"),
+        ),
+        SizedBox(width: 8),
+        ElevatedButton(
+            onPressed: () {
+              setState(() {
+                _period = "Weekly";
+              });
+            },
+            child: Text(
+              "Weekly",
+              style: selectButtonTextStyle(_period == "Weekly"),
+            ),
+            style: selectButtonStyle(
+              _period == "Weekly",
+            ))
+      ],
+    );
+  }
+
+  TextFormField _buildFrequencyField() {
+    return TextFormField(
+      decoration: InputDecoration(
+        hintText: "1",
+        fillColor: backgroundColor,
+        filled: true,
+        border: textFieldBorder,
+        contentPadding: EdgeInsets.all(10),
+        isDense: true,
+        hintStyle: textFieldHintTextStyle,
+      ),
+      keyboardType: TextInputType.number,
+      validator: (String value) {
+        int frequency = int.tryParse(value);
+
+        if (frequency == null || frequency <= 0) {
+          return "Frequency is empty or invalid";
+        }
+        return null;
+      },
+      onSaved: (String value) {
+        setState(() {
+          _frequency = value;
+        });
+      },
+    );
+  }
+
+  TextFormField _buildTimespanField() {
+    return TextFormField(
+      decoration: InputDecoration(
+        hintText: "3",
+        fillColor: backgroundColor,
+        filled: true,
+        border: textFieldBorder,
+        contentPadding: EdgeInsets.all(10),
+        isDense: true,
+        hintStyle: textFieldHintTextStyle,
+      ),
+      keyboardType: TextInputType.number,
+      validator: (String value) {
+        int timespan = int.tryParse(value);
+
+        if (timespan == null || timespan <= 0) {
+          return "Timespan is empty or invalid";
+        }
+        return null;
+      },
+      onSaved: (String value) {
+        setState(() {
+          _timespan = value;
+        });
+      },
+    );
+  }
+
+  TextFormField _buildDescriptionField() {
+    return TextFormField(
+      decoration: InputDecoration(
+        hintText: "Typing something about your goal ...",
+        fillColor: backgroundColor,
+        filled: true,
+        border: textFieldBorder,
+        contentPadding: EdgeInsets.all(10),
+        isDense: true,
+        hintStyle: textFieldHintTextStyle,
+      ),
+      keyboardType: TextInputType.number,
+      maxLines: 3,
+      validator: (String value) {
+        if (value.isEmpty) {
+          return "Description is empty";
+        }
+        return null;
+      },
+      onSaved: (String value) {
+        setState(() {
+          _description = value;
+        });
+      },
+    );
+  }
+
+  CheckboxListTile _buildPublicityCheckbox() {
+    return CheckboxListTile(
+      controlAffinity: ListTileControlAffinity.leading,
+      title: Text(
+        "Shared goal?",
+        style: textFieldTitleTextStyle,
+      ),
+      value: _publicity,
+      contentPadding: EdgeInsets.zero,
+      onChanged: (value) {
+        setState(() {
+          _publicity = !_publicity;
+        });
+      },
+    );
   }
 }
