@@ -1,4 +1,3 @@
-import 'package:aimimi/styles/buttons.dart';
 import 'package:aimimi/styles/colors.dart';
 import 'package:aimimi/styles/text_fields.dart';
 import 'package:aimimi/styles/text_styles.dart';
@@ -348,6 +347,23 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
           _publicity = !_publicity;
         });
       },
+    );
+  }
+
+  // Button styles
+  TextStyle selectButtonTextStyle(bool selected) {
+    return TextStyle(color: selected ? Colors.white : monoPrimaryColor);
+  }
+
+  ButtonStyle selectButtonStyle(bool selected) {
+    return ElevatedButton.styleFrom(
+      primary: selected ? themeColor : backgroundColor,
+      shadowColor: Colors.transparent,
+      elevation: 0,
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
     );
   }
 }
