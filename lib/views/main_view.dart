@@ -13,7 +13,7 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends State<MainView> {
   int _currentIndex = 0;
-  final List<Widget> _children = [
+  final List<Widget> _views = [
     TodayView(),
     GoalView(),
     LeaderboardView(),
@@ -67,7 +67,7 @@ class _MainViewState extends State<MainView> {
             )
           ]),
       //body: GoalView(),
-      body: _children[_currentIndex],
+      body: _views[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTappedBar,
         currentIndex: _currentIndex,
