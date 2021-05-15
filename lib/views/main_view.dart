@@ -1,9 +1,30 @@
 import 'package:aimimi/styles/colors.dart';
+import 'package:aimimi/views/leaderboard_view.dart';
+import 'package:aimimi/views/profile_view.dart';
 import 'package:aimimi/views/today_view.dart';
+import 'package:aimimi/views/goal_view.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class MainView extends StatelessWidget {
+class MainView extends StatefulWidget {
+  @override
+  _MainViewState createState() => _MainViewState();
+}
+
+class _MainViewState extends State<MainView> {
+  int _currentIndex = 0;
+  final List<Widget> _children = [
+    TodayView(),
+    GoalView(),
+    LeaderboardView(),
+    ProfileView(),
+  ];
+  void onTappedBar(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,15 +66,18 @@ class MainView extends StatelessWidget {
               width: 10,
             )
           ]),
-      body: TodayView(),
+      //body: GoalView(),
+      body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        onTap: onTappedBar,
+        currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
         backgroundColor: Color(0xffFFFFFF),
         items: [
           BottomNavigationBarItem(
             icon: Icon(
               Icons.today,
-              color: monoSecondaryColor,
+              //color: monoSecondaryColor,
             ),
             label: "Today",
             activeIcon: Icon(Icons.today, color: themeShadedColor),
@@ -61,21 +85,21 @@ class MainView extends StatelessWidget {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.indeterminate_check_box_outlined,
-              color: monoSecondaryColor,
+              //color: monoSecondaryColor,
             ),
             label: "Goals",
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.emoji_events_outlined,
-              color: monoSecondaryColor,
+              //color: monoSecondaryColor,
             ),
             label: "Leaderboard",
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.account_circle_outlined,
-              color: monoSecondaryColor,
+              //color: monoSecondaryColor,
             ),
             label: "Profile",
           ),
@@ -91,6 +115,7 @@ class MainView extends StatelessWidget {
           fontWeight: FontWeight.w600,
         ),
         selectedItemColor: themeShadedColor,
+        unselectedItemColor: monoSecondaryColor,
       ),
     );
   }
