@@ -1,5 +1,6 @@
 import 'package:aimimi/styles/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Goal extends StatelessWidget {
   const Goal({
@@ -62,14 +63,10 @@ class Goal extends StatelessWidget {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      "›",
-                      style: TextStyle(
-                        fontSize: 40,
-                        color: themeShadedColor,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
+                    FaIcon(
+                      FontAwesomeIcons.chevronRight,
+                      color: themeShadedColor,
+                    )
                   ],
                 )
               ],
