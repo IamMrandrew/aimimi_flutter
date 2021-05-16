@@ -1,7 +1,9 @@
 import 'package:aimimi/styles/colors.dart';
+import 'package:aimimi/styles/text_styles.dart';
+import 'package:aimimi/views/today_view.dart';
+import 'package:aimimi/widgets/modal/modal_add_goal.dart';
 import 'package:aimimi/views/leaderboard_view.dart';
 import 'package:aimimi/views/profile_view.dart';
-import 'package:aimimi/views/today_view.dart';
 import 'package:aimimi/views/goal_view.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -12,6 +14,16 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
+  void _modalHandler() {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return ModalAddGoal();
+      },
+    );
+  }
+
   int _currentIndex = 0;
   final List<Widget> _views = [
     TodayView(),
@@ -48,10 +60,7 @@ class _MainViewState extends State<MainView> {
           centerTitle: true,
           title: Text(
             "Today",
-            style: TextStyle(
-              color: themeShadedColor,
-              fontWeight: FontWeight.w800,
-            ),
+            style: appBarTitleTextStyle,
           ),
           elevation: 0,
           actions: [
@@ -66,8 +75,16 @@ class _MainViewState extends State<MainView> {
               width: 10,
             )
           ]),
-      //body: GoalView(),
       body: _views[_currentIndex],
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: FloatingActionButton(
+        child: FaIcon(
+          FontAwesomeIcons.plus,
+          color: Colors.white,
+        ),
+        onPressed: _modalHandler,
+        elevation: 0,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTappedBar,
         currentIndex: _currentIndex,
