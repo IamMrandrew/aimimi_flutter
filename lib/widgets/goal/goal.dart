@@ -66,6 +66,7 @@ class Goal extends StatelessWidget {
                     FaIcon(
                       FontAwesomeIcons.chevronRight,
                       color: themeShadedColor,
+                      size: 18,
                     )
                   ],
                 )
