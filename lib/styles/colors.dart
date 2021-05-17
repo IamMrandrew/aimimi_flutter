@@ -8,6 +8,7 @@ const themeMutedColor = Color(0xff759198);
 // mono color palette
 const monoPrimaryColor = Color(0xff000000);
 const monoSecondaryColor = Color(0xff999999);
+const monoTintedColor = Color(0xffC2C2C2);
 
 // background color palette
 const backgroundColor = Color(0xffF2F4F6);

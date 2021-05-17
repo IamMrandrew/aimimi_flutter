@@ -1,4 +1,5 @@
 import 'package:aimimi/styles/colors.dart';
+import 'package:aimimi/views/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:aimimi/views/main_view.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,7 +7,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -26,7 +31,7 @@ class MyApp extends StatelessWidget {
         // textTheme: GoogleFonts.robotoTextTheme(Theme.of(context).textTheme),
       ),
       debugShowCheckedModeBanner: false,
-      home: MainView(),
+      home: LoginView(),
     );
   }
 }
