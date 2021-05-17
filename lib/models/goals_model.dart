@@ -1,19 +1,38 @@
 class GoalModel {
-  String name;
+  String category;
+  String description;
+  int frequency;
   String period;
-  String days;
-  String amount;
+  bool publicity;
+  int timespan;
+  String title;
 
-  GoalModel(this.name, this.period, this.days, this.amount);
+  // GoalModel(this.category, this.description, this.frequency, this.period,
+  //     this.publicity, this.timespan, this.title);
+  GoalModel(this.category, this.description, this.frequency, this.period,
+      this.publicity, this.timespan, this.title);
 }
 
-List<GoalModel> goals = goalData
-    .map((item) =>
-        GoalModel(item['name'], item['photo'], item['days'], item['amount']))
-    .toList();
+// List<GoalModel> goals = goalData
+//     .map((item) => GoalModel(
+//         item['goals'],
+//         item['category'],
+//         item['description'],
+//         item['frequency'],
+//         item['period'],
+//         item['publicity'],
+//         item['timespan'],
+//         item['title']))
+//     .toList();
 
-final goalData = [
-  {"name": "Drink Water", "period": "Everyday", "days": "30", "amount": "0"},
-  {"name": "Push Up", "period": "Everyday", "days": "21", "amount": "4"},
-  {"name": "Pull Up", "period": "Everyday", "days": "21", "amount": "8"}
-];
+// final goalData = [
+//   {
+//     "category": "Lifestyle",
+//     "description": "This is the first goal",
+//     "frequency": 3,
+//     "period": "Daily",
+//     "publicity": false,
+//     "timespan": 30,
+//     "title": "AAA goal"
+//   },
+// ];

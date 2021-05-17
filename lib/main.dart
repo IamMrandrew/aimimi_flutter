@@ -1,7 +1,11 @@
+import 'package:aimimi/models/todayGoals_model.dart';
 import 'package:aimimi/styles/colors.dart';
+import 'package:aimimi/widgets/goal/goal.dart';
 import 'package:flutter/material.dart';
 import 'package:aimimi/views/main_view.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:aimimi/models/goals_model.dart';
+import 'package:provider/provider.dart';
+import 'package:aimimi/models/todayGoals_model.dart';
 
 void main() => runApp(MyApp());
 
@@ -23,7 +27,11 @@ class MyApp extends StatelessWidget {
         // textTheme: GoogleFonts.robotoTextTheme(Theme.of(context).textTheme),
       ),
       debugShowCheckedModeBanner: false,
-      home: MainView(),
+      // home: MainView(),
+      home: ChangeNotifierProvider<TodayGoalsModel>(
+        create: (_) => TodayGoalsModel(),
+        child: MainView(),
+      ),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:aimimi/models/todayGoals_model.dart';
 import 'package:aimimi/styles/colors.dart';
 import 'package:aimimi/styles/text_styles.dart';
 import 'package:aimimi/views/today_view.dart';
@@ -7,6 +8,7 @@ import 'package:aimimi/views/profile_view.dart';
 import 'package:aimimi/views/goal_view.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class MainView extends StatefulWidget {
   @override
@@ -14,12 +16,12 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
-  void _modalHandler() {
+  void _modalHandler(ctx) {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
-      builder: (context) {
-        return ModalAddGoal();
+      builder: (_) {
+        return ModalAddGoal(ctx: ctx);
       },
     );
   }
@@ -75,14 +77,16 @@ class _MainViewState extends State<MainView> {
               width: 10,
             )
           ]),
-      body: _views[_currentIndex],
+      body: Builder(builder: (BuildContext newContext) {
+        return _views[_currentIndex];
+      }),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
         child: FaIcon(
           FontAwesomeIcons.plus,
           color: Colors.white,
         ),
-        onPressed: _modalHandler,
+        onPressed: () => _modalHandler(context),
         elevation: 0,
       ),
       bottomNavigationBar: BottomNavigationBar(
