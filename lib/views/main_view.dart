@@ -101,7 +101,7 @@ class _MainViewState extends State<MainView> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.indeterminate_check_box_outlined,
+              Icons.leaderboard_outlined,
               //color: monoSecondaryColor,
             ),
             label: "Goals",
