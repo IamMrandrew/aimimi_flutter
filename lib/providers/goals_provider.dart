@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:aimimi/models/goals_model.dart';
 
-class TodayGoalsModel extends ChangeNotifier {
+class GoalsProvider extends ChangeNotifier {
   List<GoalModel> goalList = [
     GoalModel("Lifestyle", "This is the first goal", 3, "Daily", false, 30,
         "AAA goal")

@@ -1,11 +1,8 @@
-import 'package:aimimi/models/todayGoals_model.dart';
+import 'package:aimimi/providers/goals_provider.dart';
 import 'package:aimimi/styles/colors.dart';
-import 'package:aimimi/widgets/goal/goal.dart';
 import 'package:flutter/material.dart';
 import 'package:aimimi/views/main_view.dart';
-import 'package:aimimi/models/goals_model.dart';
 import 'package:provider/provider.dart';
-import 'package:aimimi/models/todayGoals_model.dart';
 
 void main() => runApp(MyApp());
 
@@ -28,8 +25,8 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       // home: MainView(),
-      home: ChangeNotifierProvider<TodayGoalsModel>(
-        create: (_) => TodayGoalsModel(),
+      home: ChangeNotifierProvider<GoalsProvider>(
+        create: (_) => GoalsProvider(),
         child: MainView(),
       ),
     );

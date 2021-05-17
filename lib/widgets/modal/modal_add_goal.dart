@@ -1,11 +1,9 @@
-import 'package:aimimi/models/todayGoals_model.dart';
+import 'package:aimimi/providers/goals_provider.dart';
 import 'package:aimimi/styles/colors.dart';
 import 'package:aimimi/styles/text_fields.dart';
 import 'package:aimimi/styles/text_styles.dart';
-import 'package:aimimi/widgets/goal/goal.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:aimimi/models/goals_model.dart';
 import 'package:provider/provider.dart';
 
 class ModalAddGoal extends StatefulWidget {
@@ -61,7 +59,7 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
                   }
                   _formKey.currentState.save();
                   // add right here
-                  Provider.of<TodayGoalsModel>(widget.ctx, listen: false)
+                  Provider.of<GoalsProvider>(widget.ctx, listen: false)
                       .addGoalInList(_category, _title, _period, _frequency,
                           _publicity, _description, _timespan);
 

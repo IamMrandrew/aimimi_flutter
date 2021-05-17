@@ -1,4 +1,4 @@
-import 'package:aimimi/models/todayGoals_model.dart';
+import 'package:aimimi/providers/goals_provider.dart';
 import 'package:aimimi/widgets/goal/goal_today.dart';
 import 'package:aimimi/widgets/modal/modal_add_goal.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +42,7 @@ class _TodayViewState extends State<TodayView> {
                   fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 16),
-            Consumer<TodayGoalsModel>(builder: (context, goal, child) {
+            Consumer<GoalsProvider>(builder: (context, goal, child) {
               return ListView.builder(
                   itemCount: goal.goalList.length,
                   scrollDirection: Axis.vertical,

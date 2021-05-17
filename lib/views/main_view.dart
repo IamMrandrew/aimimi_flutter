@@ -1,4 +1,3 @@
-import 'package:aimimi/models/todayGoals_model.dart';
 import 'package:aimimi/styles/colors.dart';
 import 'package:aimimi/styles/text_styles.dart';
 import 'package:aimimi/views/today_view.dart';
@@ -8,7 +7,6 @@ import 'package:aimimi/views/profile_view.dart';
 import 'package:aimimi/views/goal_view.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 
 class MainView extends StatefulWidget {
   @override
@@ -77,9 +75,7 @@ class _MainViewState extends State<MainView> {
               width: 10,
             )
           ]),
-      body: Builder(builder: (BuildContext newContext) {
-        return _views[_currentIndex];
-      }),
+      body: _views[_currentIndex],
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
         child: FaIcon(
