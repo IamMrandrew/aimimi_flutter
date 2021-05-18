@@ -41,8 +41,10 @@ class _TodayGoalState extends State<TodayGoal> {
         ),
         width: MediaQuery.of(context).size.width,
         height: 76,
-        padding: const EdgeInsets.only(left: 15),
+        padding: const EdgeInsets.all(15),
+        margin: const EdgeInsets.only(bottom: 8),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,7 +82,6 @@ class _TodayGoalState extends State<TodayGoal> {
                 ),
               ],
             ),
-            SizedBox(width: 145),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
