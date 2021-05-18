@@ -1,10 +1,7 @@
 import 'package:aimimi/providers/goals_provider.dart';
 import 'package:aimimi/widgets/goal/goal_today.dart';
-import 'package:aimimi/widgets/modal/modal_add_goal.dart';
 import 'package:flutter/material.dart';
 import 'package:aimimi/styles/colors.dart';
-import 'package:aimimi/models/goals_model.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class TodayView extends StatefulWidget {
@@ -16,17 +13,6 @@ class TodayView extends StatefulWidget {
 }
 
 class _TodayViewState extends State<TodayView> {
-  // final goals = [
-  //   GoalModel(
-  //       category: "Lifestyle",
-  //       description: "This is the first goal",
-  //       frequency: 3,
-  //       period: "Daily",
-  //       publicity: false,
-  //       timespan: 30,
-  //       title: "AAA goal")
-  // ];
-
   @override
   Widget build(BuildContext context) {
     return Container(

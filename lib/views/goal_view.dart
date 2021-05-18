@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:aimimi/styles/colors.dart';
 import 'package:aimimi/widgets/goal/goal.dart';
 
 class GoalView extends StatefulWidget {

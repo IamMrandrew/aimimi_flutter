@@ -1,4 +1,4 @@
-class GoalModel {
+class Goal {
   String category;
   String description;
   int frequency;
@@ -7,10 +7,15 @@ class GoalModel {
   int timespan;
   String title;
 
-  // GoalModel(this.category, this.description, this.frequency, this.period,
-  //     this.publicity, this.timespan, this.title);
-  GoalModel(this.category, this.description, this.frequency, this.period,
-      this.publicity, this.timespan, this.title);
+  Goal(
+    this.category,
+    this.description,
+    this.frequency,
+    this.period,
+    this.publicity,
+    this.timespan,
+    this.title,
+  );
 }
 
 // List<GoalModel> goals = goalData

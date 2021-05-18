@@ -1,9 +1,7 @@
 import 'package:aimimi/styles/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:aimimi/models/goals_model.dart';
 
 class TodayGoal extends StatefulWidget {
-  final goals;
   final String category;
   final String description;
   final int frequency;
@@ -12,17 +10,16 @@ class TodayGoal extends StatefulWidget {
   final int timespan;
   final String title;
 
-  TodayGoal(
-      {Key key,
-      this.goals,
-      this.category,
-      this.description,
-      this.frequency,
-      this.period,
-      this.publicity,
-      this.timespan,
-      this.title})
-      : super(key: key);
+  TodayGoal({
+    Key key,
+    this.category,
+    this.description,
+    this.frequency,
+    this.period,
+    this.publicity,
+    this.timespan,
+    this.title,
+  }) : super(key: key);
 
   @override
   State<TodayGoal> createState() => _TodayGoalState();
