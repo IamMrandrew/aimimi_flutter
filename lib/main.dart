@@ -1,9 +1,11 @@
 import 'package:aimimi/providers/google_sign_in.dart';
+import 'package:aimimi/providers/goals_provider.dart';
 import 'package:aimimi/styles/colors.dart';
 import 'package:aimimi/views/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:aimimi/views/main_view.dart';
+import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -33,7 +35,11 @@ class MyApp extends StatelessWidget {
         // textTheme: GoogleFonts.robotoTextTheme(Theme.of(context).textTheme),
       ),
       debugShowCheckedModeBanner: false,
-      home: LoginView(),
+      // home: MainView(),
+      home: ChangeNotifierProvider<GoalsProvider>(
+        create: (_) => GoalsProvider(),
+        child: LoginView(),
+      ),
     );
   }
 }

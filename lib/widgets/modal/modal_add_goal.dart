@@ -1,10 +1,16 @@
+import 'package:aimimi/providers/goals_provider.dart';
 import 'package:aimimi/styles/colors.dart';
 import 'package:aimimi/styles/text_fields.dart';
 import 'package:aimimi/styles/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class ModalAddGoal extends StatefulWidget {
+  final ctx;
+
+  ModalAddGoal({this.ctx, Key key}) : super(key: key);
+
   @override
   _ModalAddGoalState createState() => _ModalAddGoalState();
 }
@@ -14,9 +20,9 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
 
   String _title;
   String _category;
-  String _frequency;
+  int _frequency;
   String _period = "Daily";
-  String _timespan;
+  int _timespan;
   String _description;
   bool _publicity = false;
 
@@ -52,15 +58,11 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
                     return;
                   }
                   _formKey.currentState.save();
-                  print({
-                    "title": _title,
-                    "category": _category,
-                    "period": _period,
-                    "frequency": _frequency,
-                    "timespan": _timespan,
-                    "description": _description,
-                    "publicity": _publicity,
-                  });
+                  // add right here
+                  Provider.of<GoalsProvider>(widget.ctx, listen: false)
+                      .addGoalInList(_category, _title, _period, _frequency,
+                          _publicity, _description, _timespan);
+
                   Navigator.pop(context);
                 },
               ),
@@ -272,7 +274,7 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
       },
       onSaved: (String value) {
         setState(() {
-          _frequency = value;
+          _frequency = int.tryParse(value);
         });
       },
     );
@@ -300,7 +302,7 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
       },
       onSaved: (String value) {
         setState(() {
-          _timespan = value;
+          _timespan = int.tryParse(value);
         });
       },
     );
