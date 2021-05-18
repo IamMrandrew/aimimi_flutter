@@ -17,12 +17,12 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
-  void _modalHandler() {
+  void _modalHandler(ctx) {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
-      builder: (context) {
-        return ModalAddGoal();
+      builder: (_) {
+        return ModalAddGoal(ctx: ctx);
       },
     );
   }
@@ -85,7 +85,7 @@ class _MainViewState extends State<MainView> {
           FontAwesomeIcons.plus,
           color: Colors.white,
         ),
-        onPressed: _modalHandler,
+        onPressed: () => _modalHandler(context),
         elevation: 0,
       ),
       bottomNavigationBar: BottomNavigationBar(

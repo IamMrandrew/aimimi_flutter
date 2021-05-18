@@ -1,79 +1,103 @@
 import 'package:aimimi/styles/colors.dart';
 import 'package:flutter/material.dart';
 
-class TodayGoal extends StatelessWidget {
+class TodayGoal extends StatefulWidget {
+  final String category;
+  final String description;
+  final int frequency;
+  final String period;
+  final bool publicity;
+  final int timespan;
+  final String title;
   final modalCheckInHandler;
 
-  const TodayGoal({Key key, this.modalCheckInHandler}) : super(key: key);
+  TodayGoal({
+    Key key,
+    this.category,
+    this.description,
+    this.frequency,
+    this.period,
+    this.publicity,
+    this.timespan,
+    this.title,
+    this.modalCheckInHandler,
+  }) : super(key: key);
 
+  @override
+  State<TodayGoal> createState() => _TodayGoalState();
+}
+
+class _TodayGoalState extends State<TodayGoal> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        modalCheckInHandler();
+        widget.modalCheckInHandler();
       },
       child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            color: Colors.white,
-          ),
-          width: MediaQuery.of(context).size.width,
-          height: 76,
-          padding: const EdgeInsets.only(left: 15),
-          child: Row(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Drink Water",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: themeShadedColor,
-                      fontWeight: FontWeight.w700,
-                    ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          color: Colors.white,
+        ),
+        width: MediaQuery.of(context).size.width,
+        height: 76,
+        padding: const EdgeInsets.all(15),
+        margin: const EdgeInsets.only(bottom: 8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  widget.title,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: themeShadedColor,
+                    fontWeight: FontWeight.w700,
                   ),
-                  new Row(
-                    children: [
-                      Text(
-                        "Everyday",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: themeShadedColor,
-                          fontWeight: FontWeight.w500,
-                        ),
+                ),
+                Row(
+                  children: [
+                    Text(
+                      widget.period,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: themeShadedColor,
+                        fontWeight: FontWeight.w500,
                       ),
-                      SizedBox(width: 8),
-                      Text(
-                        "30 days left",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: themeShadedColor,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      )
-                    ],
-                  )
-                ],
-              ),
-              SizedBox(width: 145),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "0/8",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: themeShadedColor,
-                      fontWeight: FontWeight.w700,
                     ),
+                    SizedBox(width: 8),
+                    Text(
+                      "${widget.timespan} days left",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: themeShadedColor,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "0/${widget.frequency}",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: themeShadedColor,
+                    fontWeight: FontWeight.w700,
                   ),
-                ],
-              )
-            ],
-          )),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
     );
   }
 }
