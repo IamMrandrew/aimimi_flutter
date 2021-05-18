@@ -2,6 +2,8 @@ import 'package:aimimi/styles/colors.dart';
 import 'package:flutter/material.dart';
 
 class ModalCheckIn extends StatefulWidget {
+  ModalCheckIn({Key key, selectedGoal}) : super(key: key);
+
   @override
   _ModalCheckInState createState() => _ModalCheckInState();
 }
@@ -30,37 +32,7 @@ class _ModalCheckInState extends State<ModalCheckIn> {
                 SizedBox(
                   height: 24,
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12),
-                  child: Row(
-                    children: [
-                      Text(
-                        "0",
-                        style: TextStyle(
-                          color: monoPrimaryColor,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      Expanded(
-                        child: Slider(
-                          value: _checkIn,
-                          max: 8,
-                          min: 0,
-                          onChanged: (double value) {},
-                        ),
-                      ),
-                      Text(
-                        "8",
-                        style: TextStyle(
-                          color: monoPrimaryColor,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                _buildSlider(context),
                 SizedBox(
                   height: 14,
                 ),
@@ -109,6 +81,64 @@ class _ModalCheckInState extends State<ModalCheckIn> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(40)),
+      ),
+    );
+  }
+
+  Padding _buildSlider(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 12),
+      child: Row(
+        children: [
+          Text(
+            "0",
+            style: TextStyle(
+              color: monoPrimaryColor,
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          Expanded(
+            child: SliderTheme(
+              data: SliderTheme.of(context).copyWith(
+                activeTrackColor: themeColor,
+                inactiveTrackColor: Color(0xffDDDDDD),
+                trackHeight: 8,
+                thumbColor: Colors.white,
+                thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12),
+                overlayColor: Colors.transparent,
+                valueIndicatorShape: PaddleSliderValueIndicatorShape(),
+                valueIndicatorColor: themeColor,
+                valueIndicatorTextStyle: TextStyle(
+                  color: Colors.white,
+                ),
+                tickMarkShape: RoundSliderTickMarkShape(),
+                activeTickMarkColor: Colors.white,
+                inactiveTickMarkColor: Colors.white,
+              ),
+              child: Slider(
+                value: _checkIn,
+                max: 8,
+                min: 0,
+                divisions: 8,
+                label: _checkIn.toInt().toString(),
+                onChanged: (double value) {
+                  setState(() {
+                    _checkIn = value;
+                  });
+                },
+              ),
+            ),
+          ),
+          Text(
+            "8",
+            style: TextStyle(
+              color: monoPrimaryColor,
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
       ),
     );
   }

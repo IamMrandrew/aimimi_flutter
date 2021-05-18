@@ -9,7 +9,7 @@ class TodayView extends StatefulWidget {
 }
 
 class _TodayViewState extends State<TodayView> {
-  void _modalHandler() {
+  void _modalCheckInHandler() {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
@@ -35,18 +35,11 @@ class _TodayViewState extends State<TodayView> {
             ),
           ),
           SizedBox(height: 16),
-          TodayGoal(),
+          TodayGoal(modalCheckInHandler: _modalCheckInHandler),
           SizedBox(height: 8),
-          TodayGoal(),
+          TodayGoal(modalCheckInHandler: _modalCheckInHandler),
           SizedBox(height: 8),
-          TodayGoal(),
-          // Testing only
-          IconButton(
-            icon: Icon(Icons.ac_unit),
-            onPressed: () {
-              _modalHandler();
-            },
-          )
+          TodayGoal(modalCheckInHandler: _modalCheckInHandler),
         ],
       ),
     );
