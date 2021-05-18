@@ -1,5 +1,6 @@
 import 'package:aimimi/providers/goals_provider.dart';
 import 'package:aimimi/widgets/goal/goal_today.dart';
+import 'package:aimimi/widgets/modal/modal_check_in.dart';
 import 'package:flutter/material.dart';
 import 'package:aimimi/styles/colors.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +14,16 @@ class TodayView extends StatefulWidget {
 }
 
 class _TodayViewState extends State<TodayView> {
+  void _modalCheckInHandler() {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return ModalCheckIn();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -41,7 +52,8 @@ class _TodayViewState extends State<TodayView> {
                         publicity: goal.goalList[index].publicity,
                         period: goal.goalList[index].period,
                         frequency: goal.goalList[index].frequency,
-                        timespan: goal.goalList[index].timespan);
+                        timespan: goal.goalList[index].timespan,
+                        modalCheckInHandler: _modalCheckInHandler);
                   });
             }),
           ]),
