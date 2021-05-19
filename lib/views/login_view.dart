@@ -1,10 +1,10 @@
 import 'package:aimimi/providers/google_sign_in.dart';
+import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/views/main_view.dart';
 import 'package:aimimi/widgets/background_painter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:aimimi/styles/colors.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginView extends StatefulWidget {

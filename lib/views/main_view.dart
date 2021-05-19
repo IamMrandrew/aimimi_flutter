@@ -1,10 +1,9 @@
-import 'package:aimimi/styles/colors.dart';
-import 'package:aimimi/styles/text_styles.dart';
+import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/views/today_view.dart';
 import 'package:aimimi/widgets/modal/modal_add_goal.dart';
 import 'package:aimimi/views/leaderboard_view.dart';
 import 'package:aimimi/views/profile_view.dart';
-import 'package:aimimi/views/goal_view.dart';
+import 'package:aimimi/views/goals_view.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

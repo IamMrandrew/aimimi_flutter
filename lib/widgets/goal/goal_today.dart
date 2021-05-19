@@ -1,4 +1,4 @@
-import 'package:aimimi/styles/colors.dart';
+import 'package:aimimi/constants/styles.dart';
 import 'package:flutter/material.dart';
 
 class TodayGoal extends StatefulWidget {

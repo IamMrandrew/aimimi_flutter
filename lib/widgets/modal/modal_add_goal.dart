@@ -1,7 +1,5 @@
-import 'package:aimimi/providers/goals_provider.dart';
-import 'package:aimimi/styles/colors.dart';
-import 'package:aimimi/styles/text_fields.dart';
-import 'package:aimimi/styles/text_styles.dart';
+import 'package:aimimi/constants/styles.dart';
+import 'package:aimimi/services/goal_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -64,45 +62,11 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
                     return;
                   }
                   _formKey.currentState.save();
-                  // add right here
-                  Provider.of<GoalsProvider>(widget.ctx, listen: false)
-                      .addGoalInList(_category, _title, _period, _frequency,
-                          _publicity, _description, _timespan);
+
                   print(FirebaseAuth.instance.currentUser.uid);
-                  DocumentReference doc = await goalCollection.add({
-                    'title': _title,
-                    'category': _category,
-                    'description': _description,
-                    'publicity': _publicity,
-                    'period': _period,
-                    'frequency': _frequency,
-                    'timespan': _timespan,
-                    'createBy': {
-                      'uid': FirebaseAuth.instance.currentUser.uid,
-                      'username': FirebaseAuth.instance.currentUser.displayName,
-                    }
-                  });
-                  print(doc.id);
-                  await userCollection
-                      .doc(FirebaseAuth.instance.currentUser.uid)
-                      .update({
-                    "goals": FieldValue.arrayUnion([
-                      {
-                        "accuracy": 0,
-                        "checkIn": 0,
-                        "checkInSuccess": 0,
-                        "goal": {
-                          'description': _description,
-                          'frequency': _frequency,
-                          'period': _period,
-                          'publicity': _publicity,
-                          'timespan': _timespan,
-                          'title': _title,
-                        },
-                        "goalID": doc.id
-                      }
-                    ])
-                  });
+
+                  GoalService().addGoal(_title, _category, _description,
+                      _publicity, _period, _frequency, _timespan);
                   Navigator.pop(context);
                 },
               ),

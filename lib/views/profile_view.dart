@@ -1,5 +1,5 @@
 import 'package:aimimi/providers/google_sign_in.dart';
-import 'package:aimimi/styles/colors.dart';
+import 'package:aimimi/constants/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

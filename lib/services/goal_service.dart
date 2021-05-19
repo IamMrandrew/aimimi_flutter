@@ -1,6 +1,7 @@
 import 'package:aimimi/models/goal.dart';
 import 'package:aimimi/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class GoalService {
   final String uid;
@@ -54,5 +55,41 @@ class GoalService {
 
   Stream<List<UserGoal>> get userGoals {
     return userCollection.doc(uid).snapshots().map(_createUserGoals);
+  }
+
+  void addGoal(title, category, description, publicity, period, frequency,
+      timespan) async {
+    DocumentReference doc = await goalCollection.add({
+      'title': title,
+      'category': category,
+      'description': description,
+      'publicity': publicity,
+      'period': period,
+      'frequency': frequency,
+      'timespan': timespan,
+      'createBy': {
+        'uid': FirebaseAuth.instance.currentUser.uid,
+        'username': FirebaseAuth.instance.currentUser.displayName,
+      }
+    });
+    print(doc.id);
+    await userCollection.doc(FirebaseAuth.instance.currentUser.uid).update({
+      "goals": FieldValue.arrayUnion([
+        {
+          "accuracy": 0,
+          "checkIn": 0,
+          "checkInSuccess": 0,
+          "goal": {
+            'description': description,
+            'frequency': frequency,
+            'period': period,
+            'publicity': publicity,
+            'timespan': timespan,
+            'title': title,
+          },
+          "goalID": doc.id
+        }
+      ])
+    });
   }
 }
