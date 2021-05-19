@@ -1,7 +1,5 @@
 import 'package:aimimi/providers/goals_provider.dart';
-import 'package:aimimi/styles/colors.dart';
-import 'package:aimimi/styles/text_fields.dart';
-import 'package:aimimi/styles/text_styles.dart';
+import 'package:aimimi/constants/styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

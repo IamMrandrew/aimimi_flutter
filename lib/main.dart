@@ -1,7 +1,7 @@
 import 'package:aimimi/models/user.dart';
 import 'package:aimimi/providers/goals_provider.dart';
 import 'package:aimimi/services/goal_service.dart';
-import 'package:aimimi/styles/colors.dart';
+import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/views/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

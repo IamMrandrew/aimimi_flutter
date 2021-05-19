@@ -1,9 +1,9 @@
 import 'package:aimimi/models/user.dart';
 import 'package:aimimi/providers/goals_provider.dart';
+import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/widgets/goal/goal_today.dart';
 import 'package:aimimi/widgets/modal/modal_check_in.dart';
 import 'package:flutter/material.dart';
-import 'package:aimimi/styles/colors.dart';
 import 'package:provider/provider.dart';
 
 class TodayView extends StatefulWidget {
