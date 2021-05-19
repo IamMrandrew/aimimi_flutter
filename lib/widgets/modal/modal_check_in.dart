@@ -13,6 +13,14 @@ class ModalCheckIn extends StatefulWidget {
 }
 
 class _ModalCheckInState extends State<ModalCheckIn> {
+  int _checkIn;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkIn = widget.selectedGoal.checkIn;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -119,16 +127,17 @@ class _ModalCheckInState extends State<ModalCheckIn> {
                 inactiveTickMarkColor: Colors.white,
               ),
               child: Slider(
-                value: widget.selectedGoal.checkIn.toDouble(),
+                value: _checkIn.toDouble(),
                 max: widget.selectedGoal.goal.frequency.toDouble(),
                 min: 0,
                 divisions: widget.selectedGoal.goal.frequency,
-                label: widget.selectedGoal.checkIn.toInt().toString(),
-                onChanged: (double value) {
-                  setState(() async {
-                    widget.selectedGoal.checkIn = value.toInt();
-                    await GoalService().checkInGoal(value.toInt());
+                label: _checkIn.toString(),
+                onChanged: (double value) async {
+                  setState(() {
+                    _checkIn = value.toInt();
                   });
+                  await GoalService()
+                      .checkInGoal(value.toInt(), widget.selectedGoal.goalID);
                 },
               ),
             ),
