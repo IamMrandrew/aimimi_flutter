@@ -1,7 +1,10 @@
 import 'package:aimimi/models/user.dart';
+import 'package:aimimi/providers/auth.dart';
 import 'package:aimimi/services/goal_service.dart';
 import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/views/login_view.dart';
+import 'package:aimimi/views/main_view.dart';
+import 'package:aimimi/widgets/background_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -35,21 +38,52 @@ class MyApp extends StatelessWidget {
       // home: MainView(),
       home: MultiProvider(
         providers: [
+          StreamProvider<OurUser>.value(
+            initialData: null,
+            value: AuthService().user,
+          ),
+          ChangeNotifierProvider<AuthService>(
+            create: (_) => AuthService(),
+          )
+        ],
+        child: Authenticate(),
+      ),
+    );
+  }
+}
+
+class Authenticate extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    bool isSigningIn = Provider.of<AuthService>(context).isSigningIn;
+
+    if (isSigningIn) {
+      return buildLoading();
+    } else if (Provider.of<OurUser>(context) != null) {
+      return MultiProvider(
+        providers: [
           StreamProvider<List<Goal>>.value(
             initialData: [],
             value: GoalService().goals,
           ),
           StreamProvider<List<UserGoal>>.value(
             initialData: [],
-            value: GoalService(
-                    uid: FirebaseAuth.instance.currentUser != null
-                        ? FirebaseAuth.instance.currentUser.uid
-                        : null)
-                .userGoals,
+            value:
+                GoalService(uid: Provider.of<OurUser>(context).uid).userGoals,
           ),
         ],
-        child: LoginView(),
-      ),
-    );
+        child: MainView(),
+      );
+    } else {
+      return LoginView();
+    }
   }
+
+  Widget buildLoading() => Stack(
+        fit: StackFit.expand,
+        children: [
+          CustomPaint(painter: BackgroundPainter()),
+          Center(child: CircularProgressIndicator()),
+        ],
+      );
 }
