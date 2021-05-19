@@ -2,9 +2,24 @@ import 'package:aimimi/constants/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class Goal extends StatelessWidget {
-  const Goal({
+class GoalItem extends StatelessWidget {
+  final String category;
+  final String description;
+  final int frequency;
+  final String period;
+  final bool publicity;
+  final int timespan;
+  final String title;
+
+  const GoalItem({
     Key key,
+    this.category,
+    this.description,
+    this.frequency,
+    this.period,
+    this.publicity,
+    this.timespan,
+    this.title,
   }) : super(key: key);
 
   @override
@@ -20,15 +35,17 @@ class Goal extends StatelessWidget {
             ),
             width: MediaQuery.of(context).size.width,
             height: 76,
-            padding: const EdgeInsets.only(left: 15),
+            padding: const EdgeInsets.all(15),
+            margin: const EdgeInsets.only(bottom: 8),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Drink Water",
+                      title,
                       style: TextStyle(
                         fontSize: 16,
                         color: themeShadedColor,
@@ -38,7 +55,7 @@ class Goal extends StatelessWidget {
                     new Row(
                       children: [
                         Text(
-                          "Everyday",
+                          period,
                           style: TextStyle(
                             fontSize: 14,
                             color: themeShadedColor,
@@ -47,7 +64,7 @@ class Goal extends StatelessWidget {
                         ),
                         SizedBox(width: 8),
                         Text(
-                          "30 days left",
+                          "${timespan} days left",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 14,
@@ -59,7 +76,6 @@ class Goal extends StatelessWidget {
                     )
                   ],
                 ),
-                SizedBox(width: 145),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
