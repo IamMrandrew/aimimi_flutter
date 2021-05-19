@@ -52,7 +52,7 @@ class _ModalCheckInState extends State<ModalCheckIn> {
                     onPressed: () async {
                       // Check-in function
                       await GoalService()
-                          .checkInGoal(_checkIn, widget.selectedGoal.goalID);
+                          .checkInGoal(_checkIn, widget.selectedGoal);
                       Navigator.pop(context);
                     },
                     child: Text(

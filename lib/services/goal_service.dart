@@ -96,11 +96,26 @@ class GoalService {
     });
   }
 
-  Future checkInGoal(int value, String goalID) {
+  Future checkInGoal(int checkIn, UserGoal selectedGoal) {
+    final bool doEnoughTimes = checkIn >= selectedGoal.goal.frequency;
+
+    if (doEnoughTimes) {
+      return userCollection
+          .doc(FirebaseAuth.instance.currentUser.uid)
+          .collection("goals")
+          .doc(selectedGoal.goalID)
+          .update({
+        "checkIn": checkIn,
+        "checkInSuccess": FieldValue.increment(1),
+        "checkedIn": true,
+        "dayPassed": FieldValue.increment(1)
+      });
+    }
+
     return userCollection
         .doc(FirebaseAuth.instance.currentUser.uid)
         .collection("goals")
-        .doc(goalID)
-        .update({"checkIn": value});
+        .doc(selectedGoal.goalID)
+        .update({"checkIn": checkIn});
   }
 }

@@ -34,16 +34,20 @@ class _TodayGoalState extends State<TodayGoal> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        UserGoal selectedGoal = UserGoal(
-          accuracy: widget.accuracy,
-          checkIn: widget.checkIn,
-          checkInSuccess: widget.checkInSuccess,
-          checkedIn: widget.checkedIn,
-          dayPassed: widget.dayPassed,
-          goalID: widget.goalID,
-          goal: widget.goal,
-        );
-        widget.modalCheckInHandler(selectedGoal);
+        final bool notCheckedIn = !widget.checkedIn;
+
+        if (notCheckedIn) {
+          UserGoal selectedGoal = UserGoal(
+            accuracy: widget.accuracy,
+            checkIn: widget.checkIn,
+            checkInSuccess: widget.checkInSuccess,
+            checkedIn: widget.checkedIn,
+            dayPassed: widget.dayPassed,
+            goalID: widget.goalID,
+            goal: widget.goal,
+          );
+          widget.modalCheckInHandler(selectedGoal);
+        }
       },
       child: Container(
         decoration: BoxDecoration(
