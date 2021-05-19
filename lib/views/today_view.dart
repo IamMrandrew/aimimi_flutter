@@ -1,4 +1,3 @@
-import 'package:aimimi/models/goal.dart';
 import 'package:aimimi/providers/goals_provider.dart';
 import 'package:aimimi/widgets/goal/goal_today.dart';
 import 'package:aimimi/widgets/modal/modal_check_in.dart';
@@ -41,21 +40,19 @@ class _TodayViewState extends State<TodayView> {
             ),
             SizedBox(height: 16),
             Consumer<GoalsProvider>(builder: (context, goal, child) {
-              List<Goal> goals = Provider.of<List<Goal>>(context);
               return ListView.builder(
-                  itemCount: goals.length,
+                  itemCount: goal.goalList.length,
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    Goal goal = Provider.of<List<Goal>>(context)[index];
                     return TodayGoal(
-                        title: goal.title,
-                        category: goal.category,
-                        description: goal.description,
-                        publicity: goal.publicity,
-                        period: goal.period,
-                        frequency: goal.frequency,
-                        timespan: goal.timespan,
+                        title: goal.goalList[index].title,
+                        category: goal.goalList[index].category,
+                        description: goal.goalList[index].description,
+                        publicity: goal.goalList[index].publicity,
+                        period: goal.goalList[index].period,
+                        frequency: goal.goalList[index].frequency,
+                        timespan: goal.goalList[index].timespan,
                         modalCheckInHandler: _modalCheckInHandler);
                   });
             }),
