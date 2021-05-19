@@ -45,7 +45,10 @@ class MyApp extends StatelessWidget {
           ),
           StreamProvider<List<UserGoal>>.value(
             initialData: [],
-            value: GoalService(uid: FirebaseAuth.instance.currentUser.uid)
+            value: GoalService(
+                    uid: FirebaseAuth.instance.currentUser != null
+                        ? FirebaseAuth.instance.currentUser.uid
+                        : null)
                 .userGoals,
           ),
         ],
