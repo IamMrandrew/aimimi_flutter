@@ -7,7 +7,7 @@ class Goal {
   int timespan;
   String title;
 
-  Goal(
+  Goal({
     this.category,
     this.description,
     this.frequency,
@@ -15,7 +15,7 @@ class Goal {
     this.publicity,
     this.timespan,
     this.title,
-  );
+  });
 }
 
 // List<GoalModel> goals = goalData

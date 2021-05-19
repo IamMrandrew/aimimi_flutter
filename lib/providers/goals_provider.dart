@@ -3,14 +3,27 @@ import 'package:aimimi/models/goal.dart';
 
 class GoalsProvider extends ChangeNotifier {
   List<Goal> goalList = [
-    Goal("Lifestyle", "This is the first goal", 3, "Daily", false, 30,
-        "AAA goal")
+    Goal(
+        category: "Lifestyle",
+        description: "This is the first goal",
+        frequency: 3,
+        period: "Daily",
+        publicity: false,
+        timespan: 30,
+        title: "AAA goal")
   ];
 
   addGoalInList(
       category, title, period, frequency, publicity, description, timespan) {
     Goal goalModel = Goal(
-        category, description, frequency, period, publicity, timespan, title);
+      category: category,
+      description: description,
+      frequency: frequency,
+      period: period,
+      publicity: publicity,
+      timespan: timespan,
+      title: title,
+    );
     goalList.add(goalModel);
 
     notifyListeners();
