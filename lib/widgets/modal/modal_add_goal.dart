@@ -33,6 +33,15 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.all(20),
+      height: MediaQuery.of(context).size.height * 0.92,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(40),
+          topRight: Radius.circular(40),
+        ),
+      ),
       child: Column(
         children: [
           // Modal title bar
@@ -72,85 +81,87 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
               ),
             ],
           ),
-          SizedBox(
-            height: 40,
-          ),
-          // Add goal input form
-          Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildTitleField(),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "In what category?",
-                  style: textFieldTitleTextStyle,
-                ),
-                SizedBox(
-                  height: 6,
-                ),
-                _buildCategoryDropdown(),
-                SizedBox(
-                  height: 12,
-                ),
-                Text(
-                  "Repeating period?",
-                  style: textFieldTitleTextStyle,
-                ),
-                _buildPeriodButtons(),
-                SizedBox(
-                  height: 6,
-                ),
-                SizedBox(
-                  height: 12,
-                ),
-                Text(
-                  "How many times?",
-                  style: textFieldTitleTextStyle,
-                ),
-                SizedBox(
-                  height: 6,
-                ),
-                _buildFrequencyField(),
-                SizedBox(
-                  height: 12,
-                ),
-                Text(
-                  "Last for how long?",
-                  style: textFieldTitleTextStyle,
-                ),
-                SizedBox(
-                  height: 6,
-                ),
-                _buildTimespanField(),
-                SizedBox(
-                  height: 12,
-                ),
-                Text(
-                  "Description",
-                  style: textFieldTitleTextStyle,
-                ),
-                SizedBox(
-                  height: 6,
-                ),
-                _buildDescriptionField(),
-                SizedBox(
-                  height: 12,
-                ),
-                _buildPublicityCheckbox()
-              ],
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 40,
+                  ),
+                  // Add goal input form
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildTitleField(),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          "In what category?",
+                          style: textFieldTitleTextStyle,
+                        ),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        _buildCategoryDropdown(),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        Text(
+                          "Repeating period?",
+                          style: textFieldTitleTextStyle,
+                        ),
+                        _buildPeriodButtons(),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        Text(
+                          "How many times?",
+                          style: textFieldTitleTextStyle,
+                        ),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        _buildFrequencyField(),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        Text(
+                          "Last for how long?",
+                          style: textFieldTitleTextStyle,
+                        ),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        _buildTimespanField(),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        Text(
+                          "Description",
+                          style: textFieldTitleTextStyle,
+                        ),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        _buildDescriptionField(),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        _buildPublicityCheckbox()
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
-      ),
-      padding: EdgeInsets.all(20),
-      height: MediaQuery.of(context).size.height * 0.92,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(40)),
       ),
     );
   }
