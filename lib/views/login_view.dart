@@ -1,11 +1,8 @@
 import 'package:aimimi/providers/google_sign_in.dart';
-import 'package:aimimi/styles/text_fields.dart';
-import 'package:aimimi/styles/text_styles.dart';
 import 'package:aimimi/views/main_view.dart';
 import 'package:aimimi/widgets/background_painter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:stacked_firebase_auth/stacked_firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:aimimi/styles/colors.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -232,11 +229,12 @@ class _LoginViewState extends State<LoginView> {
                                 width: 1,
                               )),
                           child: MaterialButton(
-                            onPressed: () {
+                            onPressed: () async {
                               final provider =
                                   Provider.of<GoogleSignInProvider>(context,
                                       listen: false);
-                              provider.login();
+                              var result = await provider.login();
+                              print(result.uid);
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,

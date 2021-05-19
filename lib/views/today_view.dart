@@ -1,3 +1,4 @@
+import 'package:aimimi/models/user.dart';
 import 'package:aimimi/providers/goals_provider.dart';
 import 'package:aimimi/widgets/goal/goal_today.dart';
 import 'package:aimimi/widgets/modal/modal_check_in.dart';
@@ -6,9 +7,8 @@ import 'package:aimimi/styles/colors.dart';
 import 'package:provider/provider.dart';
 
 class TodayView extends StatefulWidget {
-  TodayView({
-    Key key,
-  }) : super(key: key);
+  TodayView({Key key}) : super(key: key);
+
   @override
   _TodayViewState createState() => _TodayViewState();
 }
@@ -40,20 +40,23 @@ class _TodayViewState extends State<TodayView> {
             ),
             SizedBox(height: 16),
             Consumer<GoalsProvider>(builder: (context, goal, child) {
+              List<UserGoal> goals = Provider.of<List<UserGoal>>(context);
               return ListView.builder(
-                  itemCount: goal.goalList.length,
+                  itemCount: goals.length,
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
+                    UserGoal goal = Provider.of<List<UserGoal>>(context)[index];
                     return TodayGoal(
-                        title: goal.goalList[index].title,
-                        category: goal.goalList[index].category,
-                        description: goal.goalList[index].description,
-                        publicity: goal.goalList[index].publicity,
-                        period: goal.goalList[index].period,
-                        frequency: goal.goalList[index].frequency,
-                        timespan: goal.goalList[index].timespan,
-                        modalCheckInHandler: _modalCheckInHandler);
+                      title: goal.goal.title,
+                      category: goal.goal.category,
+                      description: goal.goal.description,
+                      publicity: goal.goal.publicity,
+                      period: goal.goal.period,
+                      frequency: goal.goal.frequency,
+                      timespan: goal.goal.timespan,
+                      modalCheckInHandler: _modalCheckInHandler,
+                    );
                   });
             }),
           ]),

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import "package:aimimi/models/user.dart";
 
 class GoogleSignInProvider extends ChangeNotifier {
   final googleSignIn = GoogleSignIn();
@@ -17,10 +18,19 @@ class GoogleSignInProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  OurUser _createUser(User user) {
+    return user != null ? OurUser(uid: user.uid) : null;
+  }
+
+  Stream<OurUser> get user {
+    return FirebaseAuth.instance.authStateChanges().map(_createUser);
+  }
+
   Future login() async {
     isSigningIn = true;
 
     final user = await googleSignIn.signIn();
+
     if (user == null) {
       isSigningIn = false;
       return;
@@ -32,9 +42,12 @@ class GoogleSignInProvider extends ChangeNotifier {
         idToken: googleAuth.idToken,
       );
 
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      UserCredential result =
+          await FirebaseAuth.instance.signInWithCredential(credential);
 
       isSigningIn = false;
+
+      return _createUser(result.user);
     }
   }
 
