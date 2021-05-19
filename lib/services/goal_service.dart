@@ -34,7 +34,7 @@ class GoalService {
     return snapshot
         .data()["goals"]
         .map<UserGoal>((userGoal) => UserGoal(
-              accuracy: userGoal["accuracy"],
+              accuracy: userGoal["accuracy"].toDouble(),
               checkIn: userGoal["checkIn"],
               checkInSuccess: userGoal["checkInSuccess"],
               checkedIn: userGoal["checkedIn"],
@@ -91,5 +91,9 @@ class GoalService {
         }
       ])
     });
+  }
+
+  Future checkInGoal(int value) {
+    // return userCollection.doc(FirebaseAuth.instance.currentUser.uid).update()
   }
 }
