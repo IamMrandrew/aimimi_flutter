@@ -2,9 +2,12 @@ import 'package:aimimi/providers/goals_provider.dart';
 import 'package:aimimi/styles/colors.dart';
 import 'package:aimimi/styles/text_fields.dart';
 import 'package:aimimi/styles/text_styles.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:aimimi/services/goal_service.dart';
 
 class ModalAddGoal extends StatefulWidget {
   final ctx;
@@ -17,6 +20,10 @@ class ModalAddGoal extends StatefulWidget {
 
 class _ModalAddGoalState extends State<ModalAddGoal> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final CollectionReference<Map<String, dynamic>> goalCollection =
+      FirebaseFirestore.instance.collection("goals");
+  final CollectionReference<Map<String, dynamic>> userCollection =
+      FirebaseFirestore.instance.collection("users");
 
   String _title;
   String _category;
@@ -53,7 +60,7 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
                   FontAwesomeIcons.check,
                   color: themeShadedColor,
                 ),
-                onPressed: () {
+                onPressed: () async {
                   if (!_formKey.currentState.validate()) {
                     return;
                   }
@@ -62,7 +69,41 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
                   Provider.of<GoalsProvider>(widget.ctx, listen: false)
                       .addGoalInList(_category, _title, _period, _frequency,
                           _publicity, _description, _timespan);
-
+                  print(FirebaseAuth.instance.currentUser.uid);
+                  DocumentReference doc = await goalCollection.add({
+                    'title': _title,
+                    'category': _category,
+                    'description': _description,
+                    'publicity': _publicity,
+                    'period': _period,
+                    'frequency': _frequency,
+                    'timespan': _timespan,
+                    'createBy': {
+                      'uid': FirebaseAuth.instance.currentUser.uid,
+                      'username': FirebaseAuth.instance.currentUser.displayName,
+                    }
+                  });
+                  print(doc.id);
+                  await userCollection
+                      .doc(FirebaseAuth.instance.currentUser.uid)
+                      .update({
+                    "goals": FieldValue.arrayUnion([
+                      {
+                        "accuracy": 0,
+                        "checkIn": 0,
+                        "checkInSuccess": 0,
+                        "goal": {
+                          'description': _description,
+                          'frequency': _frequency,
+                          'period': _period,
+                          'publicity': _publicity,
+                          'timespan': _timespan,
+                          'title': _title,
+                        },
+                        "goalID": doc.id
+                      }
+                    ])
+                  });
                   Navigator.pop(context);
                 },
               ),
