@@ -97,7 +97,7 @@ class _TodayGoalState extends State<TodayGoal> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "0/${widget.goal.frequency}",
+                  "${widget.checkIn}/${widget.goal.frequency}",
                   style: TextStyle(
                     fontSize: 16,
                     color: themeShadedColor,

@@ -49,8 +49,11 @@ class _ModalCheckInState extends State<ModalCheckIn> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       // Check-in function
+                      await GoalService()
+                          .checkInGoal(_checkIn, widget.selectedGoal.goalID);
+                      Navigator.pop(context);
                     },
                     child: Text(
                       "Check in",
@@ -132,12 +135,10 @@ class _ModalCheckInState extends State<ModalCheckIn> {
                 min: 0,
                 divisions: widget.selectedGoal.goal.frequency,
                 label: _checkIn.toString(),
-                onChanged: (double value) async {
+                onChanged: (double value) {
                   setState(() {
                     _checkIn = value.toInt();
                   });
-                  await GoalService()
-                      .checkInGoal(value.toInt(), widget.selectedGoal.goalID);
                 },
               ),
             ),
