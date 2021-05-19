@@ -1,5 +1,4 @@
 import 'package:aimimi/models/user.dart';
-import 'package:aimimi/providers/goals_provider.dart';
 import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/widgets/goal/goal_today.dart';
 import 'package:aimimi/widgets/modal/modal_check_in.dart';
@@ -26,6 +25,7 @@ class _TodayViewState extends State<TodayView> {
 
   @override
   Widget build(BuildContext context) {
+    List<UserGoal> goals = Provider.of<List<UserGoal>>(context);
     return Container(
       padding: EdgeInsets.only(top: 28, left: 25, right: 25),
       child: Column(
@@ -39,26 +39,23 @@ class _TodayViewState extends State<TodayView> {
                   fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 16),
-            Consumer<GoalsProvider>(builder: (context, goal, child) {
-              List<UserGoal> goals = Provider.of<List<UserGoal>>(context);
-              return ListView.builder(
-                  itemCount: goals.length,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    UserGoal goal = Provider.of<List<UserGoal>>(context)[index];
-                    return TodayGoal(
-                      title: goal.goal.title,
-                      category: goal.goal.category,
-                      description: goal.goal.description,
-                      publicity: goal.goal.publicity,
-                      period: goal.goal.period,
-                      frequency: goal.goal.frequency,
-                      timespan: goal.goal.timespan,
-                      modalCheckInHandler: _modalCheckInHandler,
-                    );
-                  });
-            }),
+            ListView.builder(
+                itemCount: goals.length,
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  UserGoal goal = Provider.of<List<UserGoal>>(context)[index];
+                  return TodayGoal(
+                    title: goal.goal.title,
+                    category: goal.goal.category,
+                    description: goal.goal.description,
+                    publicity: goal.goal.publicity,
+                    period: goal.goal.period,
+                    frequency: goal.goal.frequency,
+                    timespan: goal.goal.timespan,
+                    modalCheckInHandler: _modalCheckInHandler,
+                  );
+                })
           ]),
     );
   }

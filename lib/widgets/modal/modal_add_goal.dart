@@ -1,4 +1,3 @@
-import 'package:aimimi/providers/goals_provider.dart';
 import 'package:aimimi/constants/styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -62,10 +61,7 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
                     return;
                   }
                   _formKey.currentState.save();
-                  // add right here
-                  Provider.of<GoalsProvider>(widget.ctx, listen: false)
-                      .addGoalInList(_category, _title, _period, _frequency,
-                          _publicity, _description, _timespan);
+
                   print(FirebaseAuth.instance.currentUser.uid);
                   DocumentReference doc = await goalCollection.add({
                     'title': _title,
