@@ -232,11 +232,12 @@ class _LoginViewState extends State<LoginView> {
                                 width: 1,
                               )),
                           child: MaterialButton(
-                            onPressed: () {
+                            onPressed: () async {
                               final provider =
                                   Provider.of<GoogleSignInProvider>(context,
                                       listen: false);
-                              provider.login();
+                              var result = await provider.login();
+                              print(result.uid);
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,

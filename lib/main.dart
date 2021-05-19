@@ -1,3 +1,4 @@
+import 'package:aimimi/models/user.dart';
 import 'package:aimimi/providers/google_sign_in.dart';
 import 'package:aimimi/providers/goals_provider.dart';
 import 'package:aimimi/services/goal_service.dart';
@@ -47,6 +48,11 @@ class MyApp extends StatelessWidget {
           StreamProvider<List<Goal>>.value(
             initialData: [],
             value: GoalService().goals,
+          ),
+          StreamProvider<List<UserGoal>>.value(
+            initialData: [],
+            value: GoalService(uid: FirebaseAuth.instance.currentUser.uid)
+                .userGoals,
           ),
         ],
         child: LoginView(),
