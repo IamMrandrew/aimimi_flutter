@@ -5,6 +5,7 @@ import 'package:aimimi/widgets/background_painter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class LoginView extends StatefulWidget {
   @override
@@ -163,7 +164,8 @@ class _LoginViewState extends State<LoginView> {
                     onPressed: () async {
                       if (formkey.currentState.validate()) {
                         formkey.currentState.save();
-                        var result = await AuthService()
+                        var result = await Provider.of<AuthService>(context,
+                                listen: false)
                             .emailLogin(email, password, context);
                         print(result.uid);
                       }
@@ -251,7 +253,9 @@ class _LoginViewState extends State<LoginView> {
                       )),
                   child: MaterialButton(
                     onPressed: () async {
-                      var result = await AuthService().googleLogin();
+                      var result =
+                          await Provider.of<AuthService>(context, listen: false)
+                              .googleLogin();
                       print(result.uid);
                     },
                     child: Row(
