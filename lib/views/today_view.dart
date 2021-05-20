@@ -1,3 +1,4 @@
+import 'package:aimimi/models/goal.dart';
 import 'package:aimimi/models/user.dart';
 import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/widgets/goal/goal_today.dart';
@@ -13,12 +14,14 @@ class TodayView extends StatefulWidget {
 }
 
 class _TodayViewState extends State<TodayView> {
-  void _modalCheckInHandler() {
+  void _modalCheckInHandler(UserGoal selectedGoal) {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
       builder: (context) {
-        return ModalCheckIn();
+        return ModalCheckIn(
+          selectedGoal: selectedGoal,
+        );
       },
     );
   }
@@ -46,13 +49,13 @@ class _TodayViewState extends State<TodayView> {
                 itemBuilder: (context, index) {
                   UserGoal goal = Provider.of<List<UserGoal>>(context)[index];
                   return TodayGoal(
-                    title: goal.goal.title,
-                    category: goal.goal.category,
-                    description: goal.goal.description,
-                    publicity: goal.goal.publicity,
-                    period: goal.goal.period,
-                    frequency: goal.goal.frequency,
-                    timespan: goal.goal.timespan,
+                    goal: goal.goal,
+                    accuracy: goal.accuracy,
+                    checkIn: goal.checkIn,
+                    checkInSuccess: goal.checkInSuccess,
+                    checkedIn: goal.checkedIn,
+                    dayPassed: goal.dayPassed,
+                    goalID: goal.goalID,
                     modalCheckInHandler: _modalCheckInHandler,
                   );
                 })

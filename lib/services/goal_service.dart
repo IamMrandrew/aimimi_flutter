@@ -30,31 +30,35 @@ class GoalService {
   }
 
   List<UserGoal> _createUserGoals(
-      DocumentSnapshot<Map<String, dynamic>> snapshot) {
-    return snapshot
-        .data()["goals"]
-        .map<UserGoal>((userGoal) => UserGoal(
-              accuracy: userGoal["accuracy"],
-              checkIn: userGoal["checkIn"],
-              checkInSuccess: userGoal["checkInSuccess"],
-              checkedIn: userGoal["checkedIn"],
-              dayPassed: 0,
-              goalID: "BZh5Rh9WzmxM0fyqKeM4",
-              goal: Goal(
-                title: userGoal["goal"]["title"],
-                category: userGoal["goal"]["category"],
-                period: userGoal["goal"]["period"],
-                frequency: userGoal["goal"]["frequency"],
-                timespan: userGoal["goal"]["timespan"],
-                publicity: userGoal["goal"]["publicity"],
-                description: userGoal["goal"]["description"],
-              ),
-            ))
+      QuerySnapshot<Map<String, dynamic>> querySnapshot) {
+    return querySnapshot.docs
+        .map<UserGoal>(
+            (DocumentSnapshot<Map<String, dynamic>> userGoal) => (UserGoal(
+                  accuracy: userGoal.data()["accuracy"].toDouble(),
+                  checkIn: userGoal.data()["checkIn"],
+                  checkInSuccess: userGoal.data()["checkInSuccess"],
+                  checkedIn: userGoal.data()["checkedIn"],
+                  dayPassed: userGoal.data()[""],
+                  goalID: userGoal.id,
+                  goal: Goal(
+                    title: userGoal.data()["goal"]["title"],
+                    category: userGoal.data()["goal"]["category"],
+                    period: userGoal.data()["goal"]["period"],
+                    frequency: userGoal.data()["goal"]["frequency"],
+                    timespan: userGoal.data()["goal"]["timespan"],
+                    publicity: userGoal.data()["goal"]["publicity"],
+                    description: userGoal.data()["goal"]["description"],
+                  ),
+                )))
         .toList();
   }
 
   Stream<List<UserGoal>> get userGoals {
-    return userCollection.doc(uid).snapshots().map(_createUserGoals);
+    return userCollection
+        .doc(uid)
+        .collection("goals")
+        .snapshots()
+        .map(_createUserGoals);
   }
 
   void addGoal(title, category, description, publicity, period, frequency,
@@ -73,23 +77,47 @@ class GoalService {
       }
     });
     print(doc.id);
-    await userCollection.doc(uid).update({
-      "goals": FieldValue.arrayUnion([
-        {
-          "accuracy": 0,
-          "checkIn": 0,
-          "checkInSuccess": 0,
-          "goal": {
-            'description': description,
-            'frequency': frequency,
-            'period': period,
-            'publicity': publicity,
-            'timespan': timespan,
-            'title': title,
-          },
-          "goalID": doc.id
-        }
-      ])
+    await userCollection
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .collection("goals")
+        .doc(doc.id.toString())
+        .set({
+      "accuracy": 0,
+      "checkIn": 0,
+      "checkInSuccess": 0,
+      "checkedIn": true,
+      "dayPassed": 0,
+      "goal": {
+        'description': description,
+        'frequency': frequency,
+        'period': period,
+        'publicity': publicity,
+        'timespan': timespan,
+        'title': title,
+      },
     });
+  }
+
+  Future checkInGoal(int checkIn, UserGoal selectedGoal) {
+    final bool doEnoughTimes = checkIn >= selectedGoal.goal.frequency;
+
+    if (doEnoughTimes) {
+      return userCollection
+          .doc(FirebaseAuth.instance.currentUser.uid)
+          .collection("goals")
+          .doc(selectedGoal.goalID)
+          .update({
+        "checkIn": checkIn,
+        "checkInSuccess": FieldValue.increment(1),
+        "checkedIn": true,
+        "dayPassed": FieldValue.increment(1)
+      });
+    }
+
+    return userCollection
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .collection("goals")
+        .doc(selectedGoal.goalID)
+        .update({"checkIn": checkIn});
   }
 }

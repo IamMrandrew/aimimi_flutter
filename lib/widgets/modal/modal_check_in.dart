@@ -1,15 +1,25 @@
 import 'package:aimimi/constants/styles.dart';
+import 'package:aimimi/models/goal.dart';
+import 'package:aimimi/models/user.dart';
+import 'package:aimimi/services/goal_service.dart';
 import 'package:flutter/material.dart';
 
 class ModalCheckIn extends StatefulWidget {
-  ModalCheckIn({Key key, selectedGoal}) : super(key: key);
+  final selectedGoal;
+  ModalCheckIn({Key key, UserGoal this.selectedGoal}) : super(key: key);
 
   @override
   _ModalCheckInState createState() => _ModalCheckInState();
 }
 
 class _ModalCheckInState extends State<ModalCheckIn> {
-  double _checkIn = 2;
+  int _checkIn;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkIn = widget.selectedGoal.checkIn;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +49,11 @@ class _ModalCheckInState extends State<ModalCheckIn> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       // Check-in function
+                      await GoalService()
+                          .checkInGoal(_checkIn, widget.selectedGoal);
+                      Navigator.pop(context);
                     },
                     child: Text(
                       "Check in",
@@ -117,21 +130,21 @@ class _ModalCheckInState extends State<ModalCheckIn> {
                 inactiveTickMarkColor: Colors.white,
               ),
               child: Slider(
-                value: _checkIn,
-                max: 8,
+                value: _checkIn.toDouble(),
+                max: widget.selectedGoal.goal.frequency.toDouble(),
                 min: 0,
-                divisions: 8,
-                label: _checkIn.toInt().toString(),
+                divisions: widget.selectedGoal.goal.frequency,
+                label: _checkIn.toString(),
                 onChanged: (double value) {
                   setState(() {
-                    _checkIn = value;
+                    _checkIn = value.toInt();
                   });
                 },
               ),
             ),
           ),
           Text(
-            "8",
+            widget.selectedGoal.goal.frequency.toString(),
             style: TextStyle(
               color: monoPrimaryColor,
               fontSize: 20,

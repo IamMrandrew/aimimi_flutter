@@ -10,7 +10,7 @@ class OurUser {
 }
 
 class UserGoal {
-  var accuracy;
+  double accuracy;
   int checkIn;
   int checkInSuccess;
   bool checkedIn;
