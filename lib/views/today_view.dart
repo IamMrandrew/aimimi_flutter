@@ -35,7 +35,7 @@ class _TodayViewState extends State<TodayView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              "Two task left for today",
+              "${_buildTaskLeft(goals)} task left for today",
               style: TextStyle(
                   fontSize: 16,
                   color: themeShadedColor.withOpacity(0.6),
@@ -62,4 +62,9 @@ class _TodayViewState extends State<TodayView> {
           ]),
     );
   }
+
+  int _buildTaskLeft(List<UserGoal> goals) => goals
+      .where((goal) => goal.checkIn != goal.goal.frequency)
+      .toList()
+      .length;
 }
