@@ -1,4 +1,4 @@
-import 'package:aimimi/providers/google_sign_in.dart';
+import 'package:aimimi/providers/auth.dart';
 import 'package:aimimi/constants/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -19,10 +19,12 @@ class _ProfileViewState extends State<ProfileView> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          /*
           CircleAvatar(
             maxRadius: 25,
             backgroundImage: NetworkImage(user.photoURL),
           ),
+          */
           SizedBox(height: 8),
           Text(
             'Name: ' + user.displayName,
@@ -39,10 +41,8 @@ class _ProfileViewState extends State<ProfileView> {
           ),
           SizedBox(height: 8),
           ElevatedButton(
-            onPressed: () {
-              final provider =
-                  Provider.of<GoogleSignInProvider>(context, listen: false);
-              provider.logout();
+            onPressed: () async {
+              await AuthService().logout();
             },
             child: Text('Logout'),
           )
