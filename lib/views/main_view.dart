@@ -79,14 +79,16 @@ class _MainViewState extends State<MainView> {
           ]),
       body: _views[_currentIndex],
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: FloatingActionButton(
-        child: FaIcon(
-          FontAwesomeIcons.plus,
-          color: Colors.white,
-        ),
-        onPressed: () => _modalHandler(context),
-        elevation: 0,
-      ),
+      floatingActionButton: _currentIndex < 2
+          ? FloatingActionButton(
+              child: FaIcon(
+                FontAwesomeIcons.plus,
+                color: Colors.white,
+              ),
+              onPressed: () => _modalHandler(context),
+              elevation: 0,
+            )
+          : null,
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTappedBar,
         currentIndex: _currentIndex,
