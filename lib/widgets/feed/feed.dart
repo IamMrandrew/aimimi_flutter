@@ -1,4 +1,5 @@
 import 'package:aimimi/constants/styles.dart';
+import 'package:aimimi/views/comment_view.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import "package:timeago/timeago.dart" as timeago;
@@ -68,7 +69,10 @@ class FeedItem extends StatelessWidget {
                         width: 10,
                       ),
                       _buildFeedButton("Comment", Icons.question_answer, () {
-                        //Navigator.push(context, MaterialPageRoute(builder: (context) => CommentView()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CommentView()));
                       }),
                     ],
                   )
