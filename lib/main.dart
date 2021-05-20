@@ -71,6 +71,11 @@ class Authenticate extends StatelessWidget {
             value:
                 GoalService(uid: Provider.of<OurUser>(context).uid).userGoals,
           ),
+          StreamProvider<List<String>>.value(
+            initialData: [],
+            value: GoalService(uid: Provider.of<OurUser>(context).uid)
+                .completedGoals,
+          ),
         ],
         child: MainView(),
       );

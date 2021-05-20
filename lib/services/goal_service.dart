@@ -53,12 +53,26 @@ class GoalService {
         .toList();
   }
 
+  List<String> _completed(QuerySnapshot<Map<String, dynamic>> querySnapshot) {
+    return querySnapshot.docs
+        .map<String>((DocumentSnapshot<Map<String, dynamic>> userGoal) => ('A'))
+        .toList();
+  }
+
   Stream<List<UserGoal>> get userGoals {
     return userCollection
         .doc(uid)
         .collection("goals")
         .snapshots()
         .map(_createUserGoals);
+  }
+
+  Stream<List<String>> get completedGoals {
+    return userCollection
+        .doc(uid)
+        .collection("completed")
+        .snapshots()
+        .map(_completed);
   }
 
   void addGoal(title, category, description, publicity, period, frequency,
