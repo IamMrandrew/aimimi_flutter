@@ -34,8 +34,8 @@ class _SignupViewState extends State<SignupView> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(25.0),
-                  topRight: Radius.circular(25.0)),
+                  topLeft: Radius.circular(40.0),
+                  topRight: Radius.circular(40.0)),
             ),
             child: Column(
               children: [
@@ -263,7 +263,7 @@ class _SignupViewState extends State<SignupView> {
                       }
                     },
                     child: Text(
-                      "Sing Up",
+                      "Sign Up",
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w700,

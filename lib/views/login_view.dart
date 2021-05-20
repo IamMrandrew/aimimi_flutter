@@ -35,8 +35,8 @@ class _LoginViewState extends State<LoginView> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(25.0),
-                  topRight: Radius.circular(25.0)),
+                  topLeft: Radius.circular(40.0),
+                  topRight: Radius.circular(40.0)),
             ),
             child: Column(
               children: [
@@ -204,12 +204,13 @@ class _LoginViewState extends State<LoginView> {
                   ],
                 ),
                 SizedBox(
-                  height: 26,
+                  height: 20,
                 ),
                 Row(
                   children: [
                     Container(
-                      width: 159,
+                      width:
+                          MediaQuery.of(context).size.width * 0.5 - 20 - 10 - 7,
                       decoration: BoxDecoration(
                           border: Border.all(
                         color: monoTintedColor,
@@ -230,7 +231,8 @@ class _LoginViewState extends State<LoginView> {
                       width: 10,
                     ),
                     Container(
-                      width: 159,
+                      width:
+                          MediaQuery.of(context).size.width * 0.5 - 20 - 10 - 7,
                       decoration: BoxDecoration(
                           border: Border.all(
                         color: monoTintedColor,
@@ -240,7 +242,7 @@ class _LoginViewState extends State<LoginView> {
                   ],
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 35,
                 ),
                 Container(
                   width: double.infinity,
