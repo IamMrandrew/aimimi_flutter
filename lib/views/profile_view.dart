@@ -41,10 +41,8 @@ class _ProfileViewState extends State<ProfileView> {
           ),
           SizedBox(height: 8),
           ElevatedButton(
-            onPressed: () {
-              final provider =
-                  Provider.of<AuthProvider>(context, listen: false);
-              provider.logout();
+            onPressed: () async {
+              await AuthService().logout();
             },
             child: Text('Logout'),
           )

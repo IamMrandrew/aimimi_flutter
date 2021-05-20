@@ -1,15 +1,14 @@
-import 'package:aimimi/views/login_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import "package:aimimi/models/user.dart";
 
-class AuthProvider extends ChangeNotifier {
+class AuthService extends ChangeNotifier {
   final googleSignIn = GoogleSignIn();
   final FirebaseAuth auth = FirebaseAuth.instance;
   bool _isSigningIn;
 
-  AuthProvider() {
+  AuthService() {
     _isSigningIn = false;
   }
 
@@ -103,11 +102,11 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  void logout() async {
+  Future logout() async {
     print(auth.currentUser.providerData[0]);
     if (auth.currentUser.providerData[0].providerId == 'google.com') {
       await googleSignIn.disconnect();
     }
-    FirebaseAuth.instance.signOut();
+    return await FirebaseAuth.instance.signOut();
   }
 }

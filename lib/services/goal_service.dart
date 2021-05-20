@@ -73,7 +73,7 @@ class GoalService {
       }
     });
     print(doc.id);
-    await userCollection.doc(FirebaseAuth.instance.currentUser.uid).update({
+    await userCollection.doc(uid).update({
       "goals": FieldValue.arrayUnion([
         {
           "accuracy": 0,
