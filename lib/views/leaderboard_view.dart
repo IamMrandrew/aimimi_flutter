@@ -79,10 +79,8 @@ class _LeaderboardViewState extends State<LeaderboardView> {
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(18))),
         padding: EdgeInsets.only(left: 14, right: 14, top: 20, bottom: 20),
-        child: Expanded(
-          child: ListView(
-            children: _buildRanks(),
-          ),
+        child: ListView(
+          children: _buildRanks(),
         ),
       ),
     );

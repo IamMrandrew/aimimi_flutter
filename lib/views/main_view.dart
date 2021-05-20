@@ -7,6 +7,8 @@ import 'package:aimimi/views/goals_view.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+List<String> title = ["Today", "Goals", "Leaderboard", "Profile"];
+
 class MainView extends StatefulWidget {
   @override
   _MainViewState createState() => _MainViewState();
@@ -30,6 +32,7 @@ class _MainViewState extends State<MainView> {
     LeaderboardView(),
     ProfileView(),
   ];
+
   void onTappedBar(int index) {
     setState(() {
       _currentIndex = index;
@@ -58,7 +61,7 @@ class _MainViewState extends State<MainView> {
           ),
           centerTitle: true,
           title: Text(
-            "Today",
+            title[_currentIndex],
             style: appBarTitleTextStyle,
           ),
           elevation: 0,
