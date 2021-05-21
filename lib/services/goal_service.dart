@@ -198,10 +198,35 @@ class GoalService {
   }
 
   // Join goal action
-  Future joinGoal() {
-    return goalCollection.doc(goalID).collection("users").doc(uid).set({
-      "accuracy": 0,
-      "username": FirebaseAuth.instance.currentUser.displayName,
-    });
+  Future joinGoal(goal) async {
+    Future addJoinedUserToGoalUsers() {
+      return goalCollection.doc(goalID).collection("users").doc(uid).set({
+        "accuracy": 0,
+        "username": FirebaseAuth.instance.currentUser.displayName,
+      });
+    }
+
+    Future addUserGoalToUserGoals(SharedGoal goal) {
+      return userCollection.doc(uid).collection("goals").doc(goalID).set({
+        "accuracy": 0,
+        "checkIn": 0,
+        "checkInSuccess": 0,
+        "checkedIn": false,
+        "dayPassed": 0,
+        "goal": {
+          'description': goal.description,
+          'frequency': goal.frequency,
+          'period': goal.period,
+          'publicity': goal.publicity,
+          'timespan': goal.timespan,
+          'title': goal.title,
+        },
+      });
+    }
+
+    return await Future.wait([
+      addJoinedUserToGoalUsers(),
+      addUserGoalToUserGoals(goal),
+    ]);
   }
 }

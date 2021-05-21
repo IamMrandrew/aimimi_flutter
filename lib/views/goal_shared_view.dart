@@ -39,7 +39,7 @@ class _SharedGoalViewState extends State<SharedGoalView> {
 
   Widget _buildBody(snapshot, joinedUsersSnapshot) {
     if (snapshot.hasData) {
-      final sharedGoal = snapshot.data;
+      final SharedGoal sharedGoal = snapshot.data;
       _checkIfUserJoined(joinedUsersSnapshot, context);
 
       return Column(
@@ -87,7 +87,7 @@ class _SharedGoalViewState extends State<SharedGoalView> {
                     GoalService(
                       goalID: widget.goalID,
                       uid: Provider.of<OurUser>(context, listen: false).uid,
-                    ).joinGoal();
+                    ).joinGoal(sharedGoal);
                     setState(() {
                       joined = true;
                     });
