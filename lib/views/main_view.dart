@@ -2,6 +2,7 @@ import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/models/goal.dart';
 import 'package:aimimi/services/goal_service.dart';
 import 'package:aimimi/views/shares_view.dart';
+import 'package:aimimi/views/activity_view.dart';
 import 'package:aimimi/views/today_view.dart';
 import 'package:aimimi/widgets/modal/modal_add_goal.dart';
 import 'package:aimimi/views/leaderboard_view.dart';
@@ -84,7 +85,8 @@ class _MainViewState extends State<MainView> {
               icon: FaIcon(FontAwesomeIcons.solidBell),
               color: themeShadedColor,
               onPressed: () {
-                //print("Pressed");
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ActivityView()));
               },
             ),
             SizedBox(
