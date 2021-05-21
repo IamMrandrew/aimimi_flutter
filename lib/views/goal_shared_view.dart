@@ -1,9 +1,11 @@
 import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/models/goal.dart';
+import 'package:aimimi/models/user.dart';
 import 'package:aimimi/services/goal_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class SharedGoalView extends StatefulWidget {
   final goalID;
@@ -72,7 +74,12 @@ class _SharedGoalViewState extends State<SharedGoalView> {
               width: double.infinity,
               height: 40,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  GoalService(
+                    goalID: widget.goalID,
+                    uid: Provider.of<OurUser>(context, listen: false).uid,
+                  ).joinGoal();
+                },
                 child: Text("Join",
                     style: TextStyle(
                       color: Colors.white,

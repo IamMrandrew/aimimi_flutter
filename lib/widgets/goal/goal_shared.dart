@@ -1,9 +1,11 @@
 import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/models/goal.dart';
 import 'package:aimimi/models/user.dart';
+import 'package:aimimi/providers/auth.dart';
 import 'package:aimimi/views/goal_shared_view.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class SharedGoalItem extends StatefulWidget {
   final String goalID;
@@ -40,11 +42,21 @@ class _SharedGoalItemState extends State<SharedGoalItem> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        final OurUser ourUserData =
+            Provider.of<OurUser>(context, listen: false);
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => SharedGoalView(
-                      goalID: widget.goalID,
+                builder: (context) => MultiProvider(
+                      providers: [
+                        StreamProvider<OurUser>.value(
+                          initialData: ourUserData,
+                          value: AuthService().user,
+                        ),
+                      ],
+                      child: SharedGoalView(
+                        goalID: widget.goalID,
+                      ),
                     )));
       },
       child: Container(

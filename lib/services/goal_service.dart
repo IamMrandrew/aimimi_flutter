@@ -51,8 +51,7 @@ class GoalService {
         .asyncMap(_createSharedGoals);
   }
 
-// Get a shared goal for SharedGoalView
-
+  // Get a shared goal for SharedGoalView
   Future<SharedGoal> _createSharedGoal(
           DocumentSnapshot<Map<String, dynamic>> sharedGoal) async =>
       SharedGoal(
@@ -81,6 +80,7 @@ class GoalService {
     return goalCollection.doc(goalID).snapshots().asyncMap(_createSharedGoal);
   }
 
+  // Get all goals for that user
   List<UserGoal> _createUserGoals(
       QuerySnapshot<Map<String, dynamic>> querySnapshot) {
     return querySnapshot.docs
@@ -113,6 +113,7 @@ class GoalService {
         .map(_createUserGoals);
   }
 
+  // Add goal action
   void addGoal(title, category, description, publicity, period, frequency,
       timespan) async {
     DocumentReference doc = await goalCollection.add({
@@ -151,6 +152,7 @@ class GoalService {
     });
   }
 
+  // Check in action
   Future checkInGoal(int checkIn, UserGoal selectedGoal) {
     final bool doEnoughTimes = checkIn >= selectedGoal.goal.frequency;
 
@@ -172,5 +174,13 @@ class GoalService {
         .collection("goals")
         .doc(selectedGoal.goalID)
         .update({"checkIn": checkIn});
+  }
+
+  // Join goal action
+  Future joinGoal() {
+    return goalCollection.doc(goalID).collection("users").doc(uid).set({
+      "accuracy": 0,
+      "username": FirebaseAuth.instance.currentUser.displayName,
+    });
   }
 }
