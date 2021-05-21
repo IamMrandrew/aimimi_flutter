@@ -13,6 +13,7 @@ class _SharesViewState extends State<SharesView> {
   @override
   Widget build(BuildContext context) {
     List<SharedGoal> sharedGoals = Provider.of<List<SharedGoal>>(context);
+    print(sharedGoals);
     List items = [
       Text(
         "Recommended For You",

@@ -1,9 +1,19 @@
+import 'package:aimimi/models/user.dart';
+
 class Feed {
   String content;
   DateTime createdAt;
   String goalID;
-  String username;
+  CreatedBy createdBy;
   bool liked;
-
-  Feed({this.content, this.createdAt, this.goalID, this.username, this.liked});
+  List likes;
+  List comments;
+  Feed(
+      {this.content,
+      this.createdAt,
+      this.goalID,
+      this.createdBy,
+      this.liked,
+      this.likes,
+      this.comments});
 }
