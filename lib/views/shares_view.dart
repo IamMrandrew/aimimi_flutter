@@ -11,15 +11,14 @@ class SharesView extends StatefulWidget {
 
 class _SharesViewState extends State<SharesView> {
   List<SharedGoal> _searchResult = [];
+  TextEditingController _controller = TextEditingController();
   FocusNode _focus = FocusNode();
   bool _focused = false;
-  final TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _focus.addListener(() {
-      print(_focus.hasFocus.toString());
       setState(() {
         _focused = !_focused;
       });
@@ -126,6 +125,9 @@ class _SharesViewState extends State<SharesView> {
             _focus.unfocus();
             _controller.clear();
           },
+          style: ButtonStyle(
+            overlayColor: MaterialStateProperty.all(Colors.transparent),
+          ),
           child: Text(
             "Cancel",
             style: TextStyle(
@@ -141,8 +143,9 @@ class _SharesViewState extends State<SharesView> {
     final result = sharedGoals.where((SharedGoal goal) {
       final String query = input.toLowerCase();
       final String title = goal.title.toLowerCase();
+      final String category = goal.category.toLowerCase();
 
-      return title.contains(query);
+      return title.contains(query) || category.contains(query);
     }).toList();
 
     setState(() {
