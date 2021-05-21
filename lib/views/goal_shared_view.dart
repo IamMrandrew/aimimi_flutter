@@ -16,24 +16,32 @@ class SharedGoalView extends StatefulWidget {
 }
 
 class _SharedGoalViewState extends State<SharedGoalView> {
+  bool joined;
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<SharedGoal>(
         stream: GoalService(goalID: widget.goalID).sharedGoal,
         builder: (context, snapshot) {
-          return Scaffold(
-            appBar: AppBar(
-              iconTheme: IconThemeData(color: themeShadedColor),
-              elevation: 0,
-            ),
-            body: _buildBody(snapshot),
-          );
+          return StreamBuilder<List<JoinedUser>>(
+              stream: GoalService(goalID: widget.goalID).joinedUsers,
+              builder: (context, joinedUsersSnapshot) {
+                return Scaffold(
+                  appBar: AppBar(
+                    iconTheme: IconThemeData(color: themeShadedColor),
+                    elevation: 0,
+                  ),
+                  body: _buildBody(snapshot, joinedUsersSnapshot),
+                );
+              });
         });
   }
 
-  Widget _buildBody(snapshot) {
+  Widget _buildBody(snapshot, joinedUsersSnapshot) {
     if (snapshot.hasData) {
       final sharedGoal = snapshot.data;
+      _checkIfUserJoined(joinedUsersSnapshot, context);
+
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -75,18 +83,18 @@ class _SharedGoalViewState extends State<SharedGoalView> {
               height: 40,
               child: ElevatedButton(
                 onPressed: () {
-                  GoalService(
-                    goalID: widget.goalID,
-                    uid: Provider.of<OurUser>(context, listen: false).uid,
-                  ).joinGoal();
+                  if (!joined) {
+                    GoalService(
+                      goalID: widget.goalID,
+                      uid: Provider.of<OurUser>(context, listen: false).uid,
+                    ).joinGoal();
+                    setState(() {
+                      joined = true;
+                    });
+                  }
                 },
-                child: Text("Join",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    )),
-                style: joinButtonStyle(true),
+                child: _buildButtonText(joined),
+                style: joinButtonStyle(joined),
               ),
             ),
           )
@@ -96,6 +104,19 @@ class _SharedGoalViewState extends State<SharedGoalView> {
       return Center(
         child: SpinKitFadingFour(size: 35.0, color: themeColor),
       );
+    }
+  }
+
+  void _checkIfUserJoined(AsyncSnapshot<List<JoinedUser>> joinedUsersSnapshot,
+      BuildContext context) {
+    List<JoinedUser> joinedUsers = joinedUsersSnapshot.data;
+    JoinedUser checkJoined = joinedUsers.firstWhere(
+        (user) => user.uid == Provider.of<OurUser>(context).uid,
+        orElse: () => null);
+    if (checkJoined != null) {
+      joined = true;
+    } else {
+      joined = false;
     }
   }
 
@@ -243,9 +264,31 @@ class _SharedGoalViewState extends State<SharedGoalView> {
     );
   }
 
+  Text _buildButtonText(bool joined) {
+    if (joined) {
+      return Text(
+        "Joined",
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
+      );
+    } else {
+      return Text(
+        "Join",
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
+      );
+    }
+  }
+
   ButtonStyle joinButtonStyle(bool joined) {
     return ElevatedButton.styleFrom(
-      primary: joined ? themeColor : backgroundColor,
+      primary: joined ? monoButtonTextColor : themeColor,
       shadowColor: Colors.transparent,
       elevation: 0,
       padding: EdgeInsets.symmetric(horizontal: 20),

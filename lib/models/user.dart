@@ -29,6 +29,14 @@ class UserGoal {
   });
 }
 
+class JoinedUser {
+  String uid;
+  String username;
+  double accuracy;
+
+  JoinedUser({this.uid, this.username, this.accuracy});
+}
+
 class CreatedBy {
   String uid;
   String username;

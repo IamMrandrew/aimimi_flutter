@@ -80,6 +80,27 @@ class GoalService {
     return goalCollection.doc(goalID).snapshots().asyncMap(_createSharedGoal);
   }
 
+  // Get users of particular goal
+  List<JoinedUser> _createJoinedUsers(
+      QuerySnapshot<Map<String, dynamic>> querySnapshot) {
+    return querySnapshot.docs
+        .map<JoinedUser>(
+            (DocumentSnapshot<Map<String, dynamic>> user) => JoinedUser(
+                  uid: user.id,
+                  username: user.data()["username"],
+                  accuracy: user.data()["accuracy"].toDouble(),
+                ))
+        .toList();
+  }
+
+  Stream<List<JoinedUser>> get joinedUsers {
+    return goalCollection
+        .doc(goalID)
+        .collection("users")
+        .snapshots()
+        .map(_createJoinedUsers);
+  }
+
   // Get all goals for that user
   List<UserGoal> _createUserGoals(
       QuerySnapshot<Map<String, dynamic>> querySnapshot) {
