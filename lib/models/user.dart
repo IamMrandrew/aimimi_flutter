@@ -28,3 +28,10 @@ class UserGoal {
     this.goalID,
   });
 }
+
+class CreatedBy {
+  String uid;
+  String username;
+
+  CreatedBy({this.uid, this.username});
+}

@@ -13,20 +13,30 @@ class GoalService {
   final CollectionReference<Map<String, dynamic>> userCollection =
       FirebaseFirestore.instance.collection("users");
 
-  Stream<List<Goal>> get goals {
-    return goalCollection.snapshots().map(
-        (QuerySnapshot<Map<String, dynamic>> querySnapshot) =>
-            querySnapshot.docs
-                .map((DocumentSnapshot<Map<String, dynamic>> goal) => (Goal(
-                      title: goal.data()["title"],
-                      category: goal.data()["category"],
-                      period: goal.data()["period"],
-                      frequency: goal.data()["frequency"],
-                      timespan: goal.data()["timespan"],
-                      publicity: goal.data()["publicity"],
-                      description: goal.data()["description"],
-                    )))
-                .toList());
+  List<SharedGoal> _createSharedGoals(
+          QuerySnapshot<Map<String, dynamic>> querySnapshot) =>
+      querySnapshot.docs
+          .map<SharedGoal>(
+              (DocumentSnapshot<Map<String, dynamic>> goal) => SharedGoal(
+                    title: goal.data()["title"],
+                    category: goal.data()["category"],
+                    period: goal.data()["period"],
+                    frequency: goal.data()["frequency"],
+                    timespan: goal.data()["timespan"],
+                    publicity: goal.data()["publicity"],
+                    description: goal.data()["description"],
+                    createdBy: CreatedBy(
+                      uid: goal.data()["createdBy"]["uid"],
+                      username: goal.data()["createdBy"]["username"],
+                    ),
+                  ))
+          .toList();
+
+  Stream<List<SharedGoal>> get sharedGoals {
+    return goalCollection
+        .where("publicity", isEqualTo: true)
+        .snapshots()
+        .map(_createSharedGoals);
   }
 
   List<UserGoal> _createUserGoals(
@@ -38,7 +48,7 @@ class GoalService {
                   checkIn: userGoal.data()["checkIn"],
                   checkInSuccess: userGoal.data()["checkInSuccess"],
                   checkedIn: userGoal.data()["checkedIn"],
-                  dayPassed: userGoal.data()[""],
+                  dayPassed: userGoal.data()["dayPassed"],
                   goalID: userGoal.id,
                   goal: Goal(
                     title: userGoal.data()["goal"]["title"],
@@ -71,7 +81,7 @@ class GoalService {
       'period': period,
       'frequency': frequency,
       'timespan': timespan,
-      'createBy': {
+      'createdBy': {
         'uid': FirebaseAuth.instance.currentUser.uid,
         'username': FirebaseAuth.instance.currentUser.displayName,
       }
