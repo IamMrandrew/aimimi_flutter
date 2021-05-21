@@ -1,5 +1,7 @@
 import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/models/goal.dart';
+import 'package:aimimi/models/user.dart';
+import 'package:aimimi/services/auth_service.dart';
 import 'package:aimimi/services/goal_service.dart';
 import 'package:aimimi/views/shares_view.dart';
 import 'package:aimimi/views/activity_view.dart';
@@ -62,10 +64,13 @@ class _MainViewState extends State<MainView> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
+                      builder: (context) => MultiProvider(
+                        providers: [
                           StreamProvider<List<SharedGoal>>.value(
-                        initialData: [],
-                        value: GoalService().sharedGoals,
+                            initialData: [],
+                            value: GoalService().sharedGoals,
+                          ),
+                        ],
                         child: SharesView(),
                       ),
                     ),

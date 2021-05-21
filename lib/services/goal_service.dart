@@ -5,7 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class GoalService {
   final String uid;
-  GoalService({this.uid});
+  final String goalID;
+
+  GoalService({this.uid, this.goalID});
 
   final CollectionReference<Map<String, dynamic>> goalCollection =
       FirebaseFirestore.instance.collection("goals");
@@ -13,25 +15,27 @@ class GoalService {
   final CollectionReference<Map<String, dynamic>> userCollection =
       FirebaseFirestore.instance.collection("users");
 
+  // Get all shared goals for SharesView
   Future<List<SharedGoal>> _createSharedGoals(
           QuerySnapshot<Map<String, dynamic>> querySnapshot) =>
       Future.wait(querySnapshot.docs.map<Future<SharedGoal>>(
-          (DocumentSnapshot<Map<String, dynamic>> goal) async {
+          (DocumentSnapshot<Map<String, dynamic>> sharedGoal) async {
         return SharedGoal(
-          title: goal.data()["title"],
-          category: goal.data()["category"],
-          period: goal.data()["period"],
-          frequency: goal.data()["frequency"],
-          timespan: goal.data()["timespan"],
-          publicity: goal.data()["publicity"],
-          description: goal.data()["description"],
+          goalID: sharedGoal.id,
+          title: sharedGoal.data()["title"],
+          category: sharedGoal.data()["category"],
+          period: sharedGoal.data()["period"],
+          frequency: sharedGoal.data()["frequency"],
+          timespan: sharedGoal.data()["timespan"],
+          publicity: sharedGoal.data()["publicity"],
+          description: sharedGoal.data()["description"],
           createdBy: CreatedBy(
-            uid: goal.data()["createdBy"]["uid"],
-            username: goal.data()["createdBy"]["username"],
+            uid: sharedGoal.data()["createdBy"]["uid"],
+            username: sharedGoal.data()["createdBy"]["username"],
           ),
-          createAt: goal.data()["createdAt"].toDate(),
+          createAt: sharedGoal.data()["createdAt"].toDate(),
           users: await goalCollection
-              .doc(goal.id)
+              .doc(sharedGoal.id)
               .collection("users")
               .get()
               .then((QuerySnapshot querySnapshot) => querySnapshot.docs
@@ -47,6 +51,57 @@ class GoalService {
         .asyncMap(_createSharedGoals);
   }
 
+  // Get a shared goal for SharedGoalView
+  Future<SharedGoal> _createSharedGoal(
+          DocumentSnapshot<Map<String, dynamic>> sharedGoal) async =>
+      SharedGoal(
+        title: sharedGoal.data()["title"],
+        category: sharedGoal.data()["category"],
+        period: sharedGoal.data()["period"],
+        frequency: sharedGoal.data()["frequency"],
+        timespan: sharedGoal.data()["timespan"],
+        publicity: sharedGoal.data()["publicity"],
+        description: sharedGoal.data()["description"],
+        createdBy: CreatedBy(
+          uid: sharedGoal.data()["createdBy"]["uid"],
+          username: sharedGoal.data()["createdBy"]["username"],
+        ),
+        createAt: sharedGoal.data()["createdAt"].toDate(),
+        users: await goalCollection
+            .doc(sharedGoal.id)
+            .collection("users")
+            .get()
+            .then((QuerySnapshot querySnapshot) => querySnapshot.docs
+                .map((DocumentSnapshot user) => user)
+                .toList()),
+      );
+
+  Stream<SharedGoal> get sharedGoal {
+    return goalCollection.doc(goalID).snapshots().asyncMap(_createSharedGoal);
+  }
+
+  // Get users of particular goal
+  List<JoinedUser> _createJoinedUsers(
+      QuerySnapshot<Map<String, dynamic>> querySnapshot) {
+    return querySnapshot.docs
+        .map<JoinedUser>(
+            (DocumentSnapshot<Map<String, dynamic>> user) => JoinedUser(
+                  uid: user.id,
+                  username: user.data()["username"],
+                  accuracy: user.data()["accuracy"].toDouble(),
+                ))
+        .toList();
+  }
+
+  Stream<List<JoinedUser>> get joinedUsers {
+    return goalCollection
+        .doc(goalID)
+        .collection("users")
+        .snapshots()
+        .map(_createJoinedUsers);
+  }
+
+  // Get all goals for that user
   List<UserGoal> _createUserGoals(
       QuerySnapshot<Map<String, dynamic>> querySnapshot) {
     return querySnapshot.docs
@@ -79,6 +134,7 @@ class GoalService {
         .map(_createUserGoals);
   }
 
+  // Add goal action
   void addGoal(title, category, description, publicity, period, frequency,
       timespan) async {
     DocumentReference doc = await goalCollection.add({
@@ -117,20 +173,34 @@ class GoalService {
     });
   }
 
+  // Check in action
   Future checkInGoal(int checkIn, UserGoal selectedGoal) {
     final bool doEnoughTimes = checkIn >= selectedGoal.goal.frequency;
 
+    print(selectedGoal.goalID);
+    print(uid);
     if (doEnoughTimes) {
-      return userCollection
-          .doc(FirebaseAuth.instance.currentUser.uid)
-          .collection("goals")
-          .doc(selectedGoal.goalID)
-          .update({
-        "checkIn": checkIn,
-        "checkInSuccess": FieldValue.increment(1),
-        "checkedIn": true,
-        "dayPassed": FieldValue.increment(1)
-      });
+      double newAccuracy =
+          ((selectedGoal.checkInSuccess + 1) / (selectedGoal.dayPassed + 1)) *
+              100;
+      return Future.wait([
+        userCollection
+            .doc(uid)
+            .collection("goals")
+            .doc(selectedGoal.goalID)
+            .update({
+          "checkIn": checkIn,
+          "checkInSuccess": FieldValue.increment(1),
+          "checkedIn": true,
+          "dayPassed": FieldValue.increment(1),
+          "accuracy": newAccuracy,
+        }),
+        goalCollection
+            .doc(selectedGoal.goalID)
+            .collection("users")
+            .doc(uid)
+            .update({"accuracy": newAccuracy})
+      ]);
     }
 
     return userCollection
@@ -138,5 +208,38 @@ class GoalService {
         .collection("goals")
         .doc(selectedGoal.goalID)
         .update({"checkIn": checkIn});
+  }
+
+  // Join goal action
+  Future joinGoal(goal) {
+    Future addJoinedUserToGoalUsers() {
+      return goalCollection.doc(goalID).collection("users").doc(uid).set({
+        "accuracy": 0,
+        "username": FirebaseAuth.instance.currentUser.displayName,
+      });
+    }
+
+    Future addUserGoalToUserGoals(SharedGoal goal) {
+      return userCollection.doc(uid).collection("goals").doc(goalID).set({
+        "accuracy": 0,
+        "checkIn": 0,
+        "checkInSuccess": 0,
+        "checkedIn": false,
+        "dayPassed": 0,
+        "goal": {
+          'description': goal.description,
+          'frequency': goal.frequency,
+          'period': goal.period,
+          'publicity': goal.publicity,
+          'timespan': goal.timespan,
+          'title': goal.title,
+        },
+      });
+    }
+
+    return Future.wait([
+      addJoinedUserToGoalUsers(),
+      addUserGoalToUserGoals(goal),
+    ]);
   }
 }

@@ -21,6 +21,7 @@ class Goal {
 }
 
 class SharedGoal {
+  String goalID;
   String title;
   String category;
   String period;
@@ -33,6 +34,7 @@ class SharedGoal {
   List users;
 
   SharedGoal({
+    this.goalID,
     this.title,
     this.category,
     this.period,
