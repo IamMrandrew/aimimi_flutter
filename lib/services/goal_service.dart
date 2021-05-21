@@ -104,7 +104,7 @@ class GoalService {
       "accuracy": 0,
       "checkIn": 0,
       "checkInSuccess": 0,
-      "checkedIn": true,
+      "checkedIn": false,
       "dayPassed": 0,
       "goal": {
         'description': description,
