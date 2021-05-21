@@ -49,7 +49,7 @@ class _CommentViewState extends State<CommentView> {
       ),
       body: Container(
         // width: MediaQuery.of(context).size.width,
-
+        padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
         child: Column(
           children: [
             CommentTitle(
@@ -59,53 +59,50 @@ class _CommentViewState extends State<CommentView> {
                   Timestamp.now().toDate().subtract(Duration(minutes: 30)),
             ),
             SizedBox(height: 24),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-              child: Expanded(
-                child: ListView.builder(
-                    itemCount: 3,
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return CommentItem(
-                        createdBy: "Joe",
-                        content: "Add oil! My friend.",
-                        createdAt: Timestamp.now()
-                            .toDate()
-                            .subtract(Duration(minutes: 30)),
-                      );
-                    }),
-              ),
+            Expanded(
+              child: ListView.builder(
+                  itemCount: 3,
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return CommentItem(
+                      createdBy: "Joe",
+                      content: "Add oil! My friend.",
+                      createdAt: Timestamp.now()
+                          .toDate()
+                          .subtract(Duration(minutes: 30)),
+                    );
+                  }),
             ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Container(
                     height: 50,
-                    width: MediaQuery.of(context).size.width * 0.75,
                     child: Form(
                       key: _formKey,
-                      child: Expanded(child: _buildCommentField()),
+                      child: _buildCommentField(),
                     ),
                   ),
-                  Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Color(0xff4b4b4b),
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                    ),
-                    child: IconButton(
-                      icon: const Icon(Icons.send),
-                      color: Colors.white,
-                      onPressed: () {},
-                    ),
-                  )
-                ],
-              ),
+                ),
+                SizedBox(width: 6),
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Color(0xff4b4b4b),
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                  ),
+                  child: IconButton(
+                    icon: const Icon(Icons.send),
+                    color: Colors.white,
+                    onPressed: () {},
+                  ),
+                )
+              ],
             ),
+            SizedBox(height: 30)
           ],
         ),
       ),
