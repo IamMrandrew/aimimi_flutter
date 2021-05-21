@@ -25,11 +25,7 @@ class _SharesViewState extends State<SharesView> {
     ];
     items += sharedGoals;
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        iconTheme: IconThemeData(color: themeShadedColor),
-        title: Text("Shares", style: appBarTitleTextStyle),
-      ),
+      appBar: singleViewAppBar("Shares"),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
         child: Column(
@@ -40,10 +36,10 @@ class _SharesViewState extends State<SharesView> {
                 itemCount: items.length,
                 separatorBuilder: (context, index) => SizedBox(height: 10),
                 itemBuilder: (context, index) {
-                  print(index);
                   final item = items?.elementAt(index) ?? "";
                   if (item is SharedGoal)
                     return SharedGoalItem(
+                      goalID: item.goalID,
                       title: item.title,
                       category: item.category,
                       period: item.period,

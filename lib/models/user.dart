@@ -4,9 +4,8 @@ class OurUser {
   String uid;
   String username;
   DateTime createdAt;
-  List<UserGoal> goals;
 
-  OurUser({this.uid, this.username});
+  OurUser({this.uid, this.username, this.createdAt});
 }
 
 class UserGoal {
@@ -27,6 +26,14 @@ class UserGoal {
     this.goal,
     this.goalID,
   });
+}
+
+class JoinedUser {
+  String uid;
+  String username;
+  double accuracy;
+
+  JoinedUser({this.uid, this.username, this.accuracy});
 }
 
 class CreatedBy {

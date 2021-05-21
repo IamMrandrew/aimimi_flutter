@@ -334,8 +334,8 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
         isDense: true,
         hintStyle: textFieldHintTextStyle,
       ),
-      keyboardType: TextInputType.number,
-      maxLines: 3,
+      keyboardType: TextInputType.multiline,
+      maxLines: 30,
       validator: (String value) {
         if (value.isEmpty) {
           return "Description is empty";

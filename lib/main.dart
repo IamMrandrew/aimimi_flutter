@@ -1,5 +1,5 @@
 import 'package:aimimi/models/user.dart';
-import 'package:aimimi/providers/auth.dart';
+import 'package:aimimi/services/auth_service.dart';
 import 'package:aimimi/services/goal_service.dart';
 import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/views/login_view.dart';
@@ -21,32 +21,32 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'aimimi',
-      theme: ThemeData(
-        // Default colors
-        primaryColor: Colors.white,
-        accentColor: themeColor,
-        scaffoldBackgroundColor: backgroundTintedColor,
-        canvasColor: Colors.transparent,
+    return MultiProvider(
+      providers: [
+        StreamProvider<OurUser>.value(
+          initialData: null,
+          value: AuthService().user,
+        ),
+        ChangeNotifierProvider<AuthService>(
+          create: (_) => AuthService(),
+        )
+      ],
+      child: MaterialApp(
+        title: 'aimimi',
+        theme: ThemeData(
+          // Default colors
+          primaryColor: Colors.white,
+          accentColor: themeColor,
+          scaffoldBackgroundColor: backgroundTintedColor,
+          canvasColor: Colors.transparent,
 
-        // Default font
-        fontFamily: "Roboto",
-        // textTheme: GoogleFonts.robotoTextTheme(Theme.of(context).textTheme),
-      ),
-      debugShowCheckedModeBanner: false,
-      // home: MainView(),
-      home: MultiProvider(
-        providers: [
-          StreamProvider<OurUser>.value(
-            initialData: null,
-            value: AuthService().user,
-          ),
-          ChangeNotifierProvider<AuthService>(
-            create: (_) => AuthService(),
-          )
-        ],
-        child: Authenticate(),
+          // Default font
+          fontFamily: "Roboto",
+          // textTheme: GoogleFonts.robotoTextTheme(Theme.of(context).textTheme),
+        ),
+        debugShowCheckedModeBanner: false,
+        // home: MainView(),
+        home: Authenticate(),
       ),
     );
   }
