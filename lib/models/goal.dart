@@ -1,5 +1,4 @@
 import 'package:aimimi/models/user.dart';
-import 'package:provider/provider.dart';
 
 class Goal {
   String category;
@@ -30,7 +29,8 @@ class SharedGoal {
   String description;
   bool publicity;
   CreatedBy createdBy;
-  List<OurUser> users;
+  DateTime createAt;
+  List users;
 
   SharedGoal({
     this.title,
@@ -41,6 +41,7 @@ class SharedGoal {
     this.description,
     this.publicity,
     this.createdBy,
+    this.createAt,
     this.users,
   });
 }

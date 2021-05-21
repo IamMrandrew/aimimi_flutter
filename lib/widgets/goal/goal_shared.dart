@@ -13,7 +13,7 @@ class SharedGoalItem extends StatefulWidget {
   final String description;
   final bool publicity;
   final dynamic createdBy;
-  final List users;
+  final users;
 
   SharedGoalItem({
     Key key,
@@ -106,7 +106,7 @@ class _SharedGoalItemState extends State<SharedGoalItem> {
                   ),
                   SizedBox(width: 5),
                   Text(
-                    "1223",
+                    widget.users.length.toString(),
                     style: TextStyle(
                       color: monoSecondaryColor,
                       fontSize: 14,
@@ -121,7 +121,7 @@ class _SharedGoalItemState extends State<SharedGoalItem> {
                   ),
                   SizedBox(width: 5),
                   Text(
-                    "5",
+                    widget.timespan.toString(),
                     style: TextStyle(
                       color: monoSecondaryColor,
                       fontSize: 14,

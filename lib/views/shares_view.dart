@@ -52,7 +52,7 @@ class _SharesViewState extends State<SharesView> {
                       createdBy: item.createdBy.username,
                       publicity: item.publicity,
                       timespan: item.timespan,
-                      users: ["asdasda", "dsadsaads"],
+                      users: item.users,
                     );
                   else
                     return item;

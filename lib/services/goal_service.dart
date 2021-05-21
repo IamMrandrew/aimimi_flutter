@@ -13,30 +13,38 @@ class GoalService {
   final CollectionReference<Map<String, dynamic>> userCollection =
       FirebaseFirestore.instance.collection("users");
 
-  List<SharedGoal> _createSharedGoals(
+  Future<List<SharedGoal>> _createSharedGoals(
           QuerySnapshot<Map<String, dynamic>> querySnapshot) =>
-      querySnapshot.docs
-          .map<SharedGoal>(
-              (DocumentSnapshot<Map<String, dynamic>> goal) => SharedGoal(
-                    title: goal.data()["title"],
-                    category: goal.data()["category"],
-                    period: goal.data()["period"],
-                    frequency: goal.data()["frequency"],
-                    timespan: goal.data()["timespan"],
-                    publicity: goal.data()["publicity"],
-                    description: goal.data()["description"],
-                    createdBy: CreatedBy(
-                      uid: goal.data()["createdBy"]["uid"],
-                      username: goal.data()["createdBy"]["username"],
-                    ),
-                  ))
-          .toList();
+      Future.wait(querySnapshot.docs.map<Future<SharedGoal>>(
+          (DocumentSnapshot<Map<String, dynamic>> goal) async {
+        return SharedGoal(
+          title: goal.data()["title"],
+          category: goal.data()["category"],
+          period: goal.data()["period"],
+          frequency: goal.data()["frequency"],
+          timespan: goal.data()["timespan"],
+          publicity: goal.data()["publicity"],
+          description: goal.data()["description"],
+          createdBy: CreatedBy(
+            uid: goal.data()["createdBy"]["uid"],
+            username: goal.data()["createdBy"]["username"],
+          ),
+          createAt: goal.data()["createdAt"].toDate(),
+          users: await goalCollection
+              .doc(goal.id)
+              .collection("users")
+              .get()
+              .then((QuerySnapshot querySnapshot) => querySnapshot.docs
+                  .map((DocumentSnapshot user) => user)
+                  .toList()),
+        );
+      }).toList());
 
   Stream<List<SharedGoal>> get sharedGoals {
     return goalCollection
         .where("publicity", isEqualTo: true)
         .snapshots()
-        .map(_createSharedGoals);
+        .asyncMap(_createSharedGoals);
   }
 
   List<UserGoal> _createUserGoals(
@@ -84,7 +92,8 @@ class GoalService {
       'createdBy': {
         'uid': FirebaseAuth.instance.currentUser.uid,
         'username': FirebaseAuth.instance.currentUser.displayName,
-      }
+      },
+      "createdAt": Timestamp.now(),
     });
     print(doc.id);
     await userCollection
