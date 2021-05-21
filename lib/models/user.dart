@@ -4,9 +4,8 @@ class OurUser {
   String uid;
   String username;
   DateTime createdAt;
-  List<UserGoal> goals;
 
-  OurUser({this.uid, this.username});
+  OurUser({this.uid, this.username, this.createdAt});
 }
 
 class UserGoal {

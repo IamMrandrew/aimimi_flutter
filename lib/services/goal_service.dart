@@ -177,17 +177,30 @@ class GoalService {
   Future checkInGoal(int checkIn, UserGoal selectedGoal) {
     final bool doEnoughTimes = checkIn >= selectedGoal.goal.frequency;
 
+    print(selectedGoal.goalID);
+    print(uid);
     if (doEnoughTimes) {
-      return userCollection
-          .doc(FirebaseAuth.instance.currentUser.uid)
-          .collection("goals")
-          .doc(selectedGoal.goalID)
-          .update({
-        "checkIn": checkIn,
-        "checkInSuccess": FieldValue.increment(1),
-        "checkedIn": true,
-        "dayPassed": FieldValue.increment(1)
-      });
+      double newAccuracy =
+          ((selectedGoal.checkInSuccess + 1) / (selectedGoal.dayPassed + 1)) *
+              100;
+      return Future.wait([
+        userCollection
+            .doc(uid)
+            .collection("goals")
+            .doc(selectedGoal.goalID)
+            .update({
+          "checkIn": checkIn,
+          "checkInSuccess": FieldValue.increment(1),
+          "checkedIn": true,
+          "dayPassed": FieldValue.increment(1),
+          "accuracy": newAccuracy,
+        }),
+        goalCollection
+            .doc(selectedGoal.goalID)
+            .collection("users")
+            .doc(uid)
+            .update({"accuracy": newAccuracy})
+      ]);
     }
 
     return userCollection
@@ -198,7 +211,7 @@ class GoalService {
   }
 
   // Join goal action
-  Future joinGoal(goal) async {
+  Future joinGoal(goal) {
     Future addJoinedUserToGoalUsers() {
       return goalCollection.doc(goalID).collection("users").doc(uid).set({
         "accuracy": 0,
@@ -224,7 +237,7 @@ class GoalService {
       });
     }
 
-    return await Future.wait([
+    return Future.wait([
       addJoinedUserToGoalUsers(),
       addUserGoalToUserGoals(goal),
     ]);

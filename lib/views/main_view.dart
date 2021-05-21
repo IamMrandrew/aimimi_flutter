@@ -61,8 +61,6 @@ class _MainViewState extends State<MainView> {
                 icon: FaIcon(FontAwesomeIcons.bullseye),
                 color: themeShadedColor,
                 onPressed: () {
-                  final OurUser ourUserData =
-                      Provider.of<OurUser>(context, listen: false);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -71,10 +69,6 @@ class _MainViewState extends State<MainView> {
                           StreamProvider<List<SharedGoal>>.value(
                             initialData: [],
                             value: GoalService().sharedGoals,
-                          ),
-                          StreamProvider<OurUser>.value(
-                            initialData: ourUserData,
-                            value: AuthService().user,
                           ),
                         ],
                         child: SharesView(),

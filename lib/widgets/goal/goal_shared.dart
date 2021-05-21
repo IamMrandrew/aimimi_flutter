@@ -42,22 +42,13 @@ class _SharedGoalItemState extends State<SharedGoalItem> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        final OurUser ourUserData =
-            Provider.of<OurUser>(context, listen: false);
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => MultiProvider(
-                      providers: [
-                        StreamProvider<OurUser>.value(
-                          initialData: ourUserData,
-                          value: AuthService().user,
-                        ),
-                      ],
-                      child: SharedGoalView(
-                        goalID: widget.goalID,
-                      ),
-                    )));
+              builder: (context) => SharedGoalView(
+                goalID: widget.goalID,
+              ),
+            ));
       },
       child: Container(
         padding: EdgeInsets.symmetric(

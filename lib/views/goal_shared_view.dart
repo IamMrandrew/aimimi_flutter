@@ -82,9 +82,9 @@ class _SharedGoalViewState extends State<SharedGoalView> {
               width: double.infinity,
               height: 40,
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (!joined) {
-                    GoalService(
+                    await GoalService(
                       goalID: widget.goalID,
                       uid: Provider.of<OurUser>(context, listen: false).uid,
                     ).joinGoal(sharedGoal);
