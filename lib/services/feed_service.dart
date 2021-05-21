@@ -4,9 +4,11 @@ import 'package:aimimi/models/feed.dart';
 import 'package:aimimi/models/user.dart';
 
 class FeedService {
+  final List<UserGoal> userGoals;
   final String feedID;
   final String uid;
-  FeedService({this.uid, this.feedID});
+
+  FeedService({this.uid, this.feedID, this.userGoals});
 
   final CollectionReference<Map<String, dynamic>> feedCollection =
       FirebaseFirestore.instance.collection("feeds");
@@ -28,12 +30,15 @@ class FeedService {
               .collection("likes")
               .get()
               .then((QuerySnapshot querySnapshot) => querySnapshot.docs
-                  .map((DocumentSnapshot user) => user)
+                  .map((DocumentSnapshot like) => like)
                   .toList()),
         );
       }).toList());
 
   Stream<List<Feed>> get feeds {
-    return feedCollection.snapshots().asyncMap(_createFeeds);
+    return feedCollection
+        .where("goalID", whereIn: userGoals.map((goal) => goal.goalID).toList())
+        .snapshots()
+        .asyncMap(_createFeeds);
   }
 }

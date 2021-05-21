@@ -92,6 +92,9 @@ class _MainViewState extends State<MainView> {
               icon: FaIcon(FontAwesomeIcons.solidBell),
               color: themeShadedColor,
               onPressed: () {
+                var userGoal =
+                    Provider.of<List<UserGoal>>(context, listen: false);
+                // print(userGoal);
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -99,7 +102,7 @@ class _MainViewState extends State<MainView> {
                         providers: [
                           StreamProvider<List<Feed>>.value(
                             initialData: [],
-                            value: FeedService().feeds,
+                            value: FeedService(userGoals: userGoal).feeds,
                           ),
                         ],
                         child: ActivityView(),

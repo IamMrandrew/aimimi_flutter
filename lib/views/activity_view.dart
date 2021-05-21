@@ -9,7 +9,7 @@ class ActivityView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Feed> feeds = Provider.of<List<Feed>>(context);
-    print(feeds);
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -27,12 +27,9 @@ class ActivityView extends StatelessWidget {
                 itemBuilder: (context, index) {
                   Feed feed = Provider.of<List<Feed>>(context)[index];
                   return FeedItem(
-                    createdBy: feed.createdBy.username,
-                    content: feed.content,
-                    createdAt: Timestamp.now()
-                        .toDate()
-                        .subtract(Duration(minutes: 30)),
-                  );
+                      createdBy: feed.createdBy.username,
+                      content: feed.content,
+                      createdAt: feed.createdAt);
                 }),
           ],
         ),
