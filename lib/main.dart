@@ -62,10 +62,6 @@ class Authenticate extends StatelessWidget {
     } else if (Provider.of<OurUser>(context) != null) {
       return MultiProvider(
         providers: [
-          StreamProvider<List<Goal>>.value(
-            initialData: [],
-            value: GoalService().goals,
-          ),
           StreamProvider<List<UserGoal>>.value(
             initialData: [],
             value:
