@@ -2,6 +2,7 @@ import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/models/goal.dart';
 import 'package:aimimi/models/user.dart';
 import 'package:aimimi/services/auth_service.dart';
+import 'package:aimimi/services/feed_service.dart';
 import 'package:aimimi/services/goal_service.dart';
 import 'package:aimimi/views/shares_view.dart';
 import 'package:aimimi/views/activity_view.dart';
@@ -13,6 +14,7 @@ import 'package:aimimi/views/goals_view.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:aimimi/models/feed.dart';
 
 List<String> title = ["Today", "Goals", "Leaderboard", "Profile"];
 
@@ -90,8 +92,22 @@ class _MainViewState extends State<MainView> {
               icon: FaIcon(FontAwesomeIcons.solidBell),
               color: themeShadedColor,
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ActivityView()));
+                var userGoal =
+                    Provider.of<List<UserGoal>>(context, listen: false);
+                // print(userGoal);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MultiProvider(
+                        providers: [
+                          StreamProvider<List<Feed>>.value(
+                            initialData: [],
+                            value: FeedService(userGoals: userGoal).feeds,
+                          ),
+                        ],
+                        child: ActivityView(),
+                      ),
+                    ));
               },
             ),
             SizedBox(
