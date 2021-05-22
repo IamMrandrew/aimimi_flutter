@@ -9,6 +9,7 @@ class ActivityView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Feed> feeds = Provider.of<List<Feed>>(context);
+    bool liked;
 
     return Scaffold(
       appBar: AppBar(
@@ -26,10 +27,14 @@ class ActivityView extends StatelessWidget {
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   Feed feed = Provider.of<List<Feed>>(context)[index];
+                  // print(feed.likes);
+                  // print("this is feed id: " + feed.feedID.toString());
                   return FeedItem(
-                      createdBy: feed.createdBy.username,
-                      content: feed.content,
-                      createdAt: feed.createdAt);
+                    createdBy: feed.createdBy.username,
+                    content: feed.content,
+                    createdAt: feed.createdAt,
+                    feedID: feed.feedID,
+                  );
                 }),
           ],
         ),

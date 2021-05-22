@@ -8,6 +8,7 @@ class Feed {
   bool liked;
   List likes;
   List comments;
+  String feedID;
   Feed(
       {this.content,
       this.createdAt,
@@ -15,5 +16,6 @@ class Feed {
       this.createdBy,
       this.liked,
       this.likes,
-      this.comments});
+      this.comments,
+      this.feedID});
 }

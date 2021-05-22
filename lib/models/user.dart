@@ -42,3 +42,9 @@ class CreatedBy {
 
   CreatedBy({this.uid, this.username});
 }
+
+class LikedUser {
+  String uid;
+
+  LikedUser({this.uid});
+}

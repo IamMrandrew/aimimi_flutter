@@ -18,21 +18,15 @@ class FeedService {
       Future.wait(querySnapshot.docs.map<Future<Feed>>(
           (DocumentSnapshot<Map<String, dynamic>> feed) async {
         return Feed(
-          content: feed.data()["content"],
-          createdAt: feed.data()["createdAt"].toDate(),
-          createdBy: CreatedBy(
-            uid: feed.data()["createdBy"]["uid"],
-            username: feed.data()["createdBy"]["username"],
-          ),
-          goalID: feed.data()["goalID"],
-          likes: await feedCollection
-              .doc(feed.id)
-              .collection("likes")
-              .get()
-              .then((QuerySnapshot querySnapshot) => querySnapshot.docs
-                  .map((DocumentSnapshot like) => like)
-                  .toList()),
-        );
+            content: feed.data()["content"],
+            createdAt: feed.data()["createdAt"].toDate(),
+            createdBy: CreatedBy(
+              uid: feed.data()["createdBy"]["uid"],
+              username: feed.data()["createdBy"]["username"],
+            ),
+            goalID: feed.data()["goalID"],
+            likes: feed.data()["likes"],
+            feedID: feed.reference.id);
       }).toList());
 
   Stream<List<Feed>> get feeds {
@@ -40,5 +34,22 @@ class FeedService {
         .where("goalID", whereIn: userGoals.map((goal) => goal.goalID).toList())
         .snapshots()
         .asyncMap(_createFeeds);
+  }
+
+  List<LikedUser> _createLikedUsers(
+          DocumentSnapshot<Map<String, dynamic>> feed) =>
+      feed
+          .data()["likes"]
+          .map<LikedUser>((user) => LikedUser(uid: user))
+          .toList();
+
+  Stream<List<LikedUser>> get likedUsers {
+    return feedCollection.doc(feedID).snapshots().map(_createLikedUsers);
+  }
+
+  void like(feed) async {
+    DocumentReference doc = await feedCollection.add({
+      "likes": FieldValue.arrayUnion([FirebaseAuth.instance.currentUser.uid])
+    });
   }
 }
