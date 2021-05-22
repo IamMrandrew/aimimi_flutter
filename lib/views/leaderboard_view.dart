@@ -139,7 +139,9 @@ class _LeaderboardViewState extends State<LeaderboardView> {
       padding: EdgeInsets.symmetric(horizontal: 12),
       alignment: Alignment.bottomCenter,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: length > 2
+            ? MainAxisAlignment.spaceBetween
+            : MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: _buildTopRanks(length),
       ),
