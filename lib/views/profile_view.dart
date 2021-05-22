@@ -212,6 +212,7 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   NetworkImage getImage() {
+    //If google sign in
     if (user.providerData[0].providerId == 'google.com') {
       return NetworkImage(user.photoURL);
     } else {
