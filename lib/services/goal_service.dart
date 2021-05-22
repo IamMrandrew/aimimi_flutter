@@ -5,15 +5,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class GoalService {
   final String uid;
+  final String username;
   final String goalID;
 
-  GoalService({this.uid, this.goalID});
+  GoalService({this.uid, this.goalID, this.username});
 
   final CollectionReference<Map<String, dynamic>> goalCollection =
       FirebaseFirestore.instance.collection("goals");
 
   final CollectionReference<Map<String, dynamic>> userCollection =
       FirebaseFirestore.instance.collection("users");
+
+  final CollectionReference<Map<String, dynamic>> feedCollection =
+      FirebaseFirestore.instance.collection("feeds");
 
   // Get all shared goals for SharesView
   Future<List<SharedGoal>> _createSharedGoals(
@@ -140,7 +144,6 @@ class GoalService {
         .map(_createUserGoals);
   }
 
-
   Stream<List<String>> get completedGoals {
     return userCollection
         .doc(uid)
@@ -148,7 +151,6 @@ class GoalService {
         .snapshots()
         .map(_completed);
   }
-
 
   void addGoal(title, category, description, publicity, period, frequency,
       timespan) async {
@@ -198,8 +200,9 @@ class GoalService {
       double newAccuracy =
           ((selectedGoal.checkInSuccess + 1) / (selectedGoal.dayPassed + 1)) *
               100;
-      return Future.wait([
-        userCollection
+
+      Future updateCheckInToUser() {
+        return userCollection
             .doc(uid)
             .collection("goals")
             .doc(selectedGoal.goalID)
@@ -209,12 +212,22 @@ class GoalService {
           "checkedIn": true,
           "dayPassed": FieldValue.increment(1),
           "accuracy": newAccuracy,
-        }),
-        goalCollection
+        });
+      }
+
+      Future updateAccuracyToGoal() {
+        return goalCollection
             .doc(selectedGoal.goalID)
             .collection("users")
             .doc(uid)
-            .update({"accuracy": newAccuracy})
+            .update({"accuracy": newAccuracy});
+      }
+
+      return Future.wait([
+        updateCheckInToUser(),
+        updateAccuracyToGoal(),
+        _createFeed(
+            content: "$username  check-in for ${selectedGoal.goal.title}!!")
       ]);
     }
 
@@ -226,7 +239,7 @@ class GoalService {
   }
 
   // Join goal action
-  Future joinGoal(goal) {
+  Future joinGoal(SharedGoal goal) {
     Future addJoinedUserToGoalUsers() {
       return goalCollection.doc(goalID).collection("users").doc(uid).set({
         "accuracy": 0,
@@ -255,6 +268,23 @@ class GoalService {
     return Future.wait([
       addJoinedUserToGoalUsers(),
       addUserGoalToUserGoals(goal),
+      _createFeed(
+        content: "$username joined ${goal.title}.",
+      ),
     ]);
+  }
+
+  // Create a feed
+  Future _createFeed({String content}) {
+    return feedCollection.add({
+      "content": content,
+      "createdAt": Timestamp.now(),
+      "createdBy": {
+        "uid": uid,
+        "username": username,
+      },
+      "goalID": goalID,
+      "likes": [],
+    });
   }
 }
