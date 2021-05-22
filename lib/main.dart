@@ -58,16 +58,22 @@ class Authenticate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isSigningIn = Provider.of<AuthService>(context).isSigningIn;
+    OurUser auth = Provider.of<OurUser>(context);
 
     if (isSigningIn) {
       return buildLoading();
-    } else if (Provider.of<OurUser>(context) != null) {
+    } else if (auth != null) {
       return MultiProvider(
         providers: [
           StreamProvider<List<UserGoal>>.value(
             initialData: [],
             value:
                 GoalService(uid: Provider.of<OurUser>(context).uid).userGoals,
+          ),
+          StreamProvider<List<String>>.value(
+            initialData: [],
+            value: GoalService(uid: Provider.of<OurUser>(context).uid)
+                .completedGoals,
           ),
         ],
         child: MainView(),

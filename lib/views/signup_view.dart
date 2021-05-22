@@ -2,6 +2,7 @@ import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/services/auth_service.dart';
 import 'package:aimimi/views/login_view.dart';
 import 'package:aimimi/widgets/background_painter.dart';
+import "package:aimimi/models/user.dart";
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:provider/provider.dart';
@@ -257,9 +258,11 @@ class _SignupViewState extends State<SignupView> {
                         formkey.currentState.save();
                         final provider =
                             Provider.of<AuthService>(context, listen: false);
-                        var result = await provider.signUp(
+                        OurUser result = await provider.signUp(
                             email, password, name, context);
-                        print(result.uid);
+                        if (result != null) {
+                          Navigator.pop(context);
+                        }
                       }
                     },
                     child: Text(
@@ -330,8 +333,8 @@ class _SignupViewState extends State<SignupView> {
           Center(child: CircularProgressIndicator()),
         ],
       );
-  navigateToLogin() async {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => LoginView()));
+
+  void navigateToLogin() async {
+    Navigator.pop(context);
   }
 }
