@@ -1,3 +1,5 @@
+import 'package:aimimi/services/user_document.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -35,6 +37,8 @@ class AuthService extends ChangeNotifier {
       UserCredential result = await auth.createUserWithEmailAndPassword(
           email: email, password: password);
       await auth.currentUser.updateProfile(displayName: name);
+      await UserDocument(uid: auth.currentUser.uid)
+          .createUserDocuments(FieldValue.serverTimestamp(), name);
       isSigningIn = false;
       return _createUser(result.user);
     } catch (e) {
@@ -96,6 +100,8 @@ class AuthService extends ChangeNotifier {
       UserCredential result =
           await FirebaseAuth.instance.signInWithCredential(credential);
 
+      await UserDocument(uid: auth.currentUser.uid).createUserDocuments(
+          FieldValue.serverTimestamp(), result.user.displayName);
       isSigningIn = false;
 
       return _createUser(result.user);
