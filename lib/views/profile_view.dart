@@ -18,11 +18,12 @@ class _ProfileViewState extends State<ProfileView> {
   Widget build(BuildContext context) {
     List<UserGoal> goals = Provider.of<List<UserGoal>>(context);
     List<String> completedGoals = Provider.of<List<String>>(context);
-    return new Container(
+    return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       padding: EdgeInsets.only(top: 20, left: 20, right: 20),
-      child: new Column(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             padding: EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 20),
@@ -169,42 +170,34 @@ class _ProfileViewState extends State<ProfileView> {
             ],
           ),
           SizedBox(height: 70),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              alignment: Alignment.topLeft,
-              width: MediaQuery.of(context).size.width * 0.3,
-              height: 30,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15.0),
-              ),
-              child: MaterialButton(
-                  onPressed: () async {
-                    await AuthService().logout();
-                  },
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.logout,
-                            color: monoSecondaryColor,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            "Logout",
-                            style: TextStyle(
-                              color: Color(0xff999999),
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  )),
-            ),
+          SizedBox(
+            width: 100,
+            child: TextButton(
+                onPressed: () async {
+                  await AuthService().logout();
+                },
+                style: ButtonStyle(
+                  overlayColor:
+                      MaterialStateProperty.all<Color>(Colors.transparent),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.logout,
+                      color: monoSecondaryColor,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "Logout",
+                      style: TextStyle(
+                        color: Color(0xff999999),
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                )),
           ),
         ],
       ),
