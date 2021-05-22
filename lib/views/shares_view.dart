@@ -138,54 +138,73 @@ class _SharesViewState extends State<SharesView>
   }
 
   Widget _buildSearchBar(List<SharedGoal> sharedGoals) {
-    return Transform.translate(
-      offset: Offset(0, 0),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              onChanged: (String input) {
-                _search(input, sharedGoals);
-              },
-              controller: _controller,
-              focusNode: _focus,
-              decoration: InputDecoration(
-                hintText: "Read a book, Lifestyle ...",
-                fillColor: backgroundColor,
-                filled: true,
-                border: searchFieldBorder,
-                contentPadding: EdgeInsets.all(12),
-                isDense: true,
-                prefixIconConstraints: BoxConstraints(minWidth: 40),
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: monoSecondaryColor,
-                ),
-                hintStyle: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  color: monoSecondaryColor,
+    return Row(
+      children: [
+        Stack(
+          alignment: Alignment.centerLeft,
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width - 50,
+            ),
+            Positioned(
+              right: 0,
+              child: AnimatedSwitcher(
+                duration: Duration(milliseconds: 100),
+                child: _focused
+                    ? TextButton(
+                        key: UniqueKey(),
+                        onPressed: () {
+                          _focus.unfocus();
+                          _controller.clear();
+                        },
+                        style: ButtonStyle(
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                        ),
+                        child: Text(
+                          "Cancel",
+                          style: TextStyle(
+                            color: monoSecondaryColor,
+                          ),
+                        ),
+                      )
+                    : Container(key: UniqueKey(), width: 0, height: 0),
+              ),
+            ),
+            AnimatedContainer(
+              duration: Duration(milliseconds: 300),
+              width: _focused
+                  ? MediaQuery.of(context).size.width - 120
+                  : MediaQuery.of(context).size.width - 50,
+              child: TextField(
+                onChanged: (String input) {
+                  _search(input, sharedGoals);
+                },
+                controller: _controller,
+                focusNode: _focus,
+                decoration: InputDecoration(
+                  hintText: "Read a book, Lifestyle ...",
+                  fillColor: backgroundColor,
+                  filled: true,
+                  border: searchFieldBorder,
+                  contentPadding: EdgeInsets.all(12),
+                  isDense: true,
+                  prefixIconConstraints: BoxConstraints(minWidth: 40),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: monoSecondaryColor,
+                  ),
+                  hintStyle: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                    color: monoSecondaryColor,
+                  ),
                 ),
               ),
             ),
-          ),
-          TextButton(
-            onPressed: () {
-              _focus.unfocus();
-              _controller.clear();
-            },
-            style: ButtonStyle(
-              overlayColor: MaterialStateProperty.all(Colors.transparent),
-            ),
-            child: Text(
-              "Cancel",
-              style: TextStyle(
-                color: monoSecondaryColor,
-              ),
-            ),
-          )
-        ],
-      ),
+          ],
+        ),
+      ],
     );
   }
 
