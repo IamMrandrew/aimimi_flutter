@@ -22,7 +22,9 @@ class AuthService extends ChangeNotifier {
   }
 
   OurUser _createUser(User user) {
-    return user != null ? OurUser(uid: user.uid) : null;
+    return user != null
+        ? OurUser(uid: user.uid, username: user.displayName)
+        : null;
   }
 
   Stream<OurUser> get user {
