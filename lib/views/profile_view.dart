@@ -1,5 +1,6 @@
 import 'package:aimimi/models/user.dart';
 import 'package:aimimi/providers/auth.dart';
+import 'package:aimimi/services/auth_service.dart';
 import 'package:aimimi/constants/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

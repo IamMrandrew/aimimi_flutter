@@ -1,3 +1,5 @@
+import 'package:aimimi/models/user.dart';
+
 class Goal {
   String category;
   String description;
@@ -15,5 +17,33 @@ class Goal {
     this.publicity,
     this.timespan,
     this.title,
+  });
+}
+
+class SharedGoal {
+  String goalID;
+  String title;
+  String category;
+  String period;
+  int frequency;
+  int timespan;
+  String description;
+  bool publicity;
+  CreatedBy createdBy;
+  DateTime createAt;
+  List users;
+
+  SharedGoal({
+    this.goalID,
+    this.title,
+    this.category,
+    this.period,
+    this.frequency,
+    this.timespan,
+    this.description,
+    this.publicity,
+    this.createdBy,
+    this.createAt,
+    this.users,
   });
 }

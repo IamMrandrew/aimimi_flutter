@@ -3,6 +3,7 @@ import 'package:aimimi/models/goal.dart';
 import 'package:aimimi/models/user.dart';
 import 'package:aimimi/services/goal_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ModalCheckIn extends StatefulWidget {
   final selectedGoal;
@@ -51,7 +52,9 @@ class _ModalCheckInState extends State<ModalCheckIn> {
                   child: ElevatedButton(
                     onPressed: () async {
                       // Check-in function
-                      await GoalService()
+                      await GoalService(
+                              uid: Provider.of<OurUser>(context, listen: false)
+                                  .uid)
                           .checkInGoal(_checkIn, widget.selectedGoal);
                       Navigator.pop(context);
                     },

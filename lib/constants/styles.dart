@@ -11,6 +11,7 @@ const themeMutedColor = Color(0xff759198);
 const monoPrimaryColor = Color(0xff000000);
 const monoSecondaryColor = Color(0xff999999);
 const monoTintedColor = Color(0xffC2C2C2);
+const monoButtonTextColor = Color(0xff888888);
 
 // background color palette
 const backgroundColor = Color(0xffF2F4F6);
@@ -46,3 +47,10 @@ const textFieldHintTextStyle = TextStyle(
   fontWeight: FontWeight.w400,
   color: monoSecondaryColor,
 );
+
+/* AppBar */
+AppBar singleViewAppBar(String titleText) => AppBar(
+      elevation: 0,
+      iconTheme: IconThemeData(color: themeShadedColor),
+      title: Text(titleText, style: appBarTitleTextStyle),
+    );
