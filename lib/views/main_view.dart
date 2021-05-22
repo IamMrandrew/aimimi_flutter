@@ -1,4 +1,10 @@
 import 'package:aimimi/constants/styles.dart';
+import 'package:aimimi/models/goal.dart';
+import 'package:aimimi/models/user.dart';
+import 'package:aimimi/services/auth_service.dart';
+import 'package:aimimi/services/goal_service.dart';
+import 'package:aimimi/views/shares_view.dart';
+import 'package:aimimi/views/activity_view.dart';
 import 'package:aimimi/views/today_view.dart';
 import 'package:aimimi/widgets/modal/modal_add_goal.dart';
 import 'package:aimimi/views/leaderboard_view.dart';
@@ -6,6 +12,9 @@ import 'package:aimimi/views/profile_view.dart';
 import 'package:aimimi/views/goals_view.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+
+List<String> title = ["Today", "Goals", "Leaderboard", "Profile"];
 
 class MainView extends StatefulWidget {
   @override
@@ -30,6 +39,7 @@ class _MainViewState extends State<MainView> {
     LeaderboardView(),
     ProfileView(),
   ];
+
   void onTappedBar(int index) {
     setState(() {
       _currentIndex = index;
@@ -51,14 +61,27 @@ class _MainViewState extends State<MainView> {
                 icon: FaIcon(FontAwesomeIcons.bullseye),
                 color: themeShadedColor,
                 onPressed: () {
-                  //print("Pressed");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MultiProvider(
+                        providers: [
+                          StreamProvider<List<SharedGoal>>.value(
+                            initialData: [],
+                            value: GoalService().sharedGoals,
+                          ),
+                        ],
+                        child: SharesView(),
+                      ),
+                    ),
+                  );
                 },
               ),
             ],
           ),
           centerTitle: true,
           title: Text(
-            "Today",
+            title[_currentIndex],
             style: appBarTitleTextStyle,
           ),
           elevation: 0,
@@ -67,7 +90,8 @@ class _MainViewState extends State<MainView> {
               icon: FaIcon(FontAwesomeIcons.solidBell),
               color: themeShadedColor,
               onPressed: () {
-                //print("Pressed");
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ActivityView()));
               },
             ),
             SizedBox(
@@ -76,14 +100,16 @@ class _MainViewState extends State<MainView> {
           ]),
       body: _views[_currentIndex],
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: FloatingActionButton(
-        child: FaIcon(
-          FontAwesomeIcons.plus,
-          color: Colors.white,
-        ),
-        onPressed: () => _modalHandler(context),
-        elevation: 0,
-      ),
+      floatingActionButton: _currentIndex < 2
+          ? FloatingActionButton(
+              child: FaIcon(
+                FontAwesomeIcons.plus,
+                color: Colors.white,
+              ),
+              onPressed: () => _modalHandler(context),
+              elevation: 0,
+            )
+          : null,
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTappedBar,
         currentIndex: _currentIndex,
