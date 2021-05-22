@@ -161,6 +161,7 @@ class _LeaderboardViewState extends State<LeaderboardView> {
           username: rank.username,
           accuracy: rank.accuracy,
           index: index,
+          length: length,
         );
       }).toList());
     } else if (length == 2) {
@@ -177,6 +178,7 @@ class _LeaderboardViewState extends State<LeaderboardView> {
           username: rank.username,
           accuracy: rank.accuracy,
           index: index,
+          length: length,
         );
       }).toList());
     } else {
@@ -193,6 +195,7 @@ class _LeaderboardViewState extends State<LeaderboardView> {
           username: rank.username,
           accuracy: rank.accuracy,
           index: index,
+          length: length,
         );
       }).toList());
     }
