@@ -1,9 +1,11 @@
 import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/models/rank.dart';
 import 'package:aimimi/models/user.dart';
+import 'package:aimimi/services/goal_service.dart';
 import 'package:aimimi/widgets/rank/rank.dart';
 import 'package:aimimi/widgets/rank/rank_top.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LeaderboardView extends StatefulWidget {
   @override
@@ -12,62 +14,68 @@ class LeaderboardView extends StatefulWidget {
 
 class _LeaderboardViewState extends State<LeaderboardView> {
   String _selectedGoalID;
-  // mock data
-  List<Rank> ranks = [
-    Rank(
-        uid: "xmpHtZYsXHN9wMLTs01pi9q7f6H3",
-        username: "Andrew Li",
-        accuracy: 100),
-    Rank(
-        uid: "xmpHtZYsXHN9wMLTs01pi9q7f6H3",
-        username: "Terrence Au",
-        accuracy: 100),
-    Rank(uid: "xmpHtZYsXHN9wMLTs01pi9q7f6H3", username: "Nam", accuracy: 100),
-    Rank(
-        uid: "xmpHtZYsXHN9wMLTs01pi9q7f6H3",
-        username: "BadAndrew",
-        accuracy: 100),
-    Rank(
-        uid: "xmpHtZYsXHN9wMLTs01pi9q7f6H3", username: "BadBob", accuracy: 100),
-    Rank(
-        uid: "xmpHtZYsXHN9wMLTs01pi9q7f6H3", username: "BadNam", accuracy: 100),
-    Rank(
-        uid: "xmpHtZYsXHN9wMLTs01pi9q7f6H3",
-        username: "BadAndrew",
-        accuracy: 100),
-    Rank(
-        uid: "xmpHtZYsXHN9wMLTs01pi9q7f6H3", username: "BadBob", accuracy: 100),
-    Rank(
-        uid: "xmpHtZYsXHN9wMLTs01pi9q7f6H3", username: "BadNam", accuracy: 100),
-    Rank(
-        uid: "xmpHtZYsXHN9wMLTs01pi9q7f6H3",
-        username: "BadAndrew",
-        accuracy: 100),
-    Rank(
-        uid: "xmpHtZYsXHN9wMLTs01pi9q7f6H3", username: "BadBob", accuracy: 100),
-    Rank(
-        uid: "xmpHtZYsXHN9wMLTs01pi9q7f6H3", username: "BadNam", accuracy: 100),
-    Rank(
-        uid: "xmpHtZYsXHN9wMLTs01pi9q7f6H3",
-        username: "BadAndrew",
-        accuracy: 100),
-    Rank(
-        uid: "xmpHtZYsXHN9wMLTs01pi9q7f6H3", username: "BadBob", accuracy: 100),
-    Rank(
-        uid: "xmpHtZYsXHN9wMLTs01pi9q7f6H3", username: "BadNam", accuracy: 100),
-  ];
+  List<Rank> ranks = [];
+  bool _first = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _first = true;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-      child: Column(children: [
-        _buildSelectDropdown(),
-        SizedBox(height: 10),
-        _buildTopRankContainer(),
-        SizedBox(height: 15),
-        _buildRankContainer()
-      ]),
+    if (_first) {
+      _selectedGoalID = getFirstGoal();
+      _first = false;
+    }
+    print(_selectedGoalID);
+
+    return StreamBuilder<List<JoinedUser>>(
+      stream: GoalService(goalID: _selectedGoalID).joinedUsers,
+      builder: (context, snapshot) {
+        List<JoinedUser> userlist = snapshot.data ?? [];
+        userlist.sort((a, b) => a.accuracy.compareTo(b.accuracy));
+        ranks.clear();
+        for (var data in userlist.reversed) {
+          ranks.add(Rank(
+              uid: data.uid, username: data.username, accuracy: data.accuracy));
+        }
+        print(userlist);
+        //3 or less users in a goal.
+        if (userlist.length < 4 && userlist.length != 0) {
+          return Container(
+            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+            child: Column(children: [
+              _buildSelectDropdown(),
+              SizedBox(height: 10),
+              _buildTopRankContainer(userlist.length),
+            ]),
+          );
+        }
+        //0 user in a goal.
+        else if (userlist.length == 0) {
+          return Container(
+            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+            child: Column(children: [
+              _buildSelectDropdown(),
+            ]),
+          );
+        }
+        //>4 users in a goal.
+        else {
+          return Container(
+            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+            child: Column(children: [
+              _buildSelectDropdown(),
+              SizedBox(height: 10),
+              _buildTopRankContainer(userlist.length),
+              SizedBox(height: 15),
+              _buildRankContainer(),
+            ]),
+          );
+        }
+      },
     );
   }
 
@@ -86,7 +94,7 @@ class _LeaderboardViewState extends State<LeaderboardView> {
     );
   }
 
-  Container _buildTopRankContainer() {
+  Container _buildTopRankContainer(int length) {
     return Container(
       width: double.infinity,
       height: 167,
@@ -96,29 +104,67 @@ class _LeaderboardViewState extends State<LeaderboardView> {
       padding: EdgeInsets.symmetric(horizontal: 12),
       alignment: Alignment.bottomCenter,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: length > 2
+            ? MainAxisAlignment.spaceBetween
+            : MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.end,
-        children: _buildTopRanks(),
+        children: _buildTopRanks(length),
       ),
     );
   }
 
-  List<Widget> _buildTopRanks() {
-    List<Widget> rearrange(list) {
-      list.insert(0, list.removeAt(1));
-      return list;
-    }
+  List<Widget> _buildTopRanks(int length) {
+    if (length == 1) {
+      List<Widget> rearrange(list) {
+        return list;
+      }
 
-    return rearrange(ranks.sublist(0, 3).asMap().entries.map((entry) {
-      int index = entry.key;
-      Rank rank = entry.value;
-      return TopRank(
-        uid: rank.uid,
-        username: rank.username,
-        accuracy: rank.accuracy,
-        index: index,
-      );
-    }).toList());
+      return rearrange(ranks.sublist(0, 1).asMap().entries.map((entry) {
+        int index = entry.key;
+        Rank rank = entry.value;
+        return TopRank(
+          uid: rank.uid,
+          username: rank.username,
+          accuracy: rank.accuracy,
+          index: index,
+          length: length,
+        );
+      }).toList());
+    } else if (length == 2) {
+      List<Widget> rearrange(list) {
+        list.insert(0, list.removeAt(1));
+        return list;
+      }
+
+      return rearrange(ranks.sublist(0, 2).asMap().entries.map((entry) {
+        int index = entry.key;
+        Rank rank = entry.value;
+        return TopRank(
+          uid: rank.uid,
+          username: rank.username,
+          accuracy: rank.accuracy,
+          index: index,
+          length: length,
+        );
+      }).toList());
+    } else {
+      List<Widget> rearrange(list) {
+        list.insert(0, list.removeAt(1));
+        return list;
+      }
+
+      return rearrange(ranks.sublist(0, 3).asMap().entries.map((entry) {
+        int index = entry.key;
+        Rank rank = entry.value;
+        return TopRank(
+          uid: rank.uid,
+          username: rank.username,
+          accuracy: rank.accuracy,
+          index: index,
+          length: length,
+        );
+      }).toList());
+    }
   }
 
   List<Widget> _buildRanks() {
@@ -135,6 +181,7 @@ class _LeaderboardViewState extends State<LeaderboardView> {
   }
 
   Align _buildSelectDropdown() {
+    List<UserGoal> goalList = getGoals();
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
@@ -159,10 +206,10 @@ class _LeaderboardViewState extends State<LeaderboardView> {
             color: monoSecondaryColor,
           ),
           iconSize: 28,
-          items: ["Learn Flutter", "Read a book", "Drink water"].map((item) {
+          items: goalList.map((item) {
             return DropdownMenuItem(
-              child: Text(item),
-              value: item,
+              child: Text(item.goal.title),
+              value: item.goalID,
             );
           }).toList(),
           onChanged: (value) {
@@ -173,5 +220,27 @@ class _LeaderboardViewState extends State<LeaderboardView> {
         ),
       ),
     );
+  }
+
+  List<UserGoal> getGoals() {
+    List<UserGoal> goals = Provider.of<List<UserGoal>>(context);
+    return goals;
+  }
+
+  String getFirstGoal() {
+    List<UserGoal> goals = Provider.of<List<UserGoal>>(context);
+    if (goals.isNotEmpty) {
+      return goals[0].goalID;
+    } else {
+      return null;
+    }
+  }
+
+  Stream<List<JoinedUser>> getUserList() {
+    Stream<List<JoinedUser>> userlist = GoalService(
+      goalID: _selectedGoalID,
+    ).joinedUsers;
+
+    return userlist;
   }
 }

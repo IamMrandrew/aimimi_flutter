@@ -45,7 +45,7 @@ class _SharedGoalViewState extends State<SharedGoalView> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSharedGoalHeader(sharedGoal),
+          _buildSharedGoalHeader(sharedGoal, joinedUsersSnapshot),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Text(
@@ -87,6 +87,8 @@ class _SharedGoalViewState extends State<SharedGoalView> {
                     await GoalService(
                       goalID: widget.goalID,
                       uid: Provider.of<OurUser>(context, listen: false).uid,
+                      username:
+                          Provider.of<OurUser>(context, listen: false).username,
                     ).joinGoal(sharedGoal);
                     setState(() {
                       joined = true;
@@ -120,7 +122,7 @@ class _SharedGoalViewState extends State<SharedGoalView> {
     }
   }
 
-  Container _buildSharedGoalHeader(sharedGoal) {
+  Container _buildSharedGoalHeader(sharedGoal, joinedUsersSnapshot) {
     return Container(
       padding: EdgeInsets.only(left: 32, right: 32, top: 30, bottom: 20),
       decoration: BoxDecoration(
@@ -189,7 +191,7 @@ class _SharedGoalViewState extends State<SharedGoalView> {
                   ),
                   SizedBox(width: 5),
                   Text(
-                    sharedGoal.users.length.toString(),
+                    joinedUsersSnapshot.data.length.toString(),
                     style: TextStyle(
                       color: monoSecondaryColor,
                       fontSize: 14,

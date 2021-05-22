@@ -45,6 +45,9 @@ class MyApp extends StatelessWidget {
           // Default font
           fontFamily: "Roboto",
           // textTheme: GoogleFonts.robotoTextTheme(Theme.of(context).textTheme),
+
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
         ),
         debugShowCheckedModeBanner: false,
         // home: MainView(),
@@ -60,9 +63,10 @@ class Authenticate extends StatelessWidget {
     bool isSigningIn = Provider.of<AuthService>(context).isSigningIn;
     OurUser auth = Provider.of<OurUser>(context);
 
-    if (isSigningIn) {
-      return buildLoading();
-    } else if (auth != null) {
+    // if (isSigningIn) {
+    // return buildLoading();
+    // } else
+    if (auth != null) {
       return MultiProvider(
         providers: [
           StreamProvider<List<UserGoal>>.value(

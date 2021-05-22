@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ModalCheckIn extends StatefulWidget {
-  final selectedGoal;
+  final UserGoal selectedGoal;
   ModalCheckIn({Key key, UserGoal this.selectedGoal}) : super(key: key);
 
   @override
@@ -53,8 +53,12 @@ class _ModalCheckInState extends State<ModalCheckIn> {
                     onPressed: () async {
                       // Check-in function
                       await GoalService(
+                              goalID: widget.selectedGoal.goalID,
                               uid: Provider.of<OurUser>(context, listen: false)
-                                  .uid)
+                                  .uid,
+                              username:
+                                  Provider.of<OurUser>(context, listen: false)
+                                      .username)
                           .checkInGoal(_checkIn, widget.selectedGoal);
                       Navigator.pop(context);
                     },

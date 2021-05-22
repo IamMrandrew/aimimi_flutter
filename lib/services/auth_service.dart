@@ -22,7 +22,9 @@ class AuthService extends ChangeNotifier {
   }
 
   OurUser _createUser(User user) {
-    return user != null ? OurUser(uid: user.uid) : null;
+    return user != null
+        ? OurUser(uid: user.uid, username: user.displayName)
+        : null;
   }
 
   Stream<OurUser> get user {
@@ -84,14 +86,16 @@ class AuthService extends ChangeNotifier {
   Future googleLogin() async {
     isSigningIn = true;
 
+    await googleSignIn.disconnect();
     final user = await googleSignIn.signIn();
 
     if (user == null) {
       isSigningIn = false;
       return;
     } else {
+      print("here" + user.toString());
       final googleAuth = await user.authentication;
-
+      print("there");
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
@@ -109,10 +113,13 @@ class AuthService extends ChangeNotifier {
   }
 
   Future logout() async {
-    print(auth.currentUser.providerData[0]);
+    // print(auth.currentUser.providerData[0]);
     if (auth.currentUser.providerData[0].providerId == 'google.com') {
-      await googleSignIn.disconnect();
+      return await Future.wait([
+        FirebaseAuth.instance.signOut(),
+        googleSignIn.disconnect(),
+      ]);
     }
-    return await FirebaseAuth.instance.signOut();
+    return FirebaseAuth.instance.signOut();
   }
 }
