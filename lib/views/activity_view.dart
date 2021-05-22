@@ -5,11 +5,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ActivityView extends StatelessWidget {
+class ActivityView extends StatefulWidget {
+  final userGoal;
+  ActivityView({this.userGoal});
+
+  @override
+  State<ActivityView> createState() => _ActivityViewState();
+}
+
+class _ActivityViewState extends State<ActivityView> {
   @override
   Widget build(BuildContext context) {
     List<Feed> feeds = Provider.of<List<Feed>>(context);
-    bool liked;
 
     return Scaffold(
       appBar: AppBar(
@@ -27,14 +34,14 @@ class ActivityView extends StatelessWidget {
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   Feed feed = Provider.of<List<Feed>>(context)[index];
-                  // print(feed.likes);
-                  // print("this is feed id: " + feed.feedID.toString());
+
                   return FeedItem(
                     createdBy: feed.createdBy.username,
                     content: feed.content,
                     createdAt: feed.createdAt,
                     feedID: feed.feedID,
                     feed: feed,
+                    userGoal: widget.userGoal,
                   );
                 }),
           ],

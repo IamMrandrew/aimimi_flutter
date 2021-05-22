@@ -16,8 +16,16 @@ class FeedItem extends StatefulWidget {
   final String content;
   final String feedID;
   final feed;
+  final userGoal;
+  final int length;
   FeedItem(
-      {this.createdBy, this.createdAt, this.content, this.feedID, this.feed});
+      {this.createdBy,
+      this.createdAt,
+      this.content,
+      this.feedID,
+      this.feed,
+      this.userGoal,
+      this.length});
 
   @override
   State<FeedItem> createState() => _FeedItemState();
@@ -79,7 +87,7 @@ class _FeedItemState extends State<FeedItem> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "${widget.createdBy} joined your group",
+                      this.widget.content,
                       style: TextStyle(
                         color: themeShadedColor,
                         fontSize: 15,
@@ -97,7 +105,13 @@ class _FeedItemState extends State<FeedItem> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => CommentView()));
+                                  builder: (context) => CommentView(
+                                      content: widget.content,
+                                      createdAt: widget.createdAt,
+                                      createdBy: this.widget.createdBy,
+                                      feedID: widget.feedID,
+                                      userGoal: widget.userGoal,
+                                      length: likedUsersSnapshot.data.length)));
                         }),
                       ],
                     )

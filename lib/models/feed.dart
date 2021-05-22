@@ -19,3 +19,11 @@ class Feed {
       this.comments,
       this.feedID});
 }
+
+class Comment {
+  String content;
+  DateTime createdAt;
+  CreatedBy createdBy;
+
+  Comment({this.content, this.createdAt, this.createdBy});
+}

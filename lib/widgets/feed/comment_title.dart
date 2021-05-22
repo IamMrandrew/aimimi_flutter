@@ -9,8 +9,14 @@ class CommentTitle extends StatelessWidget {
   final String createdBy;
   final DateTime createdAt;
   final String content;
-
-  CommentTitle({this.createdBy, this.createdAt, this.content});
+  final int length;
+  final int commentLength;
+  CommentTitle(
+      {this.createdBy,
+      this.createdAt,
+      this.content,
+      this.length,
+      this.commentLength});
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +65,7 @@ class CommentTitle extends StatelessWidget {
                       onPressed: null,
                     ),
                     SizedBox(width: 7),
-                    Text("1 Like",
+                    Text("${length} Like",
                         style: TextStyle(
                           color: monoButtonTextColor,
                           fontSize: 15,
@@ -100,7 +106,7 @@ class CommentTitle extends StatelessWidget {
                           color: monoButtonTextColor,
                         ),
                         SizedBox(width: 12),
-                        Text("4 Comments",
+                        Text("${commentLength} Comments",
                             style: TextStyle(
                               color: monoButtonTextColor,
                               fontSize: 15,

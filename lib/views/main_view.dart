@@ -105,7 +105,9 @@ class _MainViewState extends State<MainView> {
                             value: FeedService(userGoals: userGoal).feeds,
                           ),
                         ],
-                        child: ActivityView(),
+                        child: ActivityView(
+                          userGoal: userGoal,
+                        ),
                       ),
                     ));
               },
