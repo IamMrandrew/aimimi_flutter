@@ -140,7 +140,6 @@ class GoalService {
         .map(_createUserGoals);
   }
 
-
   Stream<List<String>> get completedGoals {
     return userCollection
         .doc(uid)
@@ -148,7 +147,6 @@ class GoalService {
         .snapshots()
         .map(_completed);
   }
-
 
   void addGoal(title, category, description, publicity, period, frequency,
       timespan) async {

@@ -18,16 +18,48 @@ class FeedService {
       Future.wait(querySnapshot.docs.map<Future<Feed>>(
           (DocumentSnapshot<Map<String, dynamic>> feed) async {
         return Feed(
-            content: feed.data()["content"],
-            createdAt: feed.data()["createdAt"].toDate(),
-            createdBy: CreatedBy(
-              uid: feed.data()["createdBy"]["uid"],
-              username: feed.data()["createdBy"]["username"],
-            ),
-            goalID: feed.data()["goalID"],
-            likes: feed.data()["likes"],
-            feedID: feed.reference.id);
+          content: feed.data()["content"],
+          createdAt: feed.data()["createdAt"].toDate(),
+          createdBy: CreatedBy(
+            uid: feed.data()["createdBy"]["uid"],
+            username: feed.data()["createdBy"]["username"],
+          ),
+          goalID: feed.data()["goalID"],
+          likes: feed.data()["likes"],
+          feedID: feed.reference.id,
+          comments: await feedCollection
+              .doc(feed.id)
+              .collection("comments")
+              .get()
+              .then((QuerySnapshot querySnapshot) => querySnapshot.docs
+                  .map((DocumentSnapshot user) => user)
+                  .toList()),
+        );
       }).toList());
+
+  List<Comment> _createComments(
+      QuerySnapshot<Map<String, dynamic>> querySnapshot) {
+    return querySnapshot.docs
+        .map<Comment>(
+            (DocumentSnapshot<Map<String, dynamic>> comment) => Comment(
+                  content: comment.data()["content"],
+                  createdAt: comment.data()["createdAt"].toDate(),
+                  createdBy: CreatedBy(
+                    uid: comment.data()["createdBy"]["uid"],
+                    username: comment.data()["createdBy"]["username"],
+                  ),
+                ))
+        .toList();
+  }
+
+  Stream<List<Comment>> get comments {
+    print("This is feed ID " + feedID);
+    return feedCollection
+        .doc(feedID)
+        .collection("comments")
+        .snapshots()
+        .map(_createComments);
+  }
 
   Stream<List<Feed>> get feeds {
     return feedCollection

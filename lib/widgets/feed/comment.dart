@@ -1,4 +1,5 @@
 import 'package:aimimi/constants/styles.dart';
+import 'package:aimimi/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:aimimi/views/comment_view.dart';
 import 'package:flutter/material.dart';
@@ -6,11 +7,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import "package:timeago/timeago.dart" as timeago;
 
 class CommentItem extends StatelessWidget {
-  final String createdBy;
+  final String username;
   final DateTime createdAt;
   final String content;
 
-  CommentItem({this.createdBy, this.createdAt, this.content});
+  CommentItem({this.username, this.createdAt, this.content});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,7 @@ class CommentItem extends StatelessWidget {
                   ),
                   SizedBox(width: 7),
                   Text(
-                    this.createdBy,
+                    this.username,
                     style: TextStyle(
                       color: monoPrimaryColor,
                       fontSize: 16,
