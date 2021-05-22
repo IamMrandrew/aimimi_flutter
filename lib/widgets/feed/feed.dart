@@ -120,6 +120,7 @@ class _FeedItemState extends State<FeedItem> {
               ],
             ),
           ),
+          SizedBox(height: 12),
         ],
       );
     } else {
