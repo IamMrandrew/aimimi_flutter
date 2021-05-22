@@ -153,7 +153,15 @@ class _CommentViewState extends State<CommentView> {
                               child: IconButton(
                                 icon: const Icon(Icons.send),
                                 color: Colors.white,
-                                onPressed: () {},
+                                onPressed: () async {
+                                  if (!_formKey.currentState.validate()) {
+                                    return;
+                                  }
+                                  _formKey.currentState.save();
+                                  print(_comment);
+                                  FeedService(feedID: widget.feedID)
+                                      .addComment(_comment);
+                                },
                               ),
                             )
                           ],

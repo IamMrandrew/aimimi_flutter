@@ -53,10 +53,10 @@ class FeedService {
   }
 
   Stream<List<Comment>> get comments {
-    print("This is feed ID " + feedID);
     return feedCollection
         .doc(feedID)
         .collection("comments")
+        .orderBy("createdAt", descending: false)
         .snapshots()
         .map(_createComments);
   }
@@ -88,6 +88,17 @@ class FeedService {
   Future dislike(feed) async {
     return feedCollection.doc(feedID).update({
       "likes": FieldValue.arrayRemove([FirebaseAuth.instance.currentUser.uid])
+    });
+  }
+
+  void addComment(_comment) async {
+    await feedCollection.doc(feedID).collection("comments").add({
+      "content": _comment,
+      "createdAt": Timestamp.now(),
+      "createdBy": {
+        "uid": FirebaseAuth.instance.currentUser.uid,
+        "username": FirebaseAuth.instance.currentUser.displayName
+      }
     });
   }
 }
