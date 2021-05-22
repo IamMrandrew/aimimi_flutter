@@ -151,7 +151,6 @@ class _LeaderboardViewState extends State<LeaderboardView> {
   List<Widget> _buildTopRanks(int length) {
     if (length == 1) {
       List<Widget> rearrange(list) {
-        list.insert(0, list.removeAt(1));
         return list;
       }
 
