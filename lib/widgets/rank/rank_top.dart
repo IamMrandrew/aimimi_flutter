@@ -92,34 +92,18 @@ class TopRank extends StatelessWidget {
   }
 
   double _buildTopRankHeight(context, length) {
-    if (length == 2) {
-      switch (index) {
-        case 0:
-          return 135;
-          break;
-        case 1:
-          return 151;
-          break;
-        case 2:
-          return 120;
-          break;
-        default:
-          return 120;
-      }
-    } else {
-      switch (index) {
-        case 0:
-          return 151;
-          break;
-        case 1:
-          return 135;
-          break;
-        case 2:
-          return 120;
-          break;
-        default:
-          return 120;
-      }
+    switch (index) {
+      case 0:
+        return 151;
+        break;
+      case 1:
+        return 135;
+        break;
+      case 2:
+        return 120;
+        break;
+      default:
+        return 120;
     }
   }
 
