@@ -31,6 +31,7 @@ class CommentView extends StatefulWidget {
 class _CommentViewState extends State<CommentView> {
   final user = FirebaseAuth.instance.currentUser;
   String _comment;
+  bool _incoming = false;
   NetworkImage getImage() {
     if (user.providerData[0].providerId == 'google.com') {
       return NetworkImage(user.photoURL);
@@ -94,12 +95,19 @@ class _CommentViewState extends State<CommentView> {
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
+                                if (commentSnapshot.data[index].createdBy.uid ==
+                                    FirebaseAuth.instance.currentUser.uid)
+                                  _incoming = true;
+                                else
+                                  _incoming = false;
                                 return CommentItem(
                                   username: commentSnapshot
                                       .data[index].createdBy.username,
                                   content: commentSnapshot.data[index].content,
                                   createdAt:
                                       commentSnapshot.data[index].createdAt,
+                                  uid:
+                                      commentSnapshot.data[index].createdBy.uid,
                                 );
                               }),
                         ),

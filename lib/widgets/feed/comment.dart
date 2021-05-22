@@ -1,5 +1,7 @@
 import 'package:aimimi/constants/styles.dart';
+import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/models/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:aimimi/views/comment_view.dart';
 import 'package:flutter/material.dart';
@@ -10,73 +12,102 @@ class CommentItem extends StatelessWidget {
   final String username;
   final DateTime createdAt;
   final String content;
-
-  CommentItem({this.username, this.createdAt, this.content});
+  final String uid;
+  CommentItem({this.username, this.createdAt, this.content, this.uid});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          child: Row(
-            children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    maxRadius: 15,
-                  ),
-                  SizedBox(width: 7),
-                  Text(
-                    this.username,
-                    style: TextStyle(
-                      color: monoPrimaryColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+    if (uid != FirebaseAuth.instance.currentUser.uid)
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            child: Row(
+              children: [
+                Row(
+                  children: [
+                    CircleAvatar(
+                      maxRadius: 15,
                     ),
-                  ),
-                  SizedBox(width: 8),
-                  Text(timeago.format(createdAt),
+                    SizedBox(width: 7),
+                    Text(
+                      this.username,
                       style: TextStyle(
-                        color: monoSecondaryColor,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      )),
-                ],
-              ),
-            ],
-          ),
-        ),
-        SizedBox(height: 4),
-        Container(
-          padding: EdgeInsets.only(top: 19, left: 10, bottom: 10),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(18)),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    content,
-                    style: TextStyle(
-                      color: themeShadedColor,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
+                        color: monoPrimaryColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 11),
-                ],
+                    SizedBox(width: 8),
+                    Text(timeago.format(createdAt),
+                        style: TextStyle(
+                          color: monoSecondaryColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        )),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 4),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding:
+                    EdgeInsets.only(top: 12, left: 10, bottom: 10, right: 22),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(18)),
+                ),
+
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      content,
+                      style: TextStyle(
+                        color: themeShadedColor,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 11),
+                  ],
+                ),
+                // ],
               ),
+              // ),
             ],
           ),
-        ),
-        SizedBox(
-          height: 17,
-        )
-      ],
-    );
+          SizedBox(
+            height: 3,
+          )
+        ],
+      );
+    else
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Container(
+            padding: EdgeInsets.only(top: 12, left: 10, bottom: 10, right: 22),
+            decoration: BoxDecoration(
+              color: themeColor,
+              borderRadius: BorderRadius.all(Radius.circular(18)),
+            ),
+            child: Text(
+              content,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          SizedBox(
+            height: 3,
+          )
+        ],
+      );
   }
 }
