@@ -71,6 +71,7 @@ class GoalService {
           username: sharedGoal.data()["createdBy"]["username"],
         ),
         createAt: sharedGoal.data()["createdAt"].toDate(),
+        // Dont use this users. Not real time is rubbish
         users: await goalCollection
             .doc(sharedGoal.id)
             .collection("users")
