@@ -45,6 +45,9 @@ class MyApp extends StatelessWidget {
           // Default font
           fontFamily: "Roboto",
           // textTheme: GoogleFonts.robotoTextTheme(Theme.of(context).textTheme),
+
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
         ),
         debugShowCheckedModeBanner: false,
         // home: MainView(),

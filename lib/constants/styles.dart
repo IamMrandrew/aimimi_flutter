@@ -28,6 +28,14 @@ const textFieldBorder = OutlineInputBorder(
   borderRadius: BorderRadius.all(Radius.circular(8)),
 );
 
+const searchFieldBorder = OutlineInputBorder(
+  borderSide: BorderSide(
+    width: 0,
+    style: BorderStyle.none,
+  ),
+  borderRadius: BorderRadius.all(Radius.circular(14)),
+);
+
 /* TextStyle */
 
 const appBarTitleTextStyle = TextStyle(
@@ -50,6 +58,7 @@ const textFieldHintTextStyle = TextStyle(
 
 /* AppBar */
 AppBar singleViewAppBar(String titleText) => AppBar(
+      key: UniqueKey(),
       elevation: 0,
       iconTheme: IconThemeData(color: themeShadedColor),
       title: Text(titleText, style: appBarTitleTextStyle),
