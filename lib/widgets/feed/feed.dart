@@ -2,6 +2,7 @@ import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/models/feed.dart';
 import 'package:aimimi/models/user.dart';
 import 'package:aimimi/views/comment_view.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -14,8 +15,9 @@ class FeedItem extends StatefulWidget {
   final DateTime createdAt;
   final String content;
   final String feedID;
-
-  FeedItem({this.createdBy, this.createdAt, this.content, this.feedID});
+  final feed;
+  FeedItem(
+      {this.createdBy, this.createdAt, this.content, this.feedID, this.feed});
 
   @override
   State<FeedItem> createState() => _FeedItemState();
@@ -87,11 +89,7 @@ class _FeedItemState extends State<FeedItem> {
                     SizedBox(height: 5),
                     Row(
                       children: [
-                        _buildLikeButton("Like", Icons.favorite, () async {
-                          // if (!liked) {
-                          //   await FeedService (uid:Provider.of<OurUser>(context, listen: false).uid).like()
-                          // }
-                        }),
+                        _buildLikeButton("Like", Icons.favorite),
                         SizedBox(
                           width: 10,
                         ),
@@ -165,9 +163,28 @@ class _FeedItemState extends State<FeedItem> {
     );
   }
 
-  GestureDetector _buildLikeButton(String text, IconData icon, onPressHandler) {
+  GestureDetector _buildLikeButton(String text, IconData icon) {
     return GestureDetector(
-      onTap: onPressHandler,
+      onTap: () async {
+        if (!_liked) {
+          print("not liked");
+          await FeedService(
+                  uid: Provider.of<OurUser>(context, listen: false).uid,
+                  feedID: widget.feedID)
+              .like(widget.feed);
+          setState(() {
+            _liked = true;
+          });
+        } else {
+          await FeedService(
+                  uid: Provider.of<OurUser>(context, listen: false).uid,
+                  feedID: widget.feedID)
+              .dislike(widget.feed);
+          setState(() {
+            _liked = false;
+          });
+        }
+      },
       child: Container(
         decoration: BoxDecoration(
           color: backgroundColor,

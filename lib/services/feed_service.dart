@@ -47,9 +47,15 @@ class FeedService {
     return feedCollection.doc(feedID).snapshots().map(_createLikedUsers);
   }
 
-  void like(feed) async {
-    DocumentReference doc = await feedCollection.add({
+  Future like(feed) async {
+    return feedCollection.doc(feedID).update({
       "likes": FieldValue.arrayUnion([FirebaseAuth.instance.currentUser.uid])
+    });
+  }
+
+  Future dislike(feed) async {
+    return feedCollection.doc(feedID).update({
+      "likes": FieldValue.arrayRemove([FirebaseAuth.instance.currentUser.uid])
     });
   }
 }

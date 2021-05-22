@@ -34,6 +34,7 @@ class ActivityView extends StatelessWidget {
                     content: feed.content,
                     createdAt: feed.createdAt,
                     feedID: feed.feedID,
+                    feed: feed,
                   );
                 }),
           ],
