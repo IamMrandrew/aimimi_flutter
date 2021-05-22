@@ -86,7 +86,11 @@ class AuthService extends ChangeNotifier {
   Future googleLogin() async {
     isSigningIn = true;
 
-    await googleSignIn.disconnect();
+    try {
+      await googleSignIn.disconnect();
+    } catch (error) {
+      print(error);
+    }
     final user = await googleSignIn.signIn();
 
     if (user == null) {
