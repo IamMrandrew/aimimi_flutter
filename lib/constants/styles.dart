@@ -58,6 +58,7 @@ const textFieldHintTextStyle = TextStyle(
 
 /* AppBar */
 AppBar singleViewAppBar(String titleText) => AppBar(
+      key: UniqueKey(),
       elevation: 0,
       iconTheme: IconThemeData(color: themeShadedColor),
       title: Text(titleText, style: appBarTitleTextStyle),

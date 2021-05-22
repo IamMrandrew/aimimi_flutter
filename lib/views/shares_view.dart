@@ -9,25 +9,41 @@ class SharesView extends StatefulWidget {
   _SharesViewState createState() => _SharesViewState();
 }
 
-class _SharesViewState extends State<SharesView> {
+class _SharesViewState extends State<SharesView>
+    with SingleTickerProviderStateMixin {
   List<SharedGoal> _searchResult = [];
   TextEditingController _controller = TextEditingController();
   FocusNode _focus = FocusNode();
+  AnimationController _animationController;
+  CurvedAnimation _curve;
   bool _focused = false;
 
   @override
   void initState() {
     super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 300),
+    );
+
+    _curve = CurvedAnimation(
+        parent: _animationController, curve: Curves.easeInOutCubic);
     _focus.addListener(() {
       setState(() {
         _focused = !_focused;
       });
+      if (_animationController.isCompleted) {
+        _animationController.reverse();
+      } else {
+        _animationController.forward();
+      }
     });
   }
 
   @override
   void dispose() {
     _focus.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -46,16 +62,47 @@ class _SharesViewState extends State<SharesView> {
     ];
     items += sharedGoals;
     return Scaffold(
-      appBar: singleViewAppBar("Shares"),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildSearchBar(sharedGoals),
-            SizedBox(height: 15),
-            _buildListView(items)
-          ],
+      // appBar: singleViewAppBar("Shares"),
+      body: Container(
+        color: Colors.white,
+        constraints:
+            BoxConstraints(minHeight: MediaQuery.of(context).size.height),
+        child: SafeArea(
+          bottom: false,
+          child: AnimatedBuilder(
+              animation: _animationController,
+              builder: (context, child) {
+                return Stack(
+                  children: [
+                    Transform.translate(
+                      offset: Offset(0, -56 * _curve.value),
+                      child: SingleChildScrollView(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 56),
+                            _buildSearchBar(sharedGoals),
+                            SizedBox(height: 15),
+                            _buildListView(items)
+                          ],
+                        ),
+                      ),
+                    ),
+                    AnimatedSwitcher(
+                      duration: Duration(milliseconds: 100),
+                      child: _focused
+                          ? Container(key: UniqueKey(), width: 0, height: 0)
+                          : Container(
+                              // key: UniqueKey(),
+                              height: 56,
+                              child: singleViewAppBar("Shares"),
+                            ),
+                    ),
+                  ],
+                );
+              }),
         ),
       ),
     );
@@ -90,52 +137,55 @@ class _SharesViewState extends State<SharesView> {
     );
   }
 
-  Row _buildSearchBar(List<SharedGoal> sharedGoals) {
-    return Row(
-      children: [
-        Expanded(
-          child: TextField(
-            onChanged: (String input) {
-              _search(input, sharedGoals);
+  Widget _buildSearchBar(List<SharedGoal> sharedGoals) {
+    return Transform.translate(
+      offset: Offset(0, 0),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              onChanged: (String input) {
+                _search(input, sharedGoals);
+              },
+              controller: _controller,
+              focusNode: _focus,
+              decoration: InputDecoration(
+                hintText: "Read a book, Lifestyle ...",
+                fillColor: backgroundColor,
+                filled: true,
+                border: searchFieldBorder,
+                contentPadding: EdgeInsets.all(12),
+                isDense: true,
+                prefixIconConstraints: BoxConstraints(minWidth: 40),
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: monoSecondaryColor,
+                ),
+                hintStyle: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                  color: monoSecondaryColor,
+                ),
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              _focus.unfocus();
+              _controller.clear();
             },
-            controller: _controller,
-            focusNode: _focus,
-            decoration: InputDecoration(
-              hintText: "Read a book, Lifestyle ...",
-              fillColor: backgroundColor,
-              filled: true,
-              border: searchFieldBorder,
-              contentPadding: EdgeInsets.all(12),
-              isDense: true,
-              prefixIconConstraints: BoxConstraints(minWidth: 40),
-              prefixIcon: Icon(
-                Icons.search,
-                color: monoSecondaryColor,
-              ),
-              hintStyle: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
+            style: ButtonStyle(
+              overlayColor: MaterialStateProperty.all(Colors.transparent),
+            ),
+            child: Text(
+              "Cancel",
+              style: TextStyle(
                 color: monoSecondaryColor,
               ),
             ),
-          ),
-        ),
-        TextButton(
-          onPressed: () {
-            _focus.unfocus();
-            _controller.clear();
-          },
-          style: ButtonStyle(
-            overlayColor: MaterialStateProperty.all(Colors.transparent),
-          ),
-          child: Text(
-            "Cancel",
-            style: TextStyle(
-              color: monoSecondaryColor,
-            ),
-          ),
-        )
-      ],
+          )
+        ],
+      ),
     );
   }
 
