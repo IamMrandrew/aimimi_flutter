@@ -152,42 +152,60 @@ class GoalService {
         .map(_completed);
   }
 
-  void addGoal(title, category, description, publicity, period, frequency,
+  Future addGoal(title, category, description, publicity, period, frequency,
       timespan) async {
-    DocumentReference doc = await goalCollection.add({
-      'title': title,
-      'category': category,
-      'description': description,
-      'publicity': publicity,
-      'period': period,
-      'frequency': frequency,
-      'timespan': timespan,
-      'createdBy': {
-        'uid': FirebaseAuth.instance.currentUser.uid,
-        'username': FirebaseAuth.instance.currentUser.displayName,
-      },
-      "createdAt": Timestamp.now(),
-    });
-    print(doc.id);
-    await userCollection
-        .doc(FirebaseAuth.instance.currentUser.uid)
-        .collection("goals")
-        .doc(doc.id.toString())
-        .set({
-      "accuracy": 0,
-      "checkIn": 0,
-      "checkInSuccess": 0,
-      "checkedIn": false,
-      "dayPassed": 0,
-      "goal": {
-        'description': description,
-        'frequency': frequency,
-        'period': period,
-        'publicity': publicity,
-        'timespan': timespan,
+    Future addGoalToGoals() {
+      return goalCollection.add({
         'title': title,
-      },
-    });
+        'category': category,
+        'description': description,
+        'publicity': publicity,
+        'period': period,
+        'frequency': frequency,
+        'timespan': timespan,
+        'createdBy': {
+          'uid': FirebaseAuth.instance.currentUser.uid,
+          'username': FirebaseAuth.instance.currentUser.displayName,
+        },
+        "createdAt": Timestamp.now(),
+      });
+    }
+
+    DocumentReference doc = await addGoalToGoals();
+
+    Future addUserGoalToUser() {
+      return userCollection
+          .doc(FirebaseAuth.instance.currentUser.uid)
+          .collection("goals")
+          .doc(doc.id.toString())
+          .set({
+        "accuracy": 0,
+        "checkIn": 0,
+        "checkInSuccess": 0,
+        "checkedIn": false,
+        "dayPassed": 0,
+        "goal": {
+          'description': description,
+          'frequency': frequency,
+          'period': period,
+          'publicity': publicity,
+          'timespan': timespan,
+          'title': title,
+        },
+      });
+    }
+
+    Future addUserToGoalUsers() {
+      return goalCollection.doc(doc.id).collection("users").doc(uid).set({
+        "accuracy": 0,
+        "username": username,
+      });
+    }
+
+    return Future.wait([
+      addUserGoalToUser(),
+      addUserToGoalUsers(),
+    ]);
   }
 
   // Check in action

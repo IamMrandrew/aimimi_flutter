@@ -1,4 +1,5 @@
 import 'package:aimimi/constants/styles.dart';
+import 'package:aimimi/models/user.dart';
 import 'package:aimimi/services/goal_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -74,8 +75,12 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
 
                   print(FirebaseAuth.instance.currentUser.uid);
 
-                  GoalService().addGoal(_title, _category, _description,
-                      _publicity, _period, _frequency, _timespan);
+                  await GoalService(
+                          uid: Provider.of<OurUser>(context, listen: false).uid,
+                          username: Provider.of<OurUser>(context, listen: false)
+                              .username)
+                      .addGoal(_title, _category, _description, _publicity,
+                          _period, _frequency, _timespan);
                   Navigator.pop(context);
                 },
               ),
@@ -335,7 +340,7 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
         hintStyle: textFieldHintTextStyle,
       ),
       keyboardType: TextInputType.multiline,
-      maxLines: 30,
+      maxLines: 8,
       validator: (String value) {
         if (value.isEmpty) {
           return "Description is empty";

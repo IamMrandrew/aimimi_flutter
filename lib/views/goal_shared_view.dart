@@ -85,13 +85,11 @@ class _SharedGoalViewState extends State<SharedGoalView> {
                 onPressed: () async {
                   if (!joined) {
                     await GoalService(
-                            goalID: widget.goalID,
-                            uid: Provider.of<OurUser>(context, listen: false)
-                                .uid,
-                            username:
-                                Provider.of<OurUser>(context, listen: false)
-                                    .username)
-                        .joinGoal(sharedGoal);
+                      goalID: widget.goalID,
+                      uid: Provider.of<OurUser>(context, listen: false).uid,
+                      username:
+                          Provider.of<OurUser>(context, listen: false).username,
+                    ).joinGoal(sharedGoal);
                     setState(() {
                       joined = true;
                     });
