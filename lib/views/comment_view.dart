@@ -72,121 +72,126 @@ class _CommentViewState extends State<CommentView> {
                     iconTheme: IconThemeData(color: themeShadedColor),
                     title: Text("Comment", style: appBarTitleTextStyle),
                   ),
-                  body: Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                CommentTitle(
-                                  createdBy: widget.createdBy,
-                                  content: widget.content,
-                                  createdAt: widget.createdAt,
-                                  length: widget.length,
-                                  commentLength: commentSnapshot.data != null
-                                      ? commentSnapshot.data.length
-                                      : 0,
-                                ),
-                                SizedBox(height: 24),
-                                ListView.builder(
-                                    itemCount: commentSnapshot.data != null
-                                        ? commentSnapshot.data.length
-                                        : 0,
-                                    scrollDirection: Axis.vertical,
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemBuilder: (context, index) {
-                                      if (commentSnapshot
-                                              .data[index].createdBy.uid ==
-                                          FirebaseAuth.instance.currentUser.uid)
-                                        _incoming = true;
-                                      else
-                                        _incoming = false;
-                                      return CommentItem(
-                                        username: commentSnapshot
-                                            .data[index].createdBy.username,
-                                        content:
-                                            commentSnapshot.data[index].content,
-                                        createdAt: commentSnapshot
-                                            .data[index].createdAt,
-                                        uid: commentSnapshot
-                                            .data[index].createdBy.uid,
-                                      );
-                                    }),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  body: Column(
+                    children: [
+                      CommentTitle(
+                        createdBy: widget.createdBy,
+                        content: widget.content,
+                        createdAt: widget.createdAt,
+                        length: widget.length,
+                        commentLength: commentSnapshot.data != null
+                            ? commentSnapshot.data.length
+                            : 0,
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                        child: Column(
                           children: [
-                            Expanded(
-                              child: Container(
-                                height: 50,
-                                child: Form(
-                                  key: _formKey,
-                                  child: TextFormField(
-                                    decoration: InputDecoration(
-                                      hintText: "Type something...",
-                                      fillColor: backgroundColor,
-                                      filled: true,
-                                      border: textFieldBorder,
-                                      contentPadding: new EdgeInsets.symmetric(
-                                          vertical: 15, horizontal: 10),
-                                      isDense: true,
-                                      hintStyle: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                        color: monoSecondaryColor,
+                            SizedBox(height: 24),
+                            ListView.builder(
+                                itemCount: commentSnapshot.data != null
+                                    ? commentSnapshot.data.length
+                                    : 0,
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  if (commentSnapshot
+                                          .data[index].createdBy.uid ==
+                                      FirebaseAuth.instance.currentUser.uid)
+                                    _incoming = true;
+                                  else
+                                    _incoming = false;
+                                  return CommentItem(
+                                    username: commentSnapshot
+                                        .data[index].createdBy.username,
+                                    content:
+                                        commentSnapshot.data[index].content,
+                                    createdAt:
+                                        commentSnapshot.data[index].createdAt,
+                                    uid: commentSnapshot
+                                        .data[index].createdBy.uid,
+                                  );
+                                }),
+
+                            // SizedBox(height: 30)
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 25, vertical: 15),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  // height: 50,
+                                  child: Form(
+                                    key: _formKey,
+                                    child: TextFormField(
+                                      decoration: InputDecoration(
+                                        hintText: "Type something...",
+                                        fillColor: backgroundColor,
+                                        filled: true,
+                                        border: textFieldBorder,
+                                        contentPadding:
+                                            new EdgeInsets.symmetric(
+                                                vertical: 15, horizontal: 10),
+                                        isDense: true,
+                                        hintStyle: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: monoSecondaryColor,
+                                        ),
                                       ),
+                                      validator: (String value) {
+                                        if (value.isEmpty) {
+                                          return " Comment is empty";
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (String value) {
+                                        setState(() {
+                                          _comment = value;
+                                        });
+                                      },
                                     ),
-                                    validator: (String value) {
-                                      if (value.isEmpty) {
-                                        return " Comment is empty";
-                                      }
-                                      return null;
-                                    },
-                                    onSaved: (String value) {
-                                      setState(() {
-                                        _comment = value;
-                                      });
-                                    },
                                   ),
                                 ),
                               ),
-                            ),
-                            SizedBox(width: 6),
-                            Container(
-                              width: 50,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: Color(0xff4b4b4b),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8)),
-                              ),
-                              child: IconButton(
-                                icon: const Icon(Icons.send),
-                                color: Colors.white,
-                                onPressed: () async {
-                                  if (!_formKey.currentState.validate()) {
-                                    return;
-                                  }
-                                  _formKey.currentState.save();
-                                  print(_comment);
-                                  FeedService(feedID: widget.feedID)
-                                      .addComment(_comment);
-                                },
-                              ),
-                            )
-                          ],
+                              SizedBox(width: 6),
+                              Container(
+                                width: 50,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: Color(0xff4b4b4b),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8)),
+                                ),
+                                child: IconButton(
+                                  icon: const Icon(Icons.send),
+                                  color: Colors.white,
+                                  onPressed: () async {
+                                    if (!_formKey.currentState.validate()) {
+                                      return;
+                                    }
+                                    _formKey.currentState.save();
+                                    print(_comment);
+                                    FeedService(feedID: widget.feedID)
+                                        .addComment(_comment);
+                                  },
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                        SizedBox(height: 30),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 );
               });
