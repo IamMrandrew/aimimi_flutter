@@ -51,6 +51,7 @@ class GoalService {
   Stream<List<SharedGoal>> get sharedGoals {
     return goalCollection
         .where("publicity", isEqualTo: true)
+        .orderBy("createdAt", descending: true)
         .snapshots()
         .asyncMap(_createSharedGoals);
   }
@@ -159,11 +160,11 @@ class GoalService {
       return goalCollection.add({
         'title': title,
         'category': category,
-        'description': description,
-        'publicity': publicity,
         'period': period,
         'frequency': frequency,
         'timespan': timespan,
+        'description': description,
+        'publicity': publicity,
         'createdBy': {
           'uid': FirebaseAuth.instance.currentUser.uid,
           'username': FirebaseAuth.instance.currentUser.displayName,
@@ -186,12 +187,13 @@ class GoalService {
         "checkedIn": false,
         "dayPassed": 0,
         "goal": {
-          'description': description,
-          'frequency': frequency,
-          'period': period,
-          'publicity': publicity,
-          'timespan': timespan,
           'title': title,
+          'category': category,
+          'period': period,
+          'frequency': frequency,
+          'timespan': timespan,
+          'publicity': publicity,
+          'description': description,
         },
       });
     }
@@ -274,12 +276,13 @@ class GoalService {
         "checkedIn": false,
         "dayPassed": 0,
         "goal": {
-          'description': goal.description,
-          'frequency': goal.frequency,
-          'period': goal.period,
-          'publicity': goal.publicity,
-          'timespan': goal.timespan,
           'title': goal.title,
+          'category': goal.category,
+          'period': goal.period,
+          'frequency': goal.frequency,
+          'timespan': goal.timespan,
+          'publicity': goal.publicity,
+          'description': goal.description,
         },
       });
     }
