@@ -86,7 +86,6 @@ class AuthService extends ChangeNotifier {
   Future googleLogin() async {
     isSigningIn = true;
 
-
     if (googleSignIn.currentUser != null) {
       await googleSignIn.signOut();
     }
@@ -98,9 +97,6 @@ class AuthService extends ChangeNotifier {
       return;
     } else {
       final googleAuth = await user.authentication;
-      // Update Firebase auth info from Google
-      await auth.currentUser.updateProfile(
-          displayName: user.displayName, photoURL: user.photoUrl);
 
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
@@ -109,6 +105,10 @@ class AuthService extends ChangeNotifier {
 
       UserCredential result =
           await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // Update Firebase auth info from Google
+      await auth.currentUser.updateProfile(
+          displayName: user.displayName, photoURL: user.photoUrl);
 
       await UserDocument(uid: auth.currentUser.uid).createUserDocuments(
           FieldValue.serverTimestamp(),
