@@ -211,7 +211,7 @@ class _GoalViewState extends State<GoalView> {
                   ),
                   SizedBox(width: 8),
                   Text(
-                    "${userGoal.goal.timespan} days left",
+                    "${userGoal.goal.timespan - userGoal.dayPassed} days left",
                     style: TextStyle(
                       color: monoSecondaryColor,
                       fontSize: 15,

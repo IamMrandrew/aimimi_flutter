@@ -38,6 +38,7 @@ class _GoalsViewState extends State<GoalsView> {
                     period: goal.goal.period,
                     frequency: goal.goal.frequency,
                     timespan: goal.goal.timespan,
+                    dayPassed: goal.dayPassed,
                   );
                 }),
             SizedBox(height: 80),

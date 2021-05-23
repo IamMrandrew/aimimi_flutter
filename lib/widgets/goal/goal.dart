@@ -12,6 +12,7 @@ class GoalItem extends StatelessWidget {
   final bool publicity;
   final int timespan;
   final String title;
+  final int dayPassed;
 
   const GoalItem({
     Key key,
@@ -23,6 +24,7 @@ class GoalItem extends StatelessWidget {
     this.publicity,
     this.timespan,
     this.title,
+    this.dayPassed,
   }) : super(key: key);
 
   @override
@@ -73,7 +75,7 @@ class GoalItem extends StatelessWidget {
                         ),
                         SizedBox(width: 8),
                         Text(
-                          "${timespan} days left",
+                          "${timespan - dayPassed} days left",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 14,
