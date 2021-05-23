@@ -1,6 +1,6 @@
 import 'package:aimimi/services/auth_service.dart';
 import 'package:aimimi/constants/styles.dart';
-import 'package:aimimi/views/signup_view.dart';
+import 'package:aimimi/views/auth/signup_view.dart';
 import 'package:aimimi/widgets/background_painter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:flutter/material.dart';
