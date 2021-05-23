@@ -1,5 +1,6 @@
 import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/models/goal.dart';
+import 'package:aimimi/widgets/ad/ad.dart';
 import 'package:aimimi/widgets/goal/goal_shared.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
