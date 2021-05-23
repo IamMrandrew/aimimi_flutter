@@ -340,6 +340,23 @@ class GoalService {
     ]);
   }
 
+  // Quit a goal (Goal remain there, but user quit)
+  Future quitGoal(UserGoal userGoal) {
+    Future deleteUserInGoalUsers() {
+      return goalCollection.doc(goalID).collection("users").doc(uid).delete();
+    }
+
+    Future deleteGoalInUserGoals() {
+      return userCollection.doc(uid).collection("goals").doc(goalID).delete();
+    }
+
+    return Future.wait([
+      _createFeed(content: "$username quit ${userGoal.goal.title}"),
+      deleteUserInGoalUsers(),
+      deleteGoalInUserGoals(),
+    ]);
+  }
+
   // Create a feed
   Future _createFeed({String content}) {
     return feedCollection.add({

@@ -117,12 +117,14 @@ class _GoalViewState extends State<GoalView> {
                       SizedBox(height: 12),
                       ElevatedButton(
                         onPressed: () async {
-                          await GoalService(
-                                  goalID: widget.goalID,
-                                  uid: Provider.of<OurUser>(context,
-                                          listen: false)
-                                      .uid)
-                              .publishGoal();
+                          if (!_shared) {
+                            await GoalService(
+                                    goalID: widget.goalID,
+                                    uid: Provider.of<OurUser>(context,
+                                            listen: false)
+                                        .uid)
+                                .publishGoal();
+                          }
                         },
                         child: _buildButtonText(_shared),
                         style: shareButtonStyle(_shared),
@@ -134,7 +136,15 @@ class _GoalViewState extends State<GoalView> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await GoalService(
+                        goalID: widget.goalID,
+                        uid: Provider.of<OurUser>(context, listen: false).uid,
+                        username: Provider.of<OurUser>(context, listen: false)
+                            .username,
+                      ).quitGoal(userGoal);
+                      Navigator.pop(context);
+                    },
                     child: Text(
                       "Quit",
                       style: TextStyle(
