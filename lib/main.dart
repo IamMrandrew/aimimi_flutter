@@ -1,6 +1,5 @@
 import 'package:aimimi/models/user.dart';
 import 'package:aimimi/services/auth_service.dart';
-import 'package:aimimi/services/feed_service.dart';
 import 'package:aimimi/services/goal_service.dart';
 import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/views/login_view.dart';
@@ -9,9 +8,6 @@ import 'package:aimimi/widgets/background_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'models/feed.dart';
-import 'models/goal.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

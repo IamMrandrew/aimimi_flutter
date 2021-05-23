@@ -68,6 +68,12 @@ class _MainViewState extends State<MainView> {
                     MaterialPageRoute(
                       builder: (context) => MultiProvider(
                         providers: [
+                          StreamProvider<List<UserGoal>>.value(
+                            initialData: [],
+                            value: GoalService(
+                                    uid: Provider.of<OurUser>(context).uid)
+                                .userGoals,
+                          ),
                           StreamProvider<List<SharedGoal>>.value(
                             initialData: [],
                             value: GoalService().sharedGoals,
