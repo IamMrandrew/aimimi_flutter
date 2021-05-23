@@ -1,4 +1,5 @@
 import 'package:aimimi/constants/styles.dart';
+import 'package:aimimi/models/ad.dart';
 import 'package:aimimi/models/goal.dart';
 import 'package:aimimi/widgets/ad/ad.dart';
 import 'package:aimimi/widgets/goal/goal_shared.dart';
@@ -51,6 +52,7 @@ class _SharesViewState extends State<SharesView>
   @override
   Widget build(BuildContext context) {
     List<SharedGoal> sharedGoals = Provider.of<List<SharedGoal>>(context);
+    List<Ad> ads = Provider.of<List<Ad>>(context);
     print(sharedGoals);
     List items = [
       Text(

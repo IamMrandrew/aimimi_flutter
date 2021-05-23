@@ -1,6 +1,8 @@
 import 'package:aimimi/constants/styles.dart';
+import 'package:aimimi/models/ad.dart';
 import 'package:aimimi/models/goal.dart';
 import 'package:aimimi/models/user.dart';
+import 'package:aimimi/services/ad_service.dart';
 import 'package:aimimi/services/auth_service.dart';
 import 'package:aimimi/services/feed_service.dart';
 import 'package:aimimi/services/goal_service.dart';
@@ -71,6 +73,10 @@ class _MainViewState extends State<MainView> {
                           StreamProvider<List<SharedGoal>>.value(
                             initialData: [],
                             value: GoalService().sharedGoals,
+                          ),
+                          StreamProvider<List<Ad>>.value(
+                            initialData: [],
+                            value: AdService().ads,
                           ),
                         ],
                         child: SharesView(),
