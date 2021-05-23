@@ -47,7 +47,7 @@ class TopRank extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 4),
-                    Text("$accuracy%",
+                    Text(accuracy.toStringAsFixed(1) + "%",
                         style: TextStyle(
                           color: themeShadedColor,
                           fontSize: 14,
@@ -86,7 +86,7 @@ class TopRank extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 4),
-                    Text("$accuracy%",
+                    Text(accuracy.toStringAsFixed(1) + "%",
                         style: TextStyle(
                           color: themeShadedColor,
                           fontSize: 14,
