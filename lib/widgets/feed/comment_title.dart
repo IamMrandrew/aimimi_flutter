@@ -83,54 +83,58 @@ class CommentTitle extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.all(Radius.circular(18)),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      content,
-                      style: TextStyle(
-                        color: themeShadedColor,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 11),
-                    Row(
+            child: Flexible(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        FaIcon(
-                          Icons.question_answer,
-                          size: 15,
-                          color: monoButtonTextColor,
+                        Text(
+                          content,
+                          style: TextStyle(
+                            color: themeShadedColor,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        SizedBox(width: 12),
-                        Text("${commentLength} Comments",
-                            style: TextStyle(
+                        SizedBox(height: 11),
+                        Row(
+                          children: [
+                            FaIcon(
+                              Icons.question_answer,
+                              size: 15,
                               color: monoButtonTextColor,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                            ))
+                            ),
+                            SizedBox(width: 12),
+                            Text("${commentLength} Comments",
+                                style: TextStyle(
+                                  color: monoButtonTextColor,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                ))
+                          ],
+                        )
                       ],
-                    )
-                  ],
-                ),
-                Container(
-                  height: 42,
-                  width: 42,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Color(0xffFF9C9C),
-                    borderRadius: BorderRadius.circular(100),
+                    ),
                   ),
-                  child: FaIcon(
-                    FontAwesomeIcons.dumbbell,
-                    size: 20,
-                    color: Colors.white,
+                  Container(
+                    height: 42,
+                    width: 42,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Color(0xffFF9C9C),
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    child: FaIcon(
+                      FontAwesomeIcons.dumbbell,
+                      size: 20,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],

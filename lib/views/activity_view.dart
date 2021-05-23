@@ -26,7 +26,8 @@ class _ActivityViewState extends State<ActivityView> {
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-        child: Column(
+        child: ListView(
+          scrollDirection: Axis.vertical,
           children: [
             ListView.builder(
                 itemCount: feeds.length,
