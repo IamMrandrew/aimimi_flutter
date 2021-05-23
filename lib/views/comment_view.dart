@@ -77,40 +77,50 @@ class _CommentViewState extends State<CommentView> {
                     padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
                     child: Column(
                       children: [
-                        CommentTitle(
-                          createdBy: widget.createdBy,
-                          content: widget.content,
-                          createdAt: widget.createdAt,
-                          length: widget.length,
-                          commentLength: commentSnapshot.data != null
-                              ? commentSnapshot.data.length
-                              : 0,
-                        ),
-                        SizedBox(height: 24),
                         Expanded(
-                          child: ListView.builder(
-                              itemCount: commentSnapshot.data != null
-                                  ? commentSnapshot.data.length
-                                  : 0,
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                if (commentSnapshot.data[index].createdBy.uid ==
-                                    FirebaseAuth.instance.currentUser.uid)
-                                  _incoming = true;
-                                else
-                                  _incoming = false;
-                                return CommentItem(
-                                  username: commentSnapshot
-                                      .data[index].createdBy.username,
-                                  content: commentSnapshot.data[index].content,
-                                  createdAt:
-                                      commentSnapshot.data[index].createdAt,
-                                  uid:
-                                      commentSnapshot.data[index].createdBy.uid,
-                                );
-                              }),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                CommentTitle(
+                                  createdBy: widget.createdBy,
+                                  content: widget.content,
+                                  createdAt: widget.createdAt,
+                                  length: widget.length,
+                                  commentLength: commentSnapshot.data != null
+                                      ? commentSnapshot.data.length
+                                      : 0,
+                                ),
+                                SizedBox(height: 24),
+                                ListView.builder(
+                                    itemCount: commentSnapshot.data != null
+                                        ? commentSnapshot.data.length
+                                        : 0,
+                                    scrollDirection: Axis.vertical,
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemBuilder: (context, index) {
+                                      if (commentSnapshot
+                                              .data[index].createdBy.uid ==
+                                          FirebaseAuth.instance.currentUser.uid)
+                                        _incoming = true;
+                                      else
+                                        _incoming = false;
+                                      return CommentItem(
+                                        username: commentSnapshot
+                                            .data[index].createdBy.username,
+                                        content:
+                                            commentSnapshot.data[index].content,
+                                        createdAt: commentSnapshot
+                                            .data[index].createdAt,
+                                        uid: commentSnapshot
+                                            .data[index].createdBy.uid,
+                                      );
+                                    }),
+                              ],
+                            ),
+                          ),
                         ),
+                        SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -174,7 +184,7 @@ class _CommentViewState extends State<CommentView> {
                             )
                           ],
                         ),
-                        SizedBox(height: 30)
+                        SizedBox(height: 30),
                       ],
                     ),
                   ),

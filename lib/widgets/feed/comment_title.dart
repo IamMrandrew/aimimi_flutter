@@ -86,36 +86,39 @@ class CommentTitle extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      content,
-                      style: TextStyle(
-                        color: themeShadedColor,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 11),
-                    Row(
-                      children: [
-                        FaIcon(
-                          Icons.question_answer,
-                          size: 15,
-                          color: monoButtonTextColor,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        content,
+                        style: TextStyle(
+                          color: themeShadedColor,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
                         ),
-                        SizedBox(width: 12),
-                        Text("${commentLength} Comments",
-                            style: TextStyle(
-                              color: monoButtonTextColor,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                            ))
-                      ],
-                    )
-                  ],
+                      ),
+                      SizedBox(height: 11),
+                      Row(
+                        children: [
+                          FaIcon(
+                            Icons.question_answer,
+                            size: 15,
+                            color: monoButtonTextColor,
+                          ),
+                          SizedBox(width: 12),
+                          Text("${commentLength} Comments",
+                              style: TextStyle(
+                                color: monoButtonTextColor,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                              ))
+                        ],
+                      )
+                    ],
+                  ),
                 ),
+                SizedBox(width: 10),
                 Container(
                   height: 42,
                   width: 42,
