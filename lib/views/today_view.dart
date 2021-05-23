@@ -29,9 +29,10 @@ class _TodayViewState extends State<TodayView> {
   @override
   Widget build(BuildContext context) {
     List<UserGoal> goals = Provider.of<List<UserGoal>>(context);
-    return Container(
-      padding: EdgeInsets.only(top: 28, left: 25, right: 25),
-      child: Column(
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.only(top: 28, left: 25, right: 25),
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
@@ -46,6 +47,7 @@ class _TodayViewState extends State<TodayView> {
                 itemCount: goals.length,
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   UserGoal goal = Provider.of<List<UserGoal>>(context)[index];
                   return TodayGoal(
@@ -58,8 +60,11 @@ class _TodayViewState extends State<TodayView> {
                     goalID: goal.goalID,
                     modalCheckInHandler: _modalCheckInHandler,
                   );
-                })
-          ]),
+                }),
+            SizedBox(height: 80),
+          ],
+        ),
+      ),
     );
   }
 
