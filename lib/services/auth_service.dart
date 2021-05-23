@@ -39,8 +39,8 @@ class AuthService extends ChangeNotifier {
       UserCredential result = await auth.createUserWithEmailAndPassword(
           email: email, password: password);
       await auth.currentUser.updateProfile(displayName: name);
-      await UserDocument(uid: auth.currentUser.uid)
-          .createUserDocuments(FieldValue.serverTimestamp(), name);
+      await UserDocument(uid: auth.currentUser.uid).createUserDocuments(
+          FieldValue.serverTimestamp(), name, auth.currentUser.photoURL);
       isSigningIn = false;
       return _createUser(result.user);
     } catch (e) {
@@ -97,9 +97,6 @@ class AuthService extends ChangeNotifier {
       return;
     } else {
       final googleAuth = await user.authentication;
-      // Update Firebase auth info from Google
-      await auth.currentUser.updateProfile(
-          displayName: user.displayName, photoURL: user.photoUrl);
 
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
@@ -109,8 +106,14 @@ class AuthService extends ChangeNotifier {
       UserCredential result =
           await FirebaseAuth.instance.signInWithCredential(credential);
 
+      // Update Firebase auth info from Google
+      await auth.currentUser.updateProfile(
+          displayName: user.displayName, photoURL: user.photoUrl);
+
       await UserDocument(uid: auth.currentUser.uid).createUserDocuments(
-          FieldValue.serverTimestamp(), result.user.displayName);
+          FieldValue.serverTimestamp(),
+          result.user.displayName,
+          result.user.photoURL);
       isSigningIn = false;
 
       return _createUser(result.user);

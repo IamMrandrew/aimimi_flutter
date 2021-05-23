@@ -1,4 +1,5 @@
 import 'package:aimimi/constants/styles.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class TopRank extends StatelessWidget {
@@ -12,83 +13,89 @@ class TopRank extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (length == 2) {
-      return Container(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          width: 100,
-          height: _buildTopRankHeight(context, length),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(14),
-              topRight: Radius.circular(14),
-            ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                backgroundColor: themeColor,
-                maxRadius: 20,
-                child: getText(username),
-              ),
-              SizedBox(height: 14),
-              Text(
-                username,
-                style: TextStyle(
-                  color: themeShadedColor,
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
+    return FutureBuilder<Object>(
+        future: getImage(uid),
+        builder: (context, snapshot) {
+          if (length == 2) {
+            return Container(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                width: 100,
+                height: _buildTopRankHeight(context, length),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(14),
+                    topRight: Radius.circular(14),
+                  ),
                 ),
-              ),
-              SizedBox(height: 4),
-              Text("$accuracy%",
-                  style: TextStyle(
-                    color: themeShadedColor,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  )),
-            ],
-          ));
-    } else {
-      return Container(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          width: 100,
-          height: _buildTopRankHeight(context, length),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(14),
-              topRight: Radius.circular(14),
-            ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                backgroundColor: themeColor,
-                maxRadius: 20,
-                child: getText(username),
-              ),
-              SizedBox(height: 14),
-              Text(
-                username,
-                style: TextStyle(
-                  color: themeShadedColor,
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: themeColor,
+                      maxRadius: 20,
+                      backgroundImage: snapshot.data,
+                      child: getText(username, snapshot.data),
+                    ),
+                    SizedBox(height: 14),
+                    Text(
+                      username,
+                      style: TextStyle(
+                        color: themeShadedColor,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 4),
+                    Text("$accuracy%",
+                        style: TextStyle(
+                          color: themeShadedColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        )),
+                  ],
+                ));
+          } else {
+            return Container(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                width: 100,
+                height: _buildTopRankHeight(context, length),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(14),
+                    topRight: Radius.circular(14),
+                  ),
                 ),
-              ),
-              SizedBox(height: 4),
-              Text("$accuracy%",
-                  style: TextStyle(
-                    color: themeShadedColor,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  )),
-            ],
-          ));
-    }
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: themeColor,
+                      maxRadius: 20,
+                      backgroundImage: snapshot.data,
+                      child: getText(username, snapshot.data),
+                    ),
+                    SizedBox(height: 14),
+                    Text(
+                      username,
+                      style: TextStyle(
+                        color: themeShadedColor,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 4),
+                    Text("$accuracy%",
+                        style: TextStyle(
+                          color: themeShadedColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        )),
+                  ],
+                ));
+          }
+        });
   }
 
   double _buildTopRankHeight(context, length) {
@@ -107,14 +114,29 @@ class TopRank extends StatelessWidget {
     }
   }
 
-  Text getText(String username) {
-    return Text(
-      username[0].toUpperCase(),
-      style: TextStyle(
-        color: Colors.white,
-        fontSize: 17,
-        fontWeight: FontWeight.w700,
-      ),
-    );
+  Future<NetworkImage> getImage(uid) async {
+    DocumentSnapshot<Map<String, dynamic>> data =
+        await FirebaseFirestore.instance.collection("users").doc(uid).get();
+
+    if (data.data()["photoURL"].toString() != null) {
+      return NetworkImage(data.data()["photoURL"].toString());
+    } else {
+      return NetworkImage("null", scale: 1.0);
+    }
+  }
+
+  Text getText(String username, NetworkImage data) {
+    if (data.url != "null") {
+      return null;
+    } else {
+      return Text(
+        username[0].toUpperCase(),
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 17,
+          fontWeight: FontWeight.w700,
+        ),
+      );
+    }
   }
 }

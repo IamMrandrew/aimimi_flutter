@@ -39,6 +39,7 @@ class _ActivityViewState extends State<ActivityView> {
 
                     return FeedItem(
                       createdBy: feed.createdBy.username,
+                      uid: feed.createdBy.uid,
                       content: feed.content,
                       createdAt: feed.createdAt,
                       feedID: feed.feedID,
