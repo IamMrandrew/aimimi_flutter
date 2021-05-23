@@ -133,32 +133,38 @@ class _SharesViewState extends State<SharesView>
   }
 
   void _getUserInterestAndRecommend(List<UserGoal> userGoals) {
-    List<String> userCatergories =
-        userGoals.map((goal) => goal.goal.category).toList();
-    Map userInterest = Map();
-    List recommendCategories = [];
+    if (userGoals.length > 0) {
+      List<String> userCatergories =
+          userGoals.map((goal) => goal.goal.category).toList();
+      Map userInterest = Map();
+      List recommendCategories = [];
 
-    userCatergories.forEach((item) {
-      if (!userInterest.containsKey(item)) {
-        userInterest[item] = 1;
-      } else {
-        userInterest[item] += 1;
-      }
-    });
+      userCatergories.forEach((item) {
+        if (!userInterest.containsKey(item)) {
+          userInterest[item] = 1;
+        } else {
+          userInterest[item] += 1;
+        }
+      });
 
-    List sortedValues = userInterest.values.toList()..sort();
-    int popularValue = sortedValues.last;
+      List sortedValues = userInterest.values.toList()..sort();
+      int popularValue = sortedValues.last;
 
-    userInterest.forEach((key, value) {
-      if (value == popularValue) {
-        recommendCategories.add(key);
-      }
-    });
+      userInterest.forEach((key, value) {
+        if (value == popularValue) {
+          recommendCategories.add(key);
+        }
+      });
 
-    print(recommendCategories);
-    setState(() {
-      _recommendCategory = recommendCategories[0] ?? "Lifestyle";
-    });
+      print(recommendCategories);
+      setState(() {
+        _recommendCategory = recommendCategories[0] ?? "Lifestyle";
+      });
+    } else {
+      setState(() {
+        _recommendCategory = "Lifestyle";
+      });
+    }
   }
 
   ListView _buildListView(List items) {
