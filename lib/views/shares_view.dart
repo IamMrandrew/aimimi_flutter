@@ -51,8 +51,24 @@ class _SharesViewState extends State<SharesView>
 
   @override
   Widget build(BuildContext context) {
-    List<SharedGoal> sharedGoals = Provider.of<List<SharedGoal>>(context);
+    List<dynamic> sharedGoals = Provider.of<List<SharedGoal>>(context);
     List<Ad> ads = Provider.of<List<Ad>>(context);
+
+    List advertisedSharedGoals = [];
+
+    sharedGoals.forEach((sharedGoal) {
+      Ad goalAd = ads.firstWhere((ad) => sharedGoal.goalID == ad.goalID,
+          orElse: () => null);
+      if (goalAd != null) {
+        advertisedSharedGoals.add(sharedGoal);
+        advertisedSharedGoals.add(goalAd);
+      } else {
+        advertisedSharedGoals.add(sharedGoal);
+      }
+    });
+
+    print(advertisedSharedGoals);
+
     print(sharedGoals);
     List items = [
       Text(
@@ -64,7 +80,8 @@ class _SharesViewState extends State<SharesView>
         ),
       ),
     ];
-    items += sharedGoals;
+    items += advertisedSharedGoals;
+
     return Scaffold(
       // appBar: singleViewAppBar("Shares"),
       body: Container(
@@ -134,6 +151,13 @@ class _SharesViewState extends State<SharesView>
             publicity: item.publicity,
             timespan: item.timespan,
             users: item.users,
+          );
+        else if (item is Ad)
+          return AdItem(
+            title: item.title,
+            category: item.category,
+            createdBy: item.createdBy.username,
+            content: item.content,
           );
         else
           return item;
