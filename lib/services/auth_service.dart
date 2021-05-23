@@ -86,20 +86,21 @@ class AuthService extends ChangeNotifier {
   Future googleLogin() async {
     isSigningIn = true;
 
-    try {
-      await googleSignIn.disconnect();
-    } catch (error) {
-      print(error);
+    if (googleSignIn.currentUser != null) {
+      await googleSignIn.signOut();
     }
+
     final user = await googleSignIn.signIn();
 
     if (user == null) {
       isSigningIn = false;
       return;
     } else {
-      print("here" + user.toString());
       final googleAuth = await user.authentication;
-      print("there");
+      // Update Firebase auth info from Google
+      await auth.currentUser.updateProfile(
+          displayName: user.displayName, photoURL: user.photoUrl);
+
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
@@ -117,7 +118,6 @@ class AuthService extends ChangeNotifier {
   }
 
   Future logout() async {
-    // print(auth.currentUser.providerData[0]);
     if (auth.currentUser.providerData[0].providerId == 'google.com') {
       return await Future.wait([
         FirebaseAuth.instance.signOut(),
