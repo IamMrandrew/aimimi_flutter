@@ -96,9 +96,11 @@ class AuthService extends ChangeNotifier {
       isSigningIn = false;
       return;
     } else {
-      print("here" + user.toString());
       final googleAuth = await user.authentication;
-      print("there");
+      // Update Firebase auth info from Google
+      await auth.currentUser.updateProfile(
+          displayName: user.displayName, photoURL: user.photoUrl);
+
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
