@@ -1,7 +1,6 @@
 import 'package:aimimi/models/user.dart';
 import 'package:aimimi/services/auth_service.dart';
 import 'package:aimimi/constants/styles.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -19,212 +18,195 @@ class _ProfileViewState extends State<ProfileView> {
   Widget build(BuildContext context) {
     List<UserGoal> goals = Provider.of<List<UserGoal>>(context);
     List<String> completedGoals = Provider.of<List<String>>(context);
-
-    return FutureBuilder<Object>(
-        future: getImage(),
-        builder: (context, snapshot) {
-          return Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            padding: EdgeInsets.only(top: 20, left: 20, right: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Row(
               children: [
-                Container(
+                CircleAvatar(
+                  backgroundColor: themeColor,
+                  maxRadius: 40,
+                  backgroundImage: getImage(),
+                  child: getText(),
+                ),
+                Padding(
                   padding:
-                      EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
+                      EdgeInsets.only(top: 0, left: 30, right: 0, bottom: 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CircleAvatar(
-                        backgroundColor: themeColor,
-                        maxRadius: 40,
-                        backgroundImage: snapshot.data,
-                        child: getText(),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            top: 0, left: 30, right: 0, bottom: 0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              " " + user.displayName,
-                              style: TextStyle(
-                                color: monoPrimaryColor,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            SizedBox(height: 4),
-                            Container(
-                              padding: EdgeInsets.only(
-                                  top: 10, left: 10, right: 10, bottom: 10),
-                              decoration: BoxDecoration(
-                                color: backgroundTintedColor,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Text(
-                                'Goals  ' + goals.length.toString(),
-                                style: TextStyle(
-                                  color: monoSecondaryColor,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            )
-                          ],
+                      Text(
+                        " " + user.displayName,
+                        style: TextStyle(
+                          color: monoPrimaryColor,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
+                      SizedBox(height: 4),
+                      Container(
+                        padding: EdgeInsets.only(
+                            top: 10, left: 10, right: 10, bottom: 10),
+                        decoration: BoxDecoration(
+                          color: backgroundTintedColor,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          'Goals  ' + goals.length.toString(),
+                          style: TextStyle(
+                            color: monoSecondaryColor,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
-                SizedBox(height: 40),
-                Row(
+              ],
+            ),
+          ),
+          SizedBox(height: 40),
+          Row(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width * 0.42,
+                height: MediaQuery.of(context).size.width * 0.42,
+                padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+                decoration: BoxDecoration(
+                  color: Color(0xFFEDF7FA),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width * 0.42,
-                      height: MediaQuery.of(context).size.width * 0.42,
-                      padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+                      alignment: Alignment.center,
+                      width: MediaQuery.of(context).size.width * 0.42 * 0.3,
+                      height: MediaQuery.of(context).size.width * 0.42 * 0.3,
                       decoration: BoxDecoration(
-                        color: Color(0xFFEDF7FA),
-                        borderRadius: BorderRadius.circular(20),
+                        color: Color(0xFFA3D2E6),
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            alignment: Alignment.center,
-                            width:
-                                MediaQuery.of(context).size.width * 0.42 * 0.3,
-                            height:
-                                MediaQuery.of(context).size.width * 0.42 * 0.3,
-                            decoration: BoxDecoration(
-                              color: Color(0xFFA3D2E6),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: FaIcon(
-                              FontAwesomeIcons.solidCheckCircle,
-                              color: Colors.white,
-                              size: 33,
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            goals.length.toString(),
-                            style: TextStyle(
-                              fontSize: 32,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                          Text(
-                            'Ongoing',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: monoSecondaryColor,
-                            ),
-                          )
-                        ],
+                      child: FaIcon(
+                        FontAwesomeIcons.solidCheckCircle,
+                        color: Colors.white,
+                        size: 33,
                       ),
                     ),
-                    SizedBox(width: MediaQuery.of(context).size.width * 0.055),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.42,
-                      height: MediaQuery.of(context).size.width * 0.42,
-                      padding: EdgeInsets.only(top: 20, left: 20, right: 20),
-                      decoration: BoxDecoration(
-                        color: Color(0xFFFCEEE6),
-                        borderRadius: BorderRadius.circular(20),
+                    SizedBox(height: 10),
+                    Text(
+                      goals.length.toString(),
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.w800,
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            alignment: Alignment.center,
-                            width:
-                                MediaQuery.of(context).size.width * 0.42 * 0.3,
-                            height:
-                                MediaQuery.of(context).size.width * 0.42 * 0.3,
-                            decoration: BoxDecoration(
-                              color: Color(0xFFE87E45),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: FaIcon(
-                              FontAwesomeIcons.walking,
-                              color: Colors.white,
-                              size: 33,
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            completedGoals.length.toString(),
-                            style: TextStyle(
-                              fontSize: 32,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                          Text(
-                            'Completed',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: monoSecondaryColor,
-                            ),
-                          )
-                        ],
+                    ),
+                    Text(
+                      'Ongoing',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: monoSecondaryColor,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(width: MediaQuery.of(context).size.width * 0.055),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.42,
+                height: MediaQuery.of(context).size.width * 0.42,
+                padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+                decoration: BoxDecoration(
+                  color: Color(0xFFFCEEE6),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      width: MediaQuery.of(context).size.width * 0.42 * 0.3,
+                      height: MediaQuery.of(context).size.width * 0.42 * 0.3,
+                      decoration: BoxDecoration(
+                        color: Color(0xFFE87E45),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: FaIcon(
+                        FontAwesomeIcons.walking,
+                        color: Colors.white,
+                        size: 33,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      completedGoals.length.toString(),
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    Text(
+                      'Completed',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: monoSecondaryColor,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 70),
+          SizedBox(
+            width: 100,
+            child: TextButton(
+                onPressed: () async {
+                  await AuthService().logout();
+                },
+                style: ButtonStyle(
+                  overlayColor:
+                      MaterialStateProperty.all<Color>(Colors.transparent),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.logout,
+                      color: monoSecondaryColor,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "Logout",
+                      style: TextStyle(
+                        color: Color(0xff999999),
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ],
-                ),
-                SizedBox(height: 70),
-                SizedBox(
-                  width: 100,
-                  child: TextButton(
-                      onPressed: () async {
-                        await AuthService().logout();
-                      },
-                      style: ButtonStyle(
-                        overlayColor: MaterialStateProperty.all<Color>(
-                            Colors.transparent),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.logout,
-                            color: monoSecondaryColor,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            "Logout",
-                            style: TextStyle(
-                              color: Color(0xff999999),
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ],
-                      )),
-                ),
-              ],
-            ),
-          );
-        });
+                )),
+          ),
+        ],
+      ),
+    );
   }
 
-  Future<NetworkImage> getImage() async {
+  NetworkImage getImage() {
     if (user.providerData[0].providerId == 'google.com') {
-      DocumentSnapshot<Map<String, dynamic>> data = await FirebaseFirestore
-          .instance
-          .collection("users")
-          .doc(user.uid)
-          .get();
-      ;
-
-      return NetworkImage(data.data()["photoURL"].toString());
+      return NetworkImage(user.photoURL);
     } else {
       return null;
     }
