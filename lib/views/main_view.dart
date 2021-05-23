@@ -37,7 +37,7 @@ class _MainViewState extends State<MainView> {
   int _currentIndex = 0;
   final List<Widget> _views = [
     TodayView(),
-    GoalView(),
+    GoalsView(),
     LeaderboardView(),
     ProfileView(),
   ];

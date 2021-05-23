@@ -1,8 +1,10 @@
 import 'package:aimimi/constants/styles.dart';
+import 'package:aimimi/views/goals/goal_view.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class GoalItem extends StatelessWidget {
+  final String goalID;
   final String category;
   final String description;
   final int frequency;
@@ -13,6 +15,7 @@ class GoalItem extends StatelessWidget {
 
   const GoalItem({
     Key key,
+    this.goalID,
     this.category,
     this.description,
     this.frequency,
@@ -26,7 +29,13 @@ class GoalItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          print("Clicked");
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => GoalView(
+                  goalID: goalID,
+                ),
+              ));
         },
         child: new Container(
             decoration: BoxDecoration(
