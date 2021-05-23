@@ -175,7 +175,7 @@ class _LeaderboardViewState extends State<LeaderboardView> {
         uid: rank.uid,
         username: rank.username,
         accuracy: rank.accuracy,
-        index: index,
+        index: index + 4,
       );
     }).toList();
   }

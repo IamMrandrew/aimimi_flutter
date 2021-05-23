@@ -39,8 +39,8 @@ class AuthService extends ChangeNotifier {
       UserCredential result = await auth.createUserWithEmailAndPassword(
           email: email, password: password);
       await auth.currentUser.updateProfile(displayName: name);
-      await UserDocument(uid: auth.currentUser.uid)
-          .createUserDocuments(FieldValue.serverTimestamp(), name);
+      await UserDocument(uid: auth.currentUser.uid).createUserDocuments(
+          FieldValue.serverTimestamp(), name, auth.currentUser.photoURL);
       isSigningIn = false;
       return _createUser(result.user);
     } catch (e) {
@@ -86,11 +86,8 @@ class AuthService extends ChangeNotifier {
   Future googleLogin() async {
     isSigningIn = true;
 
-    try {
-      await googleSignIn.disconnect();
-    } catch (error) {
-      print(error);
-    }
+    //await googleSignIn.disconnect();
+
     final user = await googleSignIn.signIn();
 
     if (user == null) {
@@ -109,7 +106,9 @@ class AuthService extends ChangeNotifier {
           await FirebaseAuth.instance.signInWithCredential(credential);
 
       await UserDocument(uid: auth.currentUser.uid).createUserDocuments(
-          FieldValue.serverTimestamp(), result.user.displayName);
+          FieldValue.serverTimestamp(),
+          result.user.displayName,
+          result.user.photoURL);
       isSigningIn = false;
 
       return _createUser(result.user);
