@@ -86,11 +86,10 @@ class AuthService extends ChangeNotifier {
   Future googleLogin() async {
     isSigningIn = true;
 
-    try {
-      await googleSignIn.disconnect();
-    } catch (error) {
-      print(error);
+    if (googleSignIn.currentUser != null) {
+      await googleSignIn.signOut();
     }
+
     final user = await googleSignIn.signIn();
 
     if (user == null) {
@@ -117,7 +116,6 @@ class AuthService extends ChangeNotifier {
   }
 
   Future logout() async {
-    // print(auth.currentUser.providerData[0]);
     if (auth.currentUser.providerData[0].providerId == 'google.com') {
       return await Future.wait([
         FirebaseAuth.instance.signOut(),
