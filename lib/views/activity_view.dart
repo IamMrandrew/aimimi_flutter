@@ -24,28 +24,31 @@ class _ActivityViewState extends State<ActivityView> {
         iconTheme: IconThemeData(color: themeShadedColor),
         title: Text("Activity", style: appBarTitleTextStyle),
       ),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-        child: Column(
-          children: [
-            ListView.builder(
-                itemCount: feeds.length,
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  Feed feed = Provider.of<List<Feed>>(context)[index];
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+          child: Column(
+            children: [
+              ListView.builder(
+                  itemCount: feeds.length,
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    Feed feed = Provider.of<List<Feed>>(context)[index];
 
-                  return FeedItem(
-                    createdBy: feed.createdBy.username,
-                    uid: feed.createdBy.uid,
-                    content: feed.content,
-                    createdAt: feed.createdAt,
-                    feedID: feed.feedID,
-                    feed: feed,
-                    userGoal: widget.userGoal,
-                  );
-                }),
-          ],
+                    return FeedItem(
+                      createdBy: feed.createdBy.username,
+                      uid: feed.createdBy.uid,
+                      content: feed.content,
+                      createdAt: feed.createdAt,
+                      feedID: feed.feedID,
+                      feed: feed,
+                      userGoal: widget.userGoal,
+                    );
+                  }),
+            ],
+          ),
         ),
       ),
     );

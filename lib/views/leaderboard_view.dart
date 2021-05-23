@@ -44,13 +44,15 @@ class _LeaderboardViewState extends State<LeaderboardView> {
         print(userlist);
         //3 or less users in a goal.
         if (userlist.length < 4 && userlist.length != 0) {
-          return Container(
-            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-            child: Column(children: [
-              _buildSelectDropdown(),
-              SizedBox(height: 10),
-              _buildTopRankContainer(userlist.length),
-            ]),
+          return SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+              child: Column(children: [
+                _buildSelectDropdown(),
+                SizedBox(height: 10),
+                _buildTopRankContainer(userlist.length),
+              ]),
+            ),
           );
         }
         //0 user in a goal.
@@ -64,33 +66,39 @@ class _LeaderboardViewState extends State<LeaderboardView> {
         }
         //>4 users in a goal.
         else {
-          return Container(
-            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-            child: Column(children: [
-              _buildSelectDropdown(),
-              SizedBox(height: 10),
-              _buildTopRankContainer(userlist.length),
-              SizedBox(height: 15),
-              _buildRankContainer(),
-            ]),
+          return SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+              child: Column(children: [
+                _buildSelectDropdown(),
+                SizedBox(height: 10),
+                _buildTopRankContainer(userlist.length),
+                SizedBox(height: 15),
+                _buildRankContainer(),
+              ]),
+            ),
           );
         }
       },
     );
   }
 
-  Expanded _buildRankContainer() {
-    return Expanded(
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(18))),
-        padding: EdgeInsets.only(left: 14, right: 14, top: 20, bottom: 20),
-        child: ListView(
-          children: _buildRanks(),
-        ),
-      ),
+  Container _buildRankContainer() {
+    List<RankItem> rankItems = _buildRanks();
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(18))),
+      padding: EdgeInsets.only(left: 14, right: 14, top: 20, bottom: 20),
+      child: ListView.builder(
+          itemCount: rankItems.length,
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemBuilder: (context, index) {
+            return rankItems[index];
+          }),
     );
   }
 

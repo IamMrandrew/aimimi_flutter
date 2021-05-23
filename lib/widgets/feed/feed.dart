@@ -92,40 +92,45 @@ class _FeedItemState extends State<FeedItem> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      this.widget.content,
-                      style: TextStyle(
-                        color: themeShadedColor,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    Row(
-                      children: [
-                        _buildLikeButton("Like", Icons.favorite),
-                        SizedBox(
-                          width: 10,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        this.widget.content,
+                        style: TextStyle(
+                          color: themeShadedColor,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
                         ),
-                        _buildFeedButton("Comment", Icons.question_answer, () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CommentView(
-                                      content: widget.content,
-                                      createdAt: widget.createdAt,
-                                      createdBy: this.widget.createdBy,
-                                      feedID: widget.feedID,
-                                      userGoal: widget.userGoal,
-                                      length: likedUsersSnapshot.data.length)));
-                        }),
-                      ],
-                    )
-                  ],
+                      ),
+                      SizedBox(height: 8),
+                      Row(
+                        children: [
+                          _buildLikeButton("Like", Icons.favorite),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          _buildFeedButton("Comment", Icons.question_answer,
+                              () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CommentView(
+                                        content: widget.content,
+                                        createdAt: widget.createdAt,
+                                        createdBy: this.widget.createdBy,
+                                        feedID: widget.feedID,
+                                        userGoal: widget.userGoal,
+                                        length:
+                                            likedUsersSnapshot.data.length)));
+                          }),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
+                SizedBox(width: 10),
                 Container(
                   height: 42,
                   width: 42,
@@ -148,8 +153,9 @@ class _FeedItemState extends State<FeedItem> {
       );
     } else {
       return Center(
-        child: SpinKitFadingFour(size: 35.0, color: themeColor),
-      );
+          // Hide loading cuz it will generatge many spinkit for every feeds -> ugly
+          // child: SpinKitFadingFour(size: 35.0, color: themeColor),
+          );
     }
   }
 
