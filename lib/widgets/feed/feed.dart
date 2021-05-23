@@ -15,6 +15,7 @@ class FeedItem extends StatefulWidget {
   final DateTime createdAt;
   final String content;
   final String feedID;
+  final String uid;
   final feed;
   final userGoal;
   final int length;
@@ -23,6 +24,7 @@ class FeedItem extends StatefulWidget {
       this.createdAt,
       this.content,
       this.feedID,
+      this.uid,
       this.feed,
       this.userGoal,
       this.length});
@@ -36,14 +38,18 @@ class _FeedItemState extends State<FeedItem> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<LikedUser>>(
-        stream: FeedService(feedID: widget.feedID).likedUsers,
-        builder: (context, likedUsersSnapshot) {
-          return _buildBody(likedUsersSnapshot);
+    return FutureBuilder<Object>(
+        future: getImage(widget.uid),
+        builder: (context, snapshot) {
+          return StreamBuilder<List<LikedUser>>(
+              stream: FeedService(feedID: widget.feedID).likedUsers,
+              builder: (context, likedUsersSnapshot) {
+                return _buildBody(likedUsersSnapshot, snapshot.data);
+              });
         });
   }
 
-  Widget _buildBody(likedUsersSnapshot) {
+  Widget _buildBody(likedUsersSnapshot, userImage) {
     if (likedUsersSnapshot.hasData) {
       _checkIfUserLiked(likedUsersSnapshot, context);
       return Column(
@@ -53,6 +59,9 @@ class _FeedItemState extends State<FeedItem> {
               children: [
                 CircleAvatar(
                   maxRadius: 15,
+                  backgroundColor: themeColor,
+                  backgroundImage: userImage,
+                  child: getText(widget.createdBy, userImage),
                 ),
                 SizedBox(width: 7),
                 Text(
@@ -266,6 +275,32 @@ class _FeedItemState extends State<FeedItem> {
       _liked = true;
     } else {
       _liked = false;
+    }
+  }
+
+  Future<NetworkImage> getImage(uid) async {
+    DocumentSnapshot<Map<String, dynamic>> data =
+        await FirebaseFirestore.instance.collection("users").doc(uid).get();
+
+    if (data.data()["photoURL"].toString() != null) {
+      return NetworkImage(data.data()["photoURL"].toString());
+    } else {
+      return NetworkImage("null", scale: 1.0);
+    }
+  }
+
+  Text getText(String username, NetworkImage data) {
+    if (data.url != "null") {
+      return null;
+    } else {
+      return Text(
+        username[0].toUpperCase(),
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 17,
+          fontWeight: FontWeight.w700,
+        ),
+      );
     }
   }
 }
