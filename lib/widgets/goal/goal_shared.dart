@@ -1,12 +1,9 @@
 import 'package:aimimi/constants/styles.dart';
-import 'package:aimimi/models/goal.dart';
 import 'package:aimimi/models/user.dart';
-import 'package:aimimi/services/auth_service.dart';
 import 'package:aimimi/services/goal_service.dart';
 import 'package:aimimi/views/shares/goal_shared_view.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 
 class SharedGoalItem extends StatefulWidget {
   final String goalID;
@@ -100,11 +97,7 @@ class _SharedGoalItemState extends State<SharedGoalItem> {
                           color: Color(0xffFF9C9C),
                           borderRadius: BorderRadius.circular(100),
                         ),
-                        child: FaIcon(
-                          FontAwesomeIcons.walking,
-                          size: 23,
-                          color: Colors.white,
-                        ),
+                        child: _buildCategoryIcon(),
                       ),
                     ],
                   ),
@@ -173,6 +166,42 @@ class _SharedGoalItemState extends State<SharedGoalItem> {
             ),
           );
         });
+  }
+
+  FaIcon _buildCategoryIcon() {
+    switch (widget.category) {
+      case "Fitness":
+        return FaIcon(
+          FontAwesomeIcons.running,
+          size: 23,
+          color: Colors.white,
+        );
+        break;
+      case "Lifestyle":
+        return FaIcon(
+          FontAwesomeIcons.procedures,
+          size: 18,
+          color: Colors.white,
+        );
+      case "Financial":
+        return FaIcon(
+          FontAwesomeIcons.coins,
+          size: 18,
+          color: Colors.white,
+        );
+      case "Educational":
+        return FaIcon(
+          FontAwesomeIcons.book,
+          size: 18,
+          color: Colors.white,
+        );
+      default:
+        return FaIcon(
+          FontAwesomeIcons.shapes,
+          size: 18,
+          color: Colors.white,
+        );
+    }
   }
 
   List<Widget> _buildDateCircles() {

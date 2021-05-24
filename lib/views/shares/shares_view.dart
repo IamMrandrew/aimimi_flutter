@@ -1,5 +1,8 @@
 import 'package:aimimi/constants/styles.dart';
+import 'package:aimimi/models/ad.dart';
 import 'package:aimimi/models/goal.dart';
+import 'package:aimimi/widgets/ad/ad.dart';
+import 'package:aimimi/models/user.dart';
 import 'package:aimimi/widgets/goal/goal_shared.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +20,7 @@ class _SharesViewState extends State<SharesView>
   AnimationController _animationController;
   CurvedAnimation _curve;
   bool _focused = false;
+  String _recommendCategory;
 
   @override
   void initState() {
@@ -49,11 +53,52 @@ class _SharesViewState extends State<SharesView>
 
   @override
   Widget build(BuildContext context) {
-    List<SharedGoal> sharedGoals = Provider.of<List<SharedGoal>>(context);
+    List<dynamic> sharedGoals = Provider.of<List<SharedGoal>>(context);
+    List<Ad> ads = Provider.of<List<Ad>>(context);
+
+    List advertisedSharedGoals = [];
+
+    sharedGoals.forEach((sharedGoal) {
+      Ad goalAd = ads.firstWhere((ad) => sharedGoal.goalID == ad.goalID,
+          orElse: () => null);
+      if (goalAd != null) {
+        advertisedSharedGoals.add(sharedGoal);
+        advertisedSharedGoals.add(goalAd);
+      } else {
+        advertisedSharedGoals.add(sharedGoal);
+      }
+    });
+
+    print(advertisedSharedGoals);
+
     print(sharedGoals);
+
+    List<UserGoal> userGoals = Provider.of<List<UserGoal>>(context);
+    _getUserInterestAndRecommend(userGoals);
+
+    List<SharedGoal> goalsMatchCategory = sharedGoals
+        .where((goal) => goal.category == _recommendCategory)
+        .toList();
+    List<SharedGoal> recommendations = goalsMatchCategory.length > 1
+        ? goalsMatchCategory.sublist(0, 2)
+        : goalsMatchCategory;
+    // Generating the share goal list
     List items = [
       Text(
         "Recommended For You",
+        style: TextStyle(
+          color: themeShadedColor,
+          fontSize: 22,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ];
+    items += advertisedSharedGoals;
+
+    items += recommendations;
+    items += [
+      Text(
+        "Trending",
         style: TextStyle(
           color: themeShadedColor,
           fontSize: 22,
@@ -109,6 +154,41 @@ class _SharesViewState extends State<SharesView>
     );
   }
 
+  void _getUserInterestAndRecommend(List<UserGoal> userGoals) {
+    if (userGoals.length > 0) {
+      List<String> userCatergories =
+          userGoals.map((goal) => goal.goal.category).toList();
+      Map userInterest = Map();
+      List recommendCategories = [];
+
+      userCatergories.forEach((item) {
+        if (!userInterest.containsKey(item)) {
+          userInterest[item] = 1;
+        } else {
+          userInterest[item] += 1;
+        }
+      });
+
+      List sortedValues = userInterest.values.toList()..sort();
+      int popularValue = sortedValues.last;
+
+      userInterest.forEach((key, value) {
+        if (value == popularValue) {
+          recommendCategories.add(key);
+        }
+      });
+
+      print(recommendCategories);
+      setState(() {
+        _recommendCategory = recommendCategories[0] ?? "Lifestyle";
+      });
+    } else {
+      setState(() {
+        _recommendCategory = "Lifestyle";
+      });
+    }
+  }
+
   ListView _buildListView(List items) {
     return ListView.separated(
       itemCount: _focused ? _searchResult.length : items.length,
@@ -131,6 +211,13 @@ class _SharesViewState extends State<SharesView>
             publicity: item.publicity,
             timespan: item.timespan,
             users: item.users,
+          );
+        else if (item is Ad)
+          return AdItem(
+            title: item.title,
+            category: item.category,
+            createdBy: item.createdBy.username,
+            content: item.content,
           );
         else
           return item;

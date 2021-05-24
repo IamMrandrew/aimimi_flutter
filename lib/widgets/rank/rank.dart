@@ -32,7 +32,7 @@ class RankItem extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               )),
           Text(
-            "$accuracy%",
+            accuracy.toStringAsFixed(1) + "%",
             style: TextStyle(
               color: monoPrimaryColor,
               fontSize: 15,
