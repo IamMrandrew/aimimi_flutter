@@ -1,8 +1,10 @@
 import 'package:aimimi/constants/styles.dart';
+import 'package:aimimi/views/goals/goal_view.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class GoalItem extends StatelessWidget {
+  final String goalID;
   final String category;
   final String description;
   final int frequency;
@@ -10,9 +12,11 @@ class GoalItem extends StatelessWidget {
   final bool publicity;
   final int timespan;
   final String title;
+  final int dayPassed;
 
   const GoalItem({
     Key key,
+    this.goalID,
     this.category,
     this.description,
     this.frequency,
@@ -20,13 +24,20 @@ class GoalItem extends StatelessWidget {
     this.publicity,
     this.timespan,
     this.title,
+    this.dayPassed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          print("Clicked");
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => GoalView(
+                  goalID: goalID,
+                ),
+              ));
         },
         child: new Container(
             decoration: BoxDecoration(
@@ -64,7 +75,7 @@ class GoalItem extends StatelessWidget {
                         ),
                         SizedBox(width: 8),
                         Text(
-                          "${timespan} days left",
+                          "${timespan - dayPassed} days left",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 14,

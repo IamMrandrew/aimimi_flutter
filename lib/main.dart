@@ -2,7 +2,7 @@ import 'package:aimimi/models/user.dart';
 import 'package:aimimi/services/auth_service.dart';
 import 'package:aimimi/services/goal_service.dart';
 import 'package:aimimi/constants/styles.dart';
-import 'package:aimimi/views/login_view.dart';
+import 'package:aimimi/views/auth/login_view.dart';
 import 'package:aimimi/views/main_view.dart';
 import 'package:aimimi/widgets/background_painter.dart';
 import 'package:flutter/material.dart';

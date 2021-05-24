@@ -6,13 +6,13 @@ import 'package:aimimi/services/ad_service.dart';
 import 'package:aimimi/services/auth_service.dart';
 import 'package:aimimi/services/feed_service.dart';
 import 'package:aimimi/services/goal_service.dart';
-import 'package:aimimi/views/shares_view.dart';
-import 'package:aimimi/views/activity_view.dart';
-import 'package:aimimi/views/today_view.dart';
+import 'package:aimimi/views/shares/shares_view.dart';
+import 'package:aimimi/views/activity/activity_view.dart';
+import 'package:aimimi/views/today/today_view.dart';
 import 'package:aimimi/widgets/modal/modal_add_goal.dart';
-import 'package:aimimi/views/leaderboard_view.dart';
-import 'package:aimimi/views/profile_view.dart';
-import 'package:aimimi/views/goals_view.dart';
+import 'package:aimimi/views/leaderboard/leaderboard_view.dart';
+import 'package:aimimi/views/profile/profile_view.dart';
+import 'package:aimimi/views/goals/goals_view.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +39,7 @@ class _MainViewState extends State<MainView> {
   int _currentIndex = 0;
   final List<Widget> _views = [
     TodayView(),
-    GoalView(),
+    GoalsView(),
     LeaderboardView(),
     ProfileView(),
   ];

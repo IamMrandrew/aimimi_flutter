@@ -6,12 +6,12 @@ import 'package:aimimi/models/goal.dart';
 import 'package:provider/provider.dart';
 import 'package:aimimi/services/goal_service.dart';
 
-class GoalView extends StatefulWidget {
+class GoalsView extends StatefulWidget {
   @override
-  _GoalViewState createState() => _GoalViewState();
+  _GoalsViewState createState() => _GoalsViewState();
 }
 
-class _GoalViewState extends State<GoalView> {
+class _GoalsViewState extends State<GoalsView> {
   @override
   Widget build(BuildContext context) {
     List<UserGoal> goals = Provider.of<List<UserGoal>>(context);
@@ -30,6 +30,7 @@ class _GoalViewState extends State<GoalView> {
                 itemBuilder: (context, index) {
                   UserGoal goal = Provider.of<List<UserGoal>>(context)[index];
                   return GoalItem(
+                    goalID: goal.goalID,
                     title: goal.goal.title,
                     category: goal.goal.category,
                     description: goal.goal.description,
@@ -37,6 +38,7 @@ class _GoalViewState extends State<GoalView> {
                     period: goal.goal.period,
                     frequency: goal.goal.frequency,
                     timespan: goal.goal.timespan,
+                    dayPassed: goal.dayPassed,
                   );
                 }),
             SizedBox(height: 80),

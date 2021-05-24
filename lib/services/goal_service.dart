@@ -132,18 +132,47 @@ class GoalService {
         .toList();
   }
 
-  List<String> _completed(QuerySnapshot<Map<String, dynamic>> querySnapshot) {
-    return querySnapshot.docs
-        .map<String>((DocumentSnapshot<Map<String, dynamic>> userGoal) => ('A'))
-        .toList();
-  }
-
   Stream<List<UserGoal>> get userGoals {
     return userCollection
         .doc(uid)
         .collection("goals")
         .snapshots()
         .map(_createUserGoals);
+  }
+
+  UserGoal _createUserGoal(DocumentSnapshot<Map<String, dynamic>> userGoal) =>
+      UserGoal(
+        accuracy: userGoal.data()["accuracy"].toDouble(),
+        checkIn: userGoal.data()["checkIn"],
+        checkInSuccess: userGoal.data()["checkInSuccess"],
+        checkedIn: userGoal.data()["checkedIn"],
+        dayPassed: userGoal.data()["dayPassed"],
+        goalID: userGoal.id,
+        goal: Goal(
+          title: userGoal.data()["goal"]["title"],
+          category: userGoal.data()["goal"]["category"],
+          period: userGoal.data()["goal"]["period"],
+          frequency: userGoal.data()["goal"]["frequency"],
+          timespan: userGoal.data()["goal"]["timespan"],
+          publicity: userGoal.data()["goal"]["publicity"],
+          description: userGoal.data()["goal"]["description"],
+        ),
+      );
+  // Get a UserGoal
+  Stream<UserGoal> get userGoal {
+    return userCollection
+        .doc(uid)
+        .collection("goals")
+        .doc(goalID)
+        .snapshots()
+        .map(_createUserGoal);
+  }
+
+  // Get the length of completed goal
+  List<String> _completed(QuerySnapshot<Map<String, dynamic>> querySnapshot) {
+    return querySnapshot.docs
+        .map<String>((DocumentSnapshot<Map<String, dynamic>> userGoal) => ('A'))
+        .toList();
   }
 
   Stream<List<String>> get completedGoals {
@@ -293,6 +322,41 @@ class GoalService {
       _createFeed(
         content: "$username joined ${goal.title}.",
       ),
+    ]);
+  }
+
+  // Publish a goal (Change to public)
+  Future publishGoal() {
+    Future updateGoalInGoals() {
+      return goalCollection.doc(goalID).update({"publicity": true});
+    }
+
+    Future updateGoalInUserGoals() {
+      return userCollection.doc(uid).collection("goals").doc(goalID).update(
+        {"goal.publicity": true},
+      );
+    }
+
+    return Future.wait([
+      updateGoalInGoals(),
+      updateGoalInUserGoals(),
+    ]);
+  }
+
+  // Quit a goal (Goal remain there, but user quit)
+  Future quitGoal(UserGoal userGoal) {
+    Future deleteUserInGoalUsers() {
+      return goalCollection.doc(goalID).collection("users").doc(uid).delete();
+    }
+
+    Future deleteGoalInUserGoals() {
+      return userCollection.doc(uid).collection("goals").doc(goalID).delete();
+    }
+
+    return Future.wait([
+      _createFeed(content: "$username quit ${userGoal.goal.title}"),
+      deleteUserInGoalUsers(),
+      deleteGoalInUserGoals(),
     ]);
   }
 

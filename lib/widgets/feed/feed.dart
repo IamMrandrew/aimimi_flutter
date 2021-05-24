@@ -1,7 +1,7 @@
 import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/models/feed.dart';
 import 'package:aimimi/models/user.dart';
-import 'package:aimimi/views/comment_view.dart';
+import 'package:aimimi/views/activity/comment_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';

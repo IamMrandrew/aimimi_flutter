@@ -113,7 +113,7 @@ class _TodayGoalState extends State<TodayGoal> {
                                 ),
                                 SizedBox(width: 8),
                                 Text(
-                                  "${widget.goal.timespan} days left",
+                                  "${widget.goal.timespan - widget.dayPassed} days left",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 14,
