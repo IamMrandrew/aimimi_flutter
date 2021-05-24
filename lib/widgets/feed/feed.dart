@@ -61,7 +61,9 @@ class _FeedItemState extends State<FeedItem> {
                   maxRadius: 15,
                   backgroundColor: themeColor,
                   backgroundImage: userImage,
-                  child: getText(widget.createdBy, userImage),
+                  child: userImage != null
+                      ? getText(widget.createdBy, userImage)
+                      : SizedBox(width: 0),
                 ),
                 SizedBox(width: 7),
                 Text(

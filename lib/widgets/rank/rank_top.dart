@@ -35,7 +35,9 @@ class TopRank extends StatelessWidget {
                       backgroundColor: themeColor,
                       maxRadius: 20,
                       backgroundImage: snapshot.data,
-                      child: getText(username, snapshot.data),
+                      child: snapshot.data == null
+                          ? getText(username)
+                          : SizedBox(width: 0),
                     ),
                     SizedBox(height: 14),
                     Text(
@@ -74,7 +76,9 @@ class TopRank extends StatelessWidget {
                       backgroundColor: themeColor,
                       maxRadius: 20,
                       backgroundImage: snapshot.data,
-                      child: getText(username, snapshot.data),
+                      child: snapshot.data == null
+                          ? getText(username)
+                          : SizedBox(width: 0),
                     ),
                     SizedBox(height: 14),
                     Text(
@@ -114,29 +118,26 @@ class TopRank extends StatelessWidget {
     }
   }
 
-  Future<NetworkImage> getImage(uid) async {
+  Future getImage(uid) async {
     DocumentSnapshot<Map<String, dynamic>> data =
         await FirebaseFirestore.instance.collection("users").doc(uid).get();
 
-    if (data.data()["photoURL"].toString() != null) {
-      return NetworkImage(data.data()["photoURL"].toString());
+    if (data.data()["photoURL"] != null) {
+      print(data.data()["photoURL"]);
+      return NetworkImage(data.data()["photoURL"]);
     } else {
-      return NetworkImage("null", scale: 1.0);
+      return null;
     }
   }
 
-  Text getText(String username, NetworkImage data) {
-    if (data.url != "null") {
-      return null;
-    } else {
-      return Text(
-        username[0].toUpperCase(),
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 17,
-          fontWeight: FontWeight.w700,
-        ),
-      );
-    }
+  Text getText(String username) {
+    return Text(
+      username[0].toUpperCase(),
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 17,
+        fontWeight: FontWeight.w700,
+      ),
+    );
   }
 }

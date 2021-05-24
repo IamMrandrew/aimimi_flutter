@@ -222,12 +222,13 @@ class _SharesViewState extends State<SharesView>
             publicity: item.publicity,
             timespan: item.timespan,
             users: item.users,
+            createdByUid: item.createdBy.uid,
           );
         else if (item is Ad)
           return AdItem(
             title: item.title,
             category: item.category,
-            createdBy: item.createdBy.username,
+            createdBy: item.createdBy,
             content: item.content,
           );
         else
