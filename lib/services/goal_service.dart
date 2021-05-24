@@ -273,6 +273,55 @@ class GoalService {
             .update({"accuracy": newAccuracy});
       }
 
+      final bool completedAGoal =
+          (selectedGoal.dayPassed + 1) >= selectedGoal.goal.timespan;
+      final bool completeSuccessful = newAccuracy >= 60;
+
+      if (completedAGoal) {
+        Future removeGoalInUserGoals() {
+          return userCollection
+              .doc(uid)
+              .collection("goals")
+              .doc(selectedGoal.goalID)
+              .delete();
+        }
+
+        Future addGoalInUserCompleted() {
+          return userCollection.doc(uid).collection("completed").doc(uid).set({
+            'title': selectedGoal.goal.title,
+            'category': selectedGoal.goal.category,
+            'period': selectedGoal.goal.period,
+            'frequency': selectedGoal.goal.frequency,
+            'timespan': selectedGoal.goal.timespan,
+            'publicity': selectedGoal.goal.publicity,
+            'description': selectedGoal.goal.description,
+          });
+        }
+
+        if (completeSuccessful) {
+          return Future.wait([
+            updateCheckInToUser(),
+            updateAccuracyToGoal(),
+            _createFeed(
+                content:
+                    "$username  check-in for ${selectedGoal.goal.title}!!"),
+            _createFeed(
+                content: "$username  completed ${selectedGoal.goal.title}!!"),
+            removeGoalInUserGoals(),
+            addGoalInUserCompleted(),
+          ]);
+        } else {
+          return Future.wait([
+            updateCheckInToUser(),
+            updateAccuracyToGoal(),
+            _createFeed(
+                content:
+                    "$username  check-in for ${selectedGoal.goal.title}!!"),
+            removeGoalInUserGoals(),
+          ]);
+        }
+      }
+
       return Future.wait([
         updateCheckInToUser(),
         updateAccuracyToGoal(),
