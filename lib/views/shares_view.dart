@@ -2,6 +2,7 @@ import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/models/ad.dart';
 import 'package:aimimi/models/goal.dart';
 import 'package:aimimi/widgets/ad/ad.dart';
+import 'package:aimimi/models/user.dart';
 import 'package:aimimi/widgets/goal/goal_shared.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +20,7 @@ class _SharesViewState extends State<SharesView>
   AnimationController _animationController;
   CurvedAnimation _curve;
   bool _focused = false;
+  String _recommendCategory;
 
   @override
   void initState() {
@@ -70,6 +72,17 @@ class _SharesViewState extends State<SharesView>
     print(advertisedSharedGoals);
 
     print(sharedGoals);
+
+    List<UserGoal> userGoals = Provider.of<List<UserGoal>>(context);
+    _getUserInterestAndRecommend(userGoals);
+
+    List<SharedGoal> goalsMatchCategory = sharedGoals
+        .where((goal) => goal.category == _recommendCategory)
+        .toList();
+    List<SharedGoal> recommendations = goalsMatchCategory.length > 1
+        ? goalsMatchCategory.sublist(0, 2)
+        : goalsMatchCategory;
+    // Generating the share goal list
     List items = [
       Text(
         "Recommended For You",
@@ -82,6 +95,18 @@ class _SharesViewState extends State<SharesView>
     ];
     items += advertisedSharedGoals;
 
+    items += recommendations;
+    items += [
+      Text(
+        "Trending",
+        style: TextStyle(
+          color: themeShadedColor,
+          fontSize: 22,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ];
+    items += sharedGoals;
     return Scaffold(
       // appBar: singleViewAppBar("Shares"),
       body: Container(
@@ -127,6 +152,41 @@ class _SharesViewState extends State<SharesView>
         ),
       ),
     );
+  }
+
+  void _getUserInterestAndRecommend(List<UserGoal> userGoals) {
+    if (userGoals.length > 0) {
+      List<String> userCatergories =
+          userGoals.map((goal) => goal.goal.category).toList();
+      Map userInterest = Map();
+      List recommendCategories = [];
+
+      userCatergories.forEach((item) {
+        if (!userInterest.containsKey(item)) {
+          userInterest[item] = 1;
+        } else {
+          userInterest[item] += 1;
+        }
+      });
+
+      List sortedValues = userInterest.values.toList()..sort();
+      int popularValue = sortedValues.last;
+
+      userInterest.forEach((key, value) {
+        if (value == popularValue) {
+          recommendCategories.add(key);
+        }
+      });
+
+      print(recommendCategories);
+      setState(() {
+        _recommendCategory = recommendCategories[0] ?? "Lifestyle";
+      });
+    } else {
+      setState(() {
+        _recommendCategory = "Lifestyle";
+      });
+    }
   }
 
   ListView _buildListView(List items) {

@@ -165,11 +165,7 @@ class _SharedGoalViewState extends State<SharedGoalView> {
                   color: Color(0xffFF9C9C),
                   borderRadius: BorderRadius.circular(100),
                 ),
-                child: FaIcon(
-                  FontAwesomeIcons.walking,
-                  size: 23,
-                  color: Colors.white,
-                ),
+                child: _buildCategoryIcon(sharedGoal),
               ),
             ],
           ),
@@ -236,6 +232,42 @@ class _SharedGoalViewState extends State<SharedGoalView> {
         ],
       ),
     );
+  }
+
+  FaIcon _buildCategoryIcon(SharedGoal sharedGoal) {
+    switch (sharedGoal.category) {
+      case "Fitness":
+        return FaIcon(
+          FontAwesomeIcons.running,
+          size: 23,
+          color: Colors.white,
+        );
+        break;
+      case "Lifestyle":
+        return FaIcon(
+          FontAwesomeIcons.procedures,
+          size: 18,
+          color: Colors.white,
+        );
+      case "Financial":
+        return FaIcon(
+          FontAwesomeIcons.coins,
+          size: 18,
+          color: Colors.white,
+        );
+      case "Educational":
+        return FaIcon(
+          FontAwesomeIcons.book,
+          size: 18,
+          color: Colors.white,
+        );
+      default:
+        return FaIcon(
+          FontAwesomeIcons.shapes,
+          size: 18,
+          color: Colors.white,
+        );
+    }
   }
 
   List<Widget> _buildDateCircles() {
