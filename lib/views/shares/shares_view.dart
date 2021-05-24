@@ -77,15 +77,20 @@ class _SharesViewState extends State<SharesView>
     _getUserInterestAndRecommend(userGoals);
 
     List<SharedGoal> goalsMatchCategory = sharedGoals
-        .where((goal) => goal.category == _recommendCategory)
+        .where((goal) =>
+            goal.category == _recommendCategory &&
+            userGoals.firstWhere((userGoal) => userGoal.goalID == goal.goalID,
+                    orElse: () => null) ==
+                null)
         .toList();
     List<SharedGoal> recommendations = goalsMatchCategory.length > 1
         ? goalsMatchCategory.sublist(0, 2)
         : goalsMatchCategory;
+
     // Generating the share goal list
     List items = [
       Text(
-        "Recommended For You",
+        goalsMatchCategory.length == 0 ? "" : "Recommended For You",
         style: TextStyle(
           color: themeShadedColor,
           fontSize: 22,
@@ -93,7 +98,6 @@ class _SharesViewState extends State<SharesView>
         ),
       ),
     ];
-    items += advertisedSharedGoals;
 
     items += recommendations;
     items += [
@@ -106,7 +110,8 @@ class _SharesViewState extends State<SharesView>
         ),
       ),
     ];
-    items += sharedGoals;
+
+    items += advertisedSharedGoals;
     return Scaffold(
       // appBar: singleViewAppBar("Shares"),
       body: Container(
@@ -123,16 +128,22 @@ class _SharesViewState extends State<SharesView>
                     Transform.translate(
                       offset: Offset(0, -56 * _curve.value),
                       child: SingleChildScrollView(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 56),
-                            _buildSearchBar(sharedGoals),
-                            SizedBox(height: 15),
-                            _buildListView(items)
-                          ],
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 25, vertical: 15),
+                          constraints: BoxConstraints(
+                            minHeight: MediaQuery.of(context).size.height + 56,
+                          ),
+                          color: backgroundTintedColor,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 56),
+                              _buildSearchBar(sharedGoals),
+                              SizedBox(height: 15),
+                              _buildListView(items)
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -272,7 +283,7 @@ class _SharesViewState extends State<SharesView>
                 focusNode: _focus,
                 decoration: InputDecoration(
                   hintText: "Read a book, Lifestyle ...",
-                  fillColor: backgroundColor,
+                  fillColor: backgroundShadedColor,
                   filled: true,
                   border: searchFieldBorder,
                   contentPadding: EdgeInsets.all(12),
