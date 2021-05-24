@@ -287,7 +287,11 @@ class GoalService {
         }
 
         Future addGoalInUserCompleted() {
-          return userCollection.doc(uid).collection("completed").doc(uid).set({
+          return userCollection
+              .doc(uid)
+              .collection("completed")
+              .doc(selectedGoal.goalID)
+              .set({
             'title': selectedGoal.goal.title,
             'category': selectedGoal.goal.category,
             'period': selectedGoal.goal.period,
