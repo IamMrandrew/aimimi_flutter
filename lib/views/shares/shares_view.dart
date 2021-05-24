@@ -128,16 +128,22 @@ class _SharesViewState extends State<SharesView>
                     Transform.translate(
                       offset: Offset(0, -56 * _curve.value),
                       child: SingleChildScrollView(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 56),
-                            _buildSearchBar(sharedGoals),
-                            SizedBox(height: 15),
-                            _buildListView(items)
-                          ],
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 25, vertical: 15),
+                          constraints: BoxConstraints(
+                            minHeight: MediaQuery.of(context).size.height + 56,
+                          ),
+                          color: backgroundTintedColor,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 56),
+                              _buildSearchBar(sharedGoals),
+                              SizedBox(height: 15),
+                              _buildListView(items)
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -277,7 +283,7 @@ class _SharesViewState extends State<SharesView>
                 focusNode: _focus,
                 decoration: InputDecoration(
                   hintText: "Read a book, Lifestyle ...",
-                  fillColor: backgroundColor,
+                  fillColor: backgroundShadedColor,
                   filled: true,
                   border: searchFieldBorder,
                   contentPadding: EdgeInsets.all(12),
