@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:aimimi/constants/styles.dart';
 import 'package:flutter/material.dart';
 
 class Point {
@@ -17,13 +18,13 @@ class BackgroundPainter extends CustomPainter {
 
   BackgroundPainter()
       : bluePaint = Paint()
-          ..color = Colors.lightBlue.shade300
+          ..color = themeMutedColor
           ..style = PaintingStyle.fill,
         greyPaint = Paint()
-          ..color = Colors.blueGrey[900]
+          ..color = themeColor
           ..style = PaintingStyle.fill,
         orangePaint = Paint()
-          ..color = Colors.orange.shade400
+          ..color = themeShadedColor
           ..style = PaintingStyle.fill,
         linePaint = Paint()
           ..color = Colors.orange[300]
