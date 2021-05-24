@@ -228,7 +228,8 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
           color: monoSecondaryColor,
         ),
         iconSize: 28,
-        items: ["Lifestyle", "Sport"].map((item) {
+        items: ["Lifestyle", "Fitness", "Financial", "Educational", "Other"]
+            .map((item) {
           return DropdownMenuItem(
             child: Text(item),
             value: item,
