@@ -28,7 +28,7 @@ class AuthService extends ChangeNotifier {
   }
 
   Stream<OurUser> get user {
-    return FirebaseAuth.instance.authStateChanges().map(_createUser);
+    return FirebaseAuth.instance.userChanges().map(_createUser);
   }
 
   Future signUp(
