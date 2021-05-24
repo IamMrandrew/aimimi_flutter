@@ -35,7 +35,9 @@ class TopRank extends StatelessWidget {
                       backgroundColor: themeColor,
                       maxRadius: 20,
                       backgroundImage: snapshot.data,
-                      child: getText(username, snapshot.data),
+                      child: snapshot.data != null
+                          ? getText(username, snapshot.data)
+                          : SizedBox(width: 0),
                     ),
                     SizedBox(height: 14),
                     Text(
@@ -74,7 +76,9 @@ class TopRank extends StatelessWidget {
                       backgroundColor: themeColor,
                       maxRadius: 20,
                       backgroundImage: snapshot.data,
-                      child: getText(username, snapshot.data),
+                      child: snapshot.data != null
+                          ? getText(username, snapshot.data)
+                          : SizedBox(width: 0),
                     ),
                     SizedBox(height: 14),
                     Text(
