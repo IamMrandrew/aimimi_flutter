@@ -2,6 +2,7 @@ import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/models/goal.dart';
 import 'package:aimimi/models/user.dart';
 import 'package:aimimi/services/goal_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -23,21 +24,44 @@ class _SharedGoalViewState extends State<SharedGoalView> {
     return StreamBuilder<SharedGoal>(
         stream: GoalService(goalID: widget.goalID).sharedGoal,
         builder: (context, snapshot) {
-          return StreamBuilder<List<JoinedUser>>(
-              stream: GoalService(goalID: widget.goalID).joinedUsers,
-              builder: (context, joinedUsersSnapshot) {
-                return Scaffold(
-                  appBar: AppBar(
-                    iconTheme: IconThemeData(color: themeShadedColor),
-                    elevation: 0,
-                  ),
-                  body: _buildBody(snapshot, joinedUsersSnapshot),
-                );
-              });
+          return FutureBuilder<Object>(
+            future: snapshot.data != null
+                ? getImage(snapshot.data.createdBy.uid)
+                : null,
+            builder: (context, upperSnapshot) {
+              return StreamBuilder<SharedGoal>(
+                  stream: GoalService(goalID: widget.goalID).sharedGoal,
+                  builder: (context, snapshot) {
+                    return StreamBuilder<List<JoinedUser>>(
+                        stream: GoalService(goalID: widget.goalID).joinedUsers,
+                        builder: (context, joinedUsersSnapshot) {
+                          return Scaffold(
+                            appBar: AppBar(
+                              iconTheme: IconThemeData(color: themeShadedColor),
+                              elevation: 0,
+                            ),
+                            body: _buildBody(
+                                snapshot, joinedUsersSnapshot, upperSnapshot),
+                          );
+                        });
+                  });
+            },
+          );
+          // return StreamBuilder<List<JoinedUser>>(
+          //     stream: GoalService(goalID: widget.goalID).joinedUsers,
+          //     builder: (context, joinedUsersSnapshot) {
+          //       return Scaffold(
+          //         appBar: AppBar(
+          //           iconTheme: IconThemeData(color: themeShadedColor),
+          //           elevation: 0,
+          //         ),
+          //         body: _buildBody(snapshot, joinedUsersSnapshot),
+          //       );
+          //     });
         });
   }
 
-  Widget _buildBody(snapshot, joinedUsersSnapshot) {
+  Widget _buildBody(snapshot, joinedUsersSnapshot, upperSnapshot) {
     if (snapshot.hasData) {
       final SharedGoal sharedGoal = snapshot.data;
       _checkIfUserJoined(joinedUsersSnapshot, context);
@@ -45,7 +69,8 @@ class _SharedGoalViewState extends State<SharedGoalView> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSharedGoalHeader(sharedGoal, joinedUsersSnapshot),
+          _buildSharedGoalHeader(
+              sharedGoal, joinedUsersSnapshot, upperSnapshot),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Text(
@@ -122,7 +147,8 @@ class _SharedGoalViewState extends State<SharedGoalView> {
     }
   }
 
-  Container _buildSharedGoalHeader(sharedGoal, joinedUsersSnapshot) {
+  Container _buildSharedGoalHeader(
+      sharedGoal, joinedUsersSnapshot, upperSnapshot) {
     return Container(
       padding: EdgeInsets.only(left: 32, right: 32, top: 30, bottom: 20),
       decoration: BoxDecoration(
@@ -215,6 +241,12 @@ class _SharedGoalViewState extends State<SharedGoalView> {
                 children: [
                   CircleAvatar(
                     maxRadius: 15,
+                    backgroundColor: themeColor,
+                    backgroundImage: upperSnapshot.data,
+                    child: upperSnapshot.data != null
+                        ? getText(
+                            sharedGoal.createdBy.username, upperSnapshot.data)
+                        : SizedBox(width: 0),
                   ),
                   SizedBox(width: 7),
                   Text(
@@ -330,5 +362,34 @@ class _SharedGoalViewState extends State<SharedGoalView> {
         borderRadius: BorderRadius.circular(12),
       ),
     );
+  }
+
+  Future<NetworkImage> getImage(uid) async {
+    print("this is uid: " + uid.toString());
+    DocumentSnapshot<Map<String, dynamic>> data =
+        await FirebaseFirestore.instance.collection("users").doc(uid).get();
+    if (data.data() != null) {
+      if (data.data()["photoURL"] != null) {
+        return NetworkImage(data.data()["photoURL"].toString());
+      } else {
+        return NetworkImage("null", scale: 1.0);
+      }
+    } else
+      return NetworkImage("null", scale: 1.0);
+  }
+
+  Text getText(String username, NetworkImage data) {
+    if (data.url != "null") {
+      return null;
+    } else {
+      return Text(
+        username[0].toUpperCase(),
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 17,
+          fontWeight: FontWeight.w700,
+        ),
+      );
+    }
   }
 }
