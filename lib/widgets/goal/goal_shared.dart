@@ -156,10 +156,9 @@ class _SharedGoalItemState extends State<SharedGoalItem> {
                                   maxRadius: 15,
                                   backgroundColor: themeColor,
                                   backgroundImage: upperSnapshot.data,
-                                  child: upperSnapshot.data != null
-                                      ? getText(
-                                          widget.createdBy, upperSnapshot.data)
-                                      : SizedBox(width: 0),
+                                  child: upperSnapshot.data == null
+                                      ? getText(widget.createdBy)
+                                      : null,
                                 ),
                                 SizedBox(width: 7),
                                 Text(
@@ -246,29 +245,26 @@ class _SharedGoalItemState extends State<SharedGoalItem> {
     );
   }
 
-  Future<NetworkImage> getImage(uid) async {
+  Future getImage(uid) async {
     DocumentSnapshot<Map<String, dynamic>> data =
         await FirebaseFirestore.instance.collection("users").doc(uid).get();
 
-    if (data.data()["photoURL"].toString() != null) {
-      return NetworkImage(data.data()["photoURL"].toString());
+    if (data.data()["photoURL"] != null) {
+      print(data.data()["photoURL"]);
+      return NetworkImage(data.data()["photoURL"]);
     } else {
-      return NetworkImage("null", scale: 1.0);
+      return null;
     }
   }
 
-  Text getText(String username, NetworkImage data) {
-    if (data.url != "null") {
-      return null;
-    } else {
-      return Text(
-        username[0].toUpperCase(),
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 17,
-          fontWeight: FontWeight.w700,
-        ),
-      );
-    }
+  Text getText(String username) {
+    return Text(
+      username[0].toUpperCase(),
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 17,
+        fontWeight: FontWeight.w700,
+      ),
+    );
   }
 }

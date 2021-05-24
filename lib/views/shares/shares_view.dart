@@ -228,7 +228,7 @@ class _SharesViewState extends State<SharesView>
           return AdItem(
             title: item.title,
             category: item.category,
-            createdBy: item.createdBy.username,
+            createdBy: item.createdBy,
             content: item.content,
           );
         else

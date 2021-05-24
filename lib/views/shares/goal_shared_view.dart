@@ -243,9 +243,8 @@ class _SharedGoalViewState extends State<SharedGoalView> {
                     maxRadius: 15,
                     backgroundColor: themeColor,
                     backgroundImage: upperSnapshot.data,
-                    child: upperSnapshot.data != null
-                        ? getText(
-                            sharedGoal.createdBy.username, upperSnapshot.data)
+                    child: upperSnapshot.data == null
+                        ? getText(sharedGoal.createdBy.username)
                         : SizedBox(width: 0),
                   ),
                   SizedBox(width: 7),
@@ -364,32 +363,26 @@ class _SharedGoalViewState extends State<SharedGoalView> {
     );
   }
 
-  Future<NetworkImage> getImage(uid) async {
-    print("this is uid: " + uid.toString());
+  Future getImage(uid) async {
     DocumentSnapshot<Map<String, dynamic>> data =
         await FirebaseFirestore.instance.collection("users").doc(uid).get();
-    if (data.data() != null) {
-      if (data.data()["photoURL"] != null) {
-        return NetworkImage(data.data()["photoURL"].toString());
-      } else {
-        return NetworkImage("null", scale: 1.0);
-      }
-    } else
-      return NetworkImage("null", scale: 1.0);
+
+    if (data.data()["photoURL"] != null) {
+      print(data.data()["photoURL"]);
+      return NetworkImage(data.data()["photoURL"]);
+    } else {
+      return null;
+    }
   }
 
-  Text getText(String username, NetworkImage data) {
-    if (data.url != "null") {
-      return null;
-    } else {
-      return Text(
-        username[0].toUpperCase(),
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 17,
-          fontWeight: FontWeight.w700,
-        ),
-      );
-    }
+  Text getText(String username) {
+    return Text(
+      username[0].toUpperCase(),
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 17,
+        fontWeight: FontWeight.w700,
+      ),
+    );
   }
 }
