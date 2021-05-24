@@ -1,8 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.aimimi">
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
         android:label="aimimi"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/aimimi">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

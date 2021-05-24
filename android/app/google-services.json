@@ -14,6 +14,38 @@
       },
       "oauth_client": [
         {
+          "client_id": "1004326362260-1ff9f6864c6ftcu1h2mmq5g6t3s07t0t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aimimi.aimimi",
+            "certificate_hash": "13ab19cb33b29ebb577196999a38544517b98443"
+          }
+        },
+        {
+          "client_id": "1004326362260-j0u7facvkdklvj4e9ges1ijf3s4uq7k7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aimimi.aimimi",
+            "certificate_hash": "4b7e2e86f9327040c1efc480d0d9ccce364480ff"
+          }
+        },
+        {
+          "client_id": "1004326362260-o8bki2auauej4jvqfasv49jog39hhlnr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aimimi.aimimi",
+            "certificate_hash": "f6883ef31d8e71d1d7647a7e2a1050136abf374b"
+          }
+        },
+        {
+          "client_id": "1004326362260-p6jcqjncrsk3k73ieee1eog5qd1ue945.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aimimi.aimimi",
+            "certificate_hash": "7d36e3c0fb5074c67b5a9813e4b287bfcbabd48f"
+          }
+        },
+        {
           "client_id": "1004326362260-p1hhjl95jv30qnqvcc44p4u852uasrll.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +61,13 @@
             {
               "client_id": "1004326362260-p1hhjl95jv30qnqvcc44p4u852uasrll.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1004326362260-ggg1ppdc2btt8i7hamitk42samtle7og.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.aimimi.aimimi"
+              }
             }
           ]
         }
