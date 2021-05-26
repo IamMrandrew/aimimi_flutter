@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:aimimi/models/user.dart';
 import 'package:aimimi/services/auth_service.dart';
 import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/views/auth/signup_view.dart';
@@ -291,43 +294,48 @@ class _LoginViewState extends State<LoginView> {
                   SizedBox(
                     height: 12,
                   ),
-                  Container(
-                    width: double.infinity,
-                    height: 45,
-                    decoration: BoxDecoration(
-                        color: monoPrimaryColor,
-                        borderRadius: BorderRadius.circular(15.0),
-                        border: Border.all(
-                          color: monoTintedColor,
-                          width: 1,
-                        )),
-                    child: MaterialButton(
-                      onPressed: () {
-                        print(email);
-                        print(password);
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          FaIcon(
-                            FontAwesomeIcons.apple,
-                            color: Colors.white,
-                            size: 25,
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Text(
-                            "Sign in with Apple",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
+                  Platform.isIOS
+                      ? Container(
+                          width: double.infinity,
+                          height: 45,
+                          decoration: BoxDecoration(
+                              color: monoPrimaryColor,
+                              borderRadius: BorderRadius.circular(15.0),
+                              border: Border.all(
+                                color: monoTintedColor,
+                                width: 1,
+                              )),
+                          child: MaterialButton(
+                            onPressed: () async {
+                              OurUser result = await Provider.of<AuthService>(
+                                      context,
+                                      listen: false)
+                                  .appleSignIn(context);
+                              print(result.uid);
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                FaIcon(
+                                  FontAwesomeIcons.apple,
+                                  color: Colors.white,
+                                  size: 25,
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Text(
+                                  "Sign in with Apple",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
+                        )
+                      : Container(),
                 ],
               ),
             ),
