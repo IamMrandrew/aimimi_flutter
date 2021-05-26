@@ -1,7 +1,9 @@
 import 'package:aimimi/services/user_document.dart';
+import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import "package:aimimi/models/user.dart";
 
@@ -117,6 +119,58 @@ class AuthService extends ChangeNotifier {
       isSigningIn = false;
 
       return _createUser(result.user);
+    }
+  }
+
+  Future appleSignIn(BuildContext context) async {
+    if (!await AppleSignIn.isAvailable()) {
+      showError("Apple sign in is not available on this device", context);
+      return;
+    }
+    print("do what?");
+
+    final result = await AppleSignIn.performRequests([
+      AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
+    ]);
+    print("result" + result.toString());
+    switch (result.status) {
+      case AuthorizationStatus.authorized:
+        try {
+          final AppleIdCredential appleIdCredential = result.credential;
+          final OAuthProvider oAuthProvider = OAuthProvider("apple.com");
+          final credential = oAuthProvider.credential(
+              idToken: String.fromCharCodes(appleIdCredential.identityToken),
+              accessToken:
+                  String.fromCharCodes(appleIdCredential.authorizationCode));
+
+          UserCredential res =
+              await FirebaseAuth.instance.signInWithCredential(credential);
+
+          print("Apple" + appleIdCredential.toString());
+
+          // Update Firebase auth info from Google
+          await auth.currentUser.updateProfile(
+              displayName:
+                  "${appleIdCredential.fullName.givenName} ${appleIdCredential.fullName.familyName}",
+              photoURL: null);
+
+          await UserDocument(uid: auth.currentUser.uid).createUserDocuments(
+              FieldValue.serverTimestamp(),
+              "${appleIdCredential.fullName.givenName} ${appleIdCredential.fullName.familyName}",
+              null);
+
+          return _createUser(res.user);
+        } on PlatformException catch (error) {
+          showError(error.message, context);
+        } on FirebaseAuthException catch (error) {
+          showError(error.message, context);
+        }
+        break;
+      case AuthorizationStatus.error:
+        showError("Apple authorization failed", context);
+        break;
+      case AuthorizationStatus.cancelled:
+        break;
     }
   }
 

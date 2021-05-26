@@ -63,7 +63,10 @@ class FeedService {
 
   Stream<List<Feed>> get feeds {
     return feedCollection
-        .where("goalID", whereIn: userGoals.map((goal) => goal.goalID).toList())
+        .where("goalID",
+            whereIn: userGoals.map((goal) => goal.goalID).toList().isNotEmpty
+                ? userGoals.map((goal) => goal.goalID).toList()
+                : [""])
         .orderBy("createdAt", descending: true)
         .snapshots()
         .asyncMap(_createFeeds);
