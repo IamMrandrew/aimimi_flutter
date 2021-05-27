@@ -1,10 +1,15 @@
+import 'dart:io';
+
 import 'package:aimimi/models/user.dart';
 import 'package:aimimi/services/auth_service.dart';
 import 'package:aimimi/constants/styles.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class ProfileView extends StatefulWidget {
   @override
@@ -13,6 +18,20 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   final user = FirebaseAuth.instance.currentUser;
+  File _image;
+  final picker = ImagePicker();
+
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +55,14 @@ class _ProfileViewState extends State<ProfileView> {
                 CircleAvatar(
                   backgroundColor: themeColor,
                   maxRadius: 40,
-                  backgroundImage: getImage(),
-                  child: getText(),
+                  backgroundImage: getBackground(),
+                  child: MaterialButton(
+                    onPressed: () {
+                      getImage();
+                      uploadImageToFirebase(context);
+                    },
+                    child: getText(),
+                  ),
                 ),
                 Padding(
                   padding:
@@ -174,6 +199,7 @@ class _ProfileViewState extends State<ProfileView> {
             width: 100,
             child: TextButton(
                 onPressed: () async {
+                  print(_image);
                   await AuthService().logout();
                 },
                 style: ButtonStyle(
@@ -204,7 +230,7 @@ class _ProfileViewState extends State<ProfileView> {
     );
   }
 
-  NetworkImage getImage() {
+  NetworkImage getBackground() {
     if (user.providerData[0].providerId == 'google.com') {
       return NetworkImage(user.photoURL);
     } else {
@@ -225,5 +251,17 @@ class _ProfileViewState extends State<ProfileView> {
         ),
       );
     }
+  }
+
+  Future uploadImageToFirebase(BuildContext context) async {
+    FirebaseStorage storage = FirebaseStorage.instance;
+    String uid = user.uid;
+    String fileurl;
+    Reference ref = storage.ref().child('uid/DateTime.now().toString()');
+    print(_image);
+    UploadTask uploadTask = ref.putFile(_image);
+    uploadTask.then((res) {
+      res.ref.getDownloadURL();
+    });
   }
 }
