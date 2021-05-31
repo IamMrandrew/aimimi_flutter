@@ -6,6 +6,7 @@ const firebase = admin.firestore();
 
 exports.dailySchedule = functions.pubsub
   .schedule("0 0 * * * ")
+  .timeZone("Asia/Hong_Kong")
   .onRun(async (context) => {
     console.log("This will be run every day at 00:00!");
     const usersQuerySnapshot = await firebase.collection("users").get();
