@@ -1,3 +1,4 @@
+import 'package:aimimi/app_localizations.dart';
 import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/models/feed.dart';
 import 'package:aimimi/widgets/feed/feed.dart';
@@ -22,7 +23,8 @@ class _ActivityViewState extends State<ActivityView> {
       appBar: AppBar(
         elevation: 0,
         iconTheme: IconThemeData(color: themeShadedColor),
-        title: Text("Activity", style: appBarTitleTextStyle),
+        title: Text(AppLocalizations.of(context).translate("views_activity"),
+            style: appBarTitleTextStyle),
       ),
       body: SingleChildScrollView(
         child: Container(

@@ -1,0 +1,18 @@
+{
+  "views_today": "今日",
+  "views_goals": "目標",
+  "views_leaderboard": "排行榜",
+  "views_profile": "個人",
+  "views_activity": "動態",
+  "views_shares": "共享",
+  "today_remaining": "個目標未完成",
+  "shares_recommend": "推薦給你的目標",
+  "shares_trending": "發掘熱門的目標",
+  "period_daily": "每日",
+  "period_weekly": "每週",
+  "profile_goals": "目標",
+  "timespan_remaining": "日後結束",
+  "profile_ongoing": "進行中",
+  "profile_completed": "已完成",
+  "logout": "登出"
+}

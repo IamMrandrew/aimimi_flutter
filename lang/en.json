@@ -1,0 +1,18 @@
+{
+  "views_today": "Today",
+  "views_goals": "Goals",
+  "views_leaderboard": "Leaderboard",
+  "views_profile": "Profile",
+  "views_activity": "Activity",
+  "views_shares": "Shares",
+  "today_remaining": "task left for today",
+  "shares_recommend": "Recommended For You",
+  "shares_trending": "Trending",
+  "period_daily": "Daily",
+  "period_weekly": "Weekly",
+  "timespan_remaining": "days left",
+  "profile_goals": "Goals",
+  "profile_ongoing": "Ongoing",
+  "profile_completed": "Completed",
+  "logout": "Logout"
+}

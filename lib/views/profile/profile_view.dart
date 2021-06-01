@@ -1,3 +1,4 @@
+import 'package:aimimi/app_localizations.dart';
 import 'package:aimimi/models/user.dart';
 import 'package:aimimi/services/auth_service.dart';
 import 'package:aimimi/constants/styles.dart';
@@ -62,7 +63,10 @@ class _ProfileViewState extends State<ProfileView> {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
-                          'Goals  ' + goals.length.toString(),
+                          AppLocalizations.of(context)
+                                  .translate("profile_goals") +
+                              " " +
+                              goals.length.toString(),
                           style: TextStyle(
                             color: monoSecondaryColor,
                             fontWeight: FontWeight.w700,
@@ -112,7 +116,7 @@ class _ProfileViewState extends State<ProfileView> {
                       ),
                     ),
                     Text(
-                      'Ongoing',
+                      AppLocalizations.of(context).translate("profile_ongoing"),
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
@@ -157,7 +161,8 @@ class _ProfileViewState extends State<ProfileView> {
                       ),
                     ),
                     Text(
-                      'Completed',
+                      AppLocalizations.of(context)
+                          .translate("profile_completed"),
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
@@ -190,7 +195,7 @@ class _ProfileViewState extends State<ProfileView> {
                       width: 10,
                     ),
                     Text(
-                      "Logout",
+                      AppLocalizations.of(context).translate("logout"),
                       style: TextStyle(
                         color: Color(0xff999999),
                         fontWeight: FontWeight.w700,

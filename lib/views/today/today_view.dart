@@ -1,3 +1,4 @@
+import 'package:aimimi/app_localizations.dart';
 import 'package:aimimi/models/goal.dart';
 import 'package:aimimi/models/user.dart';
 import 'package:aimimi/constants/styles.dart';
@@ -36,7 +37,8 @@ class _TodayViewState extends State<TodayView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              "${_buildTaskLeft(goals)} task left for today",
+              "${_buildTaskLeft(goals)} " +
+                  AppLocalizations.of(context).translate("today_remaining"),
               style: TextStyle(
                   fontSize: 16,
                   color: themeShadedColor.withOpacity(0.6),
