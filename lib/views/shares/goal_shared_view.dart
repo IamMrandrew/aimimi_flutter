@@ -1,3 +1,4 @@
+import 'package:aimimi/app_localizations.dart';
 import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/models/goal.dart';
 import 'package:aimimi/models/user.dart';
@@ -74,7 +75,7 @@ class _SharedGoalViewState extends State<SharedGoalView> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Text(
-              "Descriptions",
+              AppLocalizations.of(context).translate("description"),
               style: TextStyle(
                 color: Color(0xff202020),
                 fontSize: 18,
@@ -174,7 +175,8 @@ class _SharedGoalViewState extends State<SharedGoalView> {
                   ),
                   SizedBox(height: 4),
                   Text(
-                    sharedGoal.category,
+                    AppLocalizations.of(context).translate(
+                        "category_${sharedGoal.category.toLowerCase()}"),
                     style: TextStyle(
                       color: monoSecondaryColor,
                       fontSize: 15,
@@ -332,7 +334,7 @@ class _SharedGoalViewState extends State<SharedGoalView> {
   Text _buildButtonText(bool joined) {
     if (joined) {
       return Text(
-        "Joined",
+        AppLocalizations.of(context).translate("joined"),
         style: TextStyle(
           color: Colors.white,
           fontSize: 16,
@@ -341,7 +343,7 @@ class _SharedGoalViewState extends State<SharedGoalView> {
       );
     } else {
       return Text(
-        "Join",
+        AppLocalizations.of(context).translate("join"),
         style: TextStyle(
           color: Colors.white,
           fontSize: 16,

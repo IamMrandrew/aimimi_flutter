@@ -1,3 +1,4 @@
+import 'package:aimimi/app_localizations.dart';
 import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/models/user.dart';
 import 'package:aimimi/services/goal_service.dart';
@@ -86,7 +87,8 @@ class _SharedGoalItemState extends State<SharedGoalItem> {
                                 ),
                                 SizedBox(height: 4),
                                 Text(
-                                  widget.category,
+                                  AppLocalizations.of(context).translate(
+                                      "category_${widget.category.toLowerCase()}"),
                                   style: TextStyle(
                                     color: monoSecondaryColor,
                                     fontSize: 15,

@@ -1,3 +1,4 @@
+import 'package:aimimi/app_localizations.dart';
 import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/models/goal.dart';
 import 'package:aimimi/models/user.dart';
@@ -33,7 +34,7 @@ class _ModalCheckInState extends State<ModalCheckIn> {
             child: Column(
               children: [
                 Text(
-                  "Add Progress",
+                  AppLocalizations.of(context).translate("add_progress"),
                   style: TextStyle(
                     color: monoPrimaryColor,
                     fontSize: 20,
@@ -47,35 +48,38 @@ class _ModalCheckInState extends State<ModalCheckIn> {
                 SizedBox(
                   height: 14,
                 ),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      // Check-in function
-                      await GoalService(
-                              goalID: widget.selectedGoal.goalID,
-                              uid: Provider.of<OurUser>(context, listen: false)
-                                  .uid,
-                              username:
-                                  Provider.of<OurUser>(context, listen: false)
-                                      .username)
-                          .checkInGoal(_checkIn, widget.selectedGoal);
-                      Navigator.pop(context);
-                    },
-                    child: Text(
-                      "Check in",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
+                Expanded(
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        // Check-in function
+                        await GoalService(
+                                goalID: widget.selectedGoal.goalID,
+                                uid:
+                                    Provider.of<OurUser>(context, listen: false)
+                                        .uid,
+                                username:
+                                    Provider.of<OurUser>(context, listen: false)
+                                        .username)
+                            .checkInGoal(_checkIn, widget.selectedGoal);
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        AppLocalizations.of(context).translate("check_in"),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      primary: themeColor,
-                      elevation: 0,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
+                      style: ElevatedButton.styleFrom(
+                        primary: themeColor,
+                        elevation: 0,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18),
+                        ),
                       ),
                     ),
                   ),
