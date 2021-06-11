@@ -1,3 +1,4 @@
+import 'package:aimimi/app_localizations.dart';
 import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/models/feed.dart';
 import 'package:aimimi/models/user.dart';
@@ -70,7 +71,9 @@ class _CommentViewState extends State<CommentView> {
                   appBar: AppBar(
                     elevation: 0,
                     iconTheme: IconThemeData(color: themeShadedColor),
-                    title: Text("Comment", style: appBarTitleTextStyle),
+                    title: Text(
+                        AppLocalizations.of(context).translate("comment"),
+                        style: appBarTitleTextStyle),
                   ),
                   body: Column(
                     children: [

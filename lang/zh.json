@@ -40,5 +40,9 @@
   "share": "分享",
   "quit": "放棄",
   "join": "加入",
-  "joined": "已加入"
+  "joined": "已加入",
+  "like": "讚好",
+  "likes": "讚好",
+  "comment": "留言",
+  "comments": "留言"
 }

@@ -40,5 +40,9 @@
   "share": "Share",
   "quit": "Quit",
   "join": "Join",
-  "joined": "Joined"
+  "joined": "Joined",
+  "like": "Like",
+  "likes": "Like",
+  "comment": "Comment",
+  "comments": "Comments"
 }
