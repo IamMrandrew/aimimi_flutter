@@ -71,7 +71,7 @@ class _GoalViewState extends State<GoalView> {
                       ),
                       SizedBox(height: 4),
                       Text(
-                        "Grow bigger.Pull up is really great. 3 sets a day is enough for beginners",
+                        userGoal.goal.description,
                         style: TextStyle(
                           color: Color(0xff4B4B4B),
                           fontSize: 14,

@@ -39,37 +39,40 @@ class _ProfileViewState extends State<ProfileView> {
                   backgroundImage: getImage(),
                   child: getText(),
                 ),
-                Padding(
-                  padding:
-                      EdgeInsets.only(top: 0, left: 30, right: 0, bottom: 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        " " + user.displayName,
-                        style: TextStyle(
-                          color: monoPrimaryColor,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      SizedBox(height: 4),
-                      Container(
-                        padding: EdgeInsets.only(
-                            top: 10, left: 10, right: 10, bottom: 10),
-                        decoration: BoxDecoration(
-                          color: backgroundTintedColor,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          'Goals  ' + goals.length.toString(),
+                Flexible(
+                  child: Padding(
+                    padding:
+                        EdgeInsets.only(top: 0, left: 30, right: 0, bottom: 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          " " + user.displayName,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            color: monoSecondaryColor,
+                            color: monoPrimaryColor,
+                            fontSize: 20,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                      )
-                    ],
+                        SizedBox(height: 4),
+                        Container(
+                          padding: EdgeInsets.only(
+                              top: 10, left: 10, right: 10, bottom: 10),
+                          decoration: BoxDecoration(
+                            color: backgroundTintedColor,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            'Goals  ' + goals.length.toString(),
+                            style: TextStyle(
+                              color: monoSecondaryColor,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ],
