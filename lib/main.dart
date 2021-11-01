@@ -1,3 +1,4 @@
+import 'package:aimimi/app_localizations.dart';
 import 'package:aimimi/models/user.dart';
 import 'package:aimimi/services/auth_service.dart';
 import 'package:aimimi/services/goal_service.dart';
@@ -6,6 +7,7 @@ import 'package:aimimi/views/auth/login_view.dart';
 import 'package:aimimi/views/main_view.dart';
 import 'package:aimimi/widgets/background_painter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -45,6 +47,33 @@ class MyApp extends StatelessWidget {
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
         ),
+        supportedLocales: [Locale("en", "US"), Locale("zh", "HK")],
+        localizationsDelegates: [
+          // Class for loading the translation from JSON files
+          AppLocalizations.delegate,
+          // Built in localization of basic text for Material widgets
+          GlobalMaterialLocalizations.delegate,
+          // Built in localization for text direction
+          GlobalWidgetsLocalizations.delegate
+        ],
+
+        localeResolutionCallback: (locale, supportedLocales) {
+          var retLocale = supportedLocales.first;
+          // Check if the current device locale is supported
+          if (locale != null) {
+            print("user locale ${locale.languageCode}, ${locale.countryCode}");
+            for (Locale supportedLocale in supportedLocales) {
+              if (supportedLocale.languageCode == locale.languageCode) {
+                retLocale = supportedLocale;
+                if (supportedLocale.countryCode == locale.countryCode) {
+                  break;
+                }
+              }
+            }
+          }
+
+          return retLocale;
+        },
         debugShowCheckedModeBanner: false,
         // home: MainView(),
         home: Authenticate(),

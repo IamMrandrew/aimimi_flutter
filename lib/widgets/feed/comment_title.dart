@@ -1,3 +1,4 @@
+import 'package:aimimi/app_localizations.dart';
 import 'package:aimimi/constants/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:aimimi/views/activity/comment_view.dart';
@@ -65,7 +66,9 @@ class CommentTitle extends StatelessWidget {
                       onPressed: null,
                     ),
                     SizedBox(width: 7),
-                    Text("${length} Like",
+                    Text(
+                        "$length " +
+                            AppLocalizations.of(context).translate("likes"),
                         style: TextStyle(
                           color: monoButtonTextColor,
                           fontSize: 15,
@@ -107,7 +110,10 @@ class CommentTitle extends StatelessWidget {
                             color: monoButtonTextColor,
                           ),
                           SizedBox(width: 12),
-                          Text("${commentLength} Comments",
+                          Text(
+                              "$commentLength " +
+                                  AppLocalizations.of(context)
+                                      .translate("comment"),
                               style: TextStyle(
                                 color: monoButtonTextColor,
                                 fontSize: 15,

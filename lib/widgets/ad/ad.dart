@@ -1,3 +1,4 @@
+import 'package:aimimi/app_localizations.dart';
 import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -45,7 +46,8 @@ class AdItem extends StatelessWidget {
                         ),
                         SizedBox(height: 4),
                         Text(
-                          category,
+                          AppLocalizations.of(context)
+                              .translate("category_${category.toLowerCase()}"),
                           style: TextStyle(
                             color: monoSecondaryColor,
                             fontSize: 15,

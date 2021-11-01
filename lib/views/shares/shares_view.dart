@@ -1,3 +1,4 @@
+import 'package:aimimi/app_localizations.dart';
 import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/models/ad.dart';
 import 'package:aimimi/models/goal.dart';
@@ -90,7 +91,9 @@ class _SharesViewState extends State<SharesView>
     // Generating the share goal list
     List items = [
       Text(
-        goalsMatchCategory.length == 0 ? "" : "Recommended For You",
+        goalsMatchCategory.length == 0
+            ? ""
+            : AppLocalizations.of(context).translate("shares_recommend"),
         style: TextStyle(
           color: themeShadedColor,
           fontSize: 22,
@@ -102,7 +105,7 @@ class _SharesViewState extends State<SharesView>
     items += recommendations;
     items += [
       Text(
-        "Trending",
+        AppLocalizations.of(context).translate("shares_trending"),
         style: TextStyle(
           color: themeShadedColor,
           fontSize: 22,
@@ -154,7 +157,10 @@ class _SharesViewState extends State<SharesView>
                           : Container(
                               // key: UniqueKey(),
                               height: 56,
-                              child: singleViewAppBar("Shares"),
+                              child: singleViewAppBar(
+                                AppLocalizations.of(context)
+                                    .translate("views_shares"),
+                              ),
                             ),
                     ),
                   ],

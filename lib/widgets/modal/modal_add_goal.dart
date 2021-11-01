@@ -1,3 +1,4 @@
+import 'package:aimimi/app_localizations.dart';
 import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/models/user.dart';
 import 'package:aimimi/services/goal_service.dart';
@@ -61,7 +62,7 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
                   },
                 ),
                 Text(
-                  "Add Goal",
+                  AppLocalizations.of(context).translate("add_goal"),
                   style: appBarTitleTextStyle,
                 ),
                 IconButton(
@@ -108,7 +109,7 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
                             height: 20,
                           ),
                           Text(
-                            "In what category?",
+                            AppLocalizations.of(context).translate("category"),
                             style: textFieldTitleTextStyle,
                           ),
                           SizedBox(
@@ -119,7 +120,8 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
                             height: 12,
                           ),
                           Text(
-                            "Repeating period?",
+                            AppLocalizations.of(context)
+                                .translate("placeholder_period"),
                             style: textFieldTitleTextStyle,
                           ),
                           _buildPeriodButtons(),
@@ -130,7 +132,8 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
                             height: 12,
                           ),
                           Text(
-                            "How many times?",
+                            AppLocalizations.of(context)
+                                .translate("placeholder_frequency"),
                             style: textFieldTitleTextStyle,
                           ),
                           SizedBox(
@@ -141,7 +144,8 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
                             height: 12,
                           ),
                           Text(
-                            "Last for how long?",
+                            AppLocalizations.of(context)
+                                .translate("placeholder_timespan"),
                             style: textFieldTitleTextStyle,
                           ),
                           SizedBox(
@@ -152,7 +156,8 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
                             height: 12,
                           ),
                           Text(
-                            "Description",
+                            AppLocalizations.of(context)
+                                .translate("description"),
                             style: textFieldTitleTextStyle,
                           ),
                           SizedBox(
@@ -179,7 +184,7 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
   TextFormField _buildTitleField() {
     return TextFormField(
       decoration: InputDecoration(
-        hintText: "What is your goal?",
+        hintText: AppLocalizations.of(context).translate("placeholder_title"),
         fillColor: backgroundColor,
         filled: true,
         border: textFieldBorder,
@@ -217,7 +222,8 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
         dropdownColor: Colors.white,
         isDense: true,
         underline: SizedBox(),
-        hint: Text("Select"),
+        hint: Text(
+            AppLocalizations.of(context).translate("placeholder_category")),
         style: TextStyle(
           fontFamily: "Roboto",
           color: monoPrimaryColor,
@@ -228,8 +234,13 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
           color: monoSecondaryColor,
         ),
         iconSize: 28,
-        items: ["Lifestyle", "Fitness", "Financial", "Educational", "Other"]
-            .map((item) {
+        items: [
+          AppLocalizations.of(context).translate("category_lifestyle"),
+          AppLocalizations.of(context).translate("category_fitness"),
+          AppLocalizations.of(context).translate("category_financial"),
+          AppLocalizations.of(context).translate("category_educational"),
+          AppLocalizations.of(context).translate("category_other")
+        ].map((item) {
           return DropdownMenuItem(
             child: Text(item),
             value: item,
@@ -255,7 +266,7 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
             });
           },
           child: Text(
-            "Daily",
+            AppLocalizations.of(context).translate("period_daily"),
             style: selectButtonTextStyle(_period == "Daily"),
           ),
           style: selectButtonStyle(_period == "Daily"),
@@ -268,7 +279,7 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
               });
             },
             child: Text(
-              "Weekly",
+              AppLocalizations.of(context).translate("period_weekly"),
               style: selectButtonTextStyle(_period == "Weekly"),
             ),
             style: selectButtonStyle(
@@ -337,7 +348,8 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
   TextFormField _buildDescriptionField() {
     return TextFormField(
       decoration: InputDecoration(
-        hintText: "Typing something about your goal ...",
+        hintText:
+            AppLocalizations.of(context).translate("placeholder_description"),
         fillColor: backgroundColor,
         filled: true,
         border: textFieldBorder,
@@ -365,7 +377,7 @@ class _ModalAddGoalState extends State<ModalAddGoal> {
     return CheckboxListTile(
       controlAffinity: ListTileControlAffinity.leading,
       title: Text(
-        "Shared goal?",
+        AppLocalizations.of(context).translate("placeholder_publicity"),
         style: textFieldTitleTextStyle,
       ),
       value: _publicity,

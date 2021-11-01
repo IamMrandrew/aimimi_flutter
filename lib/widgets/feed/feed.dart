@@ -1,3 +1,4 @@
+import 'package:aimimi/app_localizations.dart';
 import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/models/feed.dart';
 import 'package:aimimi/models/user.dart';
@@ -109,12 +110,15 @@ class _FeedItemState extends State<FeedItem> {
                       SizedBox(height: 8),
                       Row(
                         children: [
-                          _buildLikeButton("Like", Icons.favorite),
+                          _buildLikeButton(
+                              AppLocalizations.of(context).translate("like"),
+                              Icons.favorite),
                           SizedBox(
                             width: 10,
                           ),
-                          _buildFeedButton("Comment", Icons.question_answer,
-                              () {
+                          _buildFeedButton(
+                              AppLocalizations.of(context).translate("comment"),
+                              Icons.question_answer, () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(

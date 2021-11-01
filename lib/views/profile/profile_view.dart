@@ -1,3 +1,4 @@
+import 'package:aimimi/app_localizations.dart';
 import 'package:aimimi/models/user.dart';
 import 'package:aimimi/services/auth_service.dart';
 import 'package:aimimi/constants/styles.dart';
@@ -39,40 +40,57 @@ class _ProfileViewState extends State<ProfileView> {
                   backgroundImage: getImage(),
                   child: getText(),
                 ),
-                Flexible(
-                  child: Padding(
-                    padding:
-                        EdgeInsets.only(top: 0, left: 30, right: 0, bottom: 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          " " + user.displayName,
-                          overflow: TextOverflow.ellipsis,
+                Padding(
+                  padding:
+                      EdgeInsets.only(top: 0, left: 30, right: 0, bottom: 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        " " + user.displayName,
+                        style: TextStyle(
+                          color: monoPrimaryColor,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      SizedBox(height: 4),
+                      Container(
+                        padding: EdgeInsets.only(
+                            top: 10, left: 10, right: 10, bottom: 10),
+                        decoration: BoxDecoration(
+                          color: backgroundTintedColor,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          AppLocalizations.of(context)
+                                  .translate("profile_goals") +
+                              " " +
+                              goals.length.toString(),
                           style: TextStyle(
                             color: monoPrimaryColor,
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        SizedBox(height: 4),
-                        Container(
-                          padding: EdgeInsets.only(
-                              top: 10, left: 10, right: 10, bottom: 10),
-                          decoration: BoxDecoration(
-                            color: backgroundTintedColor,
-                            borderRadius: BorderRadius.circular(20),
+                      ),
+                      SizedBox(height: 4),
+                      Container(
+                        padding: EdgeInsets.only(
+                            top: 10, left: 10, right: 10, bottom: 10),
+                        decoration: BoxDecoration(
+                          color: backgroundTintedColor,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          'Goals  ' + goals.length.toString(),
+                          style: TextStyle(
+                            color: monoSecondaryColor,
+                            fontWeight: FontWeight.w700,
                           ),
-                          child: Text(
-                            'Goals  ' + goals.length.toString(),
-                            style: TextStyle(
-                              color: monoSecondaryColor,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ],
@@ -115,7 +133,7 @@ class _ProfileViewState extends State<ProfileView> {
                       ),
                     ),
                     Text(
-                      'Ongoing',
+                      AppLocalizations.of(context).translate("profile_ongoing"),
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
@@ -160,7 +178,8 @@ class _ProfileViewState extends State<ProfileView> {
                       ),
                     ),
                     Text(
-                      'Completed',
+                      AppLocalizations.of(context)
+                          .translate("profile_completed"),
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
@@ -193,7 +212,7 @@ class _ProfileViewState extends State<ProfileView> {
                       width: 10,
                     ),
                     Text(
-                      "Logout",
+                      AppLocalizations.of(context).translate("logout"),
                       style: TextStyle(
                         color: Color(0xff999999),
                         fontWeight: FontWeight.w700,

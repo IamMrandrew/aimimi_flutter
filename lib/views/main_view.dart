@@ -1,3 +1,4 @@
+import 'package:aimimi/app_localizations.dart';
 import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/models/ad.dart';
 import 'package:aimimi/models/goal.dart';
@@ -18,7 +19,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:aimimi/models/feed.dart';
 
-List<String> title = ["Today", "Goals", "Leaderboard", "Profile"];
+List<String> title = ["today", "goals", "leaderboard", "profile"];
 
 class MainView extends StatefulWidget {
   @override
@@ -95,7 +96,7 @@ class _MainViewState extends State<MainView> {
           ),
           centerTitle: true,
           title: Text(
-            title[_currentIndex],
+            _buildTitle(context),
             style: appBarTitleTextStyle,
           ),
           elevation: 0,
@@ -151,7 +152,7 @@ class _MainViewState extends State<MainView> {
               Icons.today,
               //color: monoSecondaryColor,
             ),
-            label: "Today",
+            label: AppLocalizations.of(context).translate("views_today"),
             activeIcon: Icon(Icons.today, color: themeShadedColor),
           ),
           BottomNavigationBarItem(
@@ -159,21 +160,21 @@ class _MainViewState extends State<MainView> {
               Icons.leaderboard_outlined,
               //color: monoSecondaryColor,
             ),
-            label: "Goals",
+            label: AppLocalizations.of(context).translate("views_goals"),
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.emoji_events_outlined,
               //color: monoSecondaryColor,
             ),
-            label: "Leaderboard",
+            label: AppLocalizations.of(context).translate("views_leaderboard"),
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.account_circle_outlined,
               //color: monoSecondaryColor,
             ),
-            label: "Profile",
+            label: AppLocalizations.of(context).translate("views_profile"),
           ),
         ],
         selectedLabelStyle: TextStyle(
@@ -190,5 +191,10 @@ class _MainViewState extends State<MainView> {
         unselectedItemColor: monoSecondaryColor,
       ),
     );
+  }
+
+  String _buildTitle(context) {
+    return AppLocalizations.of(context)
+        .translate("views_" + title[_currentIndex]);
   }
 }

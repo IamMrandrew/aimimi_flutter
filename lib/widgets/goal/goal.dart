@@ -1,3 +1,4 @@
+import 'package:aimimi/app_localizations.dart';
 import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/views/goals/goal_view.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +67,8 @@ class GoalItem extends StatelessWidget {
                     new Row(
                       children: [
                         Text(
-                          period,
+                          AppLocalizations.of(context)
+                              .translate("period_" + period.toLowerCase()),
                           style: TextStyle(
                             fontSize: 14,
                             color: themeShadedColor,
@@ -75,7 +77,9 @@ class GoalItem extends StatelessWidget {
                         ),
                         SizedBox(width: 8),
                         Text(
-                          "${timespan - dayPassed} days left",
+                          "${timespan - dayPassed} " +
+                              AppLocalizations.of(context)
+                                  .translate("timespan_remaining"),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 14,

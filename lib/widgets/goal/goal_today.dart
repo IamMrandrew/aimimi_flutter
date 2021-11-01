@@ -1,3 +1,4 @@
+import 'package:aimimi/app_localizations.dart';
 import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/models/goal.dart';
 import 'package:aimimi/models/user.dart';
@@ -104,7 +105,9 @@ class _TodayGoalState extends State<TodayGoal> {
                             Row(
                               children: [
                                 Text(
-                                  widget.goal.period,
+                                  AppLocalizations.of(context).translate(
+                                      "period_" +
+                                          widget.goal.period.toLowerCase()),
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: themeShadedColor,
@@ -113,7 +116,9 @@ class _TodayGoalState extends State<TodayGoal> {
                                 ),
                                 SizedBox(width: 8),
                                 Text(
-                                  "${widget.goal.timespan - widget.dayPassed} days left",
+                                  "${widget.goal.timespan - widget.dayPassed} " +
+                                      AppLocalizations.of(context)
+                                          .translate("timespan_remaining"),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 14,

@@ -1,3 +1,4 @@
+import 'package:aimimi/app_localizations.dart';
 import 'package:aimimi/constants/styles.dart';
 import 'package:aimimi/models/user.dart';
 import 'package:aimimi/services/goal_service.dart';
@@ -62,7 +63,7 @@ class _GoalViewState extends State<GoalView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Description",
+                        AppLocalizations.of(context).translate("description"),
                         style: TextStyle(
                           color: themeShadedColor,
                           fontSize: 17,
@@ -96,7 +97,11 @@ class _GoalViewState extends State<GoalView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        _shared ? "Your goal is public" : "Not shared yet",
+                        _shared
+                            ? AppLocalizations.of(context)
+                                .translate("title_shared")
+                            : AppLocalizations.of(context)
+                                .translate("title_not_shared"),
                         style: TextStyle(
                           color: themeShadedColor,
                           fontSize: 17,
@@ -106,8 +111,10 @@ class _GoalViewState extends State<GoalView> {
                       SizedBox(height: 4),
                       Text(
                         _shared
-                            ? "Your goal is public"
-                            : "Do you want to share it now?",
+                            ? AppLocalizations.of(context)
+                                .translate("text_shared")
+                            : AppLocalizations.of(context)
+                                .translate("text_not_shared"),
                         style: TextStyle(
                           color: Color(0xff4B4B4B),
                           fontSize: 14,
@@ -193,7 +200,8 @@ class _GoalViewState extends State<GoalView> {
               Row(
                 children: [
                   Text(
-                    userGoal.goal.category,
+                    AppLocalizations.of(context).translate(
+                        "category_${userGoal.goal.category.toLowerCase()}"),
                     style: TextStyle(
                       color: monoSecondaryColor,
                       fontSize: 15,
@@ -202,7 +210,8 @@ class _GoalViewState extends State<GoalView> {
                   ),
                   SizedBox(width: 8),
                   Text(
-                    userGoal.goal.period,
+                    AppLocalizations.of(context).translate(
+                        "period_${userGoal.goal.period.toLowerCase()}"),
                     style: TextStyle(
                       color: monoSecondaryColor,
                       fontSize: 15,
@@ -211,7 +220,9 @@ class _GoalViewState extends State<GoalView> {
                   ),
                   SizedBox(width: 8),
                   Text(
-                    "${userGoal.goal.timespan - userGoal.dayPassed} days left",
+                    "${userGoal.goal.timespan - userGoal.dayPassed} " +
+                        AppLocalizations.of(context)
+                            .translate("timespan_remaining"),
                     style: TextStyle(
                       color: monoSecondaryColor,
                       fontSize: 15,
@@ -230,7 +241,7 @@ class _GoalViewState extends State<GoalView> {
   Text _buildButtonText(bool shared) {
     if (shared) {
       return Text(
-        "Shared",
+        AppLocalizations.of(context).translate("shared"),
         style: TextStyle(
           color: Colors.white,
           fontSize: 15,
@@ -239,7 +250,7 @@ class _GoalViewState extends State<GoalView> {
       );
     } else {
       return Text(
-        "Share",
+        AppLocalizations.of(context).translate("share"),
         style: TextStyle(
           color: Colors.white,
           fontSize: 15,
