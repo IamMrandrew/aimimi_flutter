@@ -59,7 +59,7 @@ class TopRank extends StatelessWidget {
                 ));
           } else {
             return Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                 width: 100,
                 height: _buildTopRankHeight(context, length),
                 decoration: BoxDecoration(
@@ -83,6 +83,7 @@ class TopRank extends StatelessWidget {
                     SizedBox(height: 14),
                     Text(
                       username,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: themeShadedColor,
                         fontSize: 15,
